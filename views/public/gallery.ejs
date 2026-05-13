@@ -1,0 +1,73 @@
+<!-- Header -->
+<div class="bg-primary text-white py-16 px-4">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="text-4xl font-bold mb-3"><% if(lang==='uz'){%>Galereya<%}else if(lang==='ru'){%>Галерея<%}else{%>Gallery<%}%></h1>
+    <p class="text-white/60 flex items-center gap-2 text-sm">
+      <a href="/" class="hover:text-white"><% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Home<%}%></a>
+      <i class="fas fa-chevron-right text-xs"></i>
+      <span><% if(lang==='uz'){%>Galereya<%}else if(lang==='ru'){%>Галерея<%}else{%>Gallery<%}%></span>
+    </p>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 py-12">
+  <!-- Filter -->
+  <div class="flex flex-wrap gap-3 mb-8">
+    <a href="/gallery" class="px-4 py-2 rounded-full text-sm font-medium <%= !query.category ? 'bg-primary text-white' : 'bg-white text-gray-600 border hover:bg-gray-50' %>">
+      <% if(lang==='uz'){%>Barchasi<%}else if(lang==='ru'){%>Все<%}else{%>All<%}%> (<%= gallery.length %>)
+    </a>
+    <% categories.forEach(cat => { %>
+      <a href="/gallery?category=<%= cat %>" class="px-4 py-2 rounded-full text-sm font-medium capitalize <%= query.category===cat ? 'bg-primary text-white' : 'bg-white text-gray-600 border hover:bg-gray-50' %>">
+        <%= cat %>
+      </a>
+    <% }) %>
+  </div>
+
+  <% if (gallery.length === 0) { %>
+    <div class="text-center py-20 text-gray-400">
+      <i class="fas fa-images text-5xl mb-4 block"></i>
+      <p><% if(lang==='uz'){%>Rasmlar yo'q<%}else if(lang==='ru'){%>Нет фотографий<%}else{%>No images yet<%}%></p>
+    </div>
+  <% } %>
+
+  <!-- Masonry Grid -->
+  <div class="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
+    <% gallery.forEach((img, i) => { %>
+      <div class="relative overflow-hidden rounded-xl group cursor-pointer break-inside-avoid mb-3" onclick="openLightbox('<%= img.image %>', '<%= (img[`title_${lang}`] || img.title_uz || '').replace(/'/g, "\\'") %>')">
+        <img src="<%= img.image %>" alt="<%= img[`title_${lang}`] || '' %>" class="w-full object-cover group-hover:scale-105 transition-transform duration-500">
+        <div class="absolute inset-0 bg-primary/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+          <i class="fas fa-expand text-white text-2xl"></i>
+          <% if (img[`title_${lang}`] || img.title_uz) { %>
+            <p class="text-white text-xs text-center px-3"><%= img[`title_${lang}`] || img.title_uz %></p>
+          <% } %>
+        </div>
+        <% if (img.category) { %>
+          <span class="absolute top-2 left-2 text-xs bg-black/40 text-white px-2 py-0.5 rounded-full capitalize backdrop-blur-sm"><%= img.category %></span>
+        <% } %>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" class="fixed inset-0 bg-black/95 z-50 hidden flex flex-col items-center justify-center p-4" onclick="if(event.target===this)closeLightbox()">
+  <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-xl w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full">
+    <i class="fas fa-times"></i>
+  </button>
+  <img id="lb-img" src="" class="max-w-full max-h-[85vh] rounded-xl object-contain">
+  <p id="lb-caption" class="text-white/70 text-sm mt-3"></p>
+</div>
+
+<script>
+function openLightbox(src, caption) {
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb-caption').textContent = caption || '';
+  document.getElementById('lightbox').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>

@@ -1,0 +1,137 @@
+<div class="max-w-5xl">
+  <a href="/admin/news" class="inline-flex items-center gap-2 text-gray-500 hover:text-gray-800 text-sm mb-6">
+    <i class="fas fa-arrow-left"></i> Back to News
+  </a>
+
+  <form method="POST" action="<%= news ? `/admin/news/${news._id}/edit` : '/admin/news/create' %>" enctype="multipart/form-data">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Main Content -->
+      <div class="lg:col-span-2 space-y-5">
+        <!-- Titles -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-heading text-blue-600"></i> Titles</h3>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Title (Uzbek) *</label>
+              <input type="text" name="title_uz" required value="<%= news?.title_uz || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Title (Russian) *</label>
+              <input type="text" name="title_ru" required value="<%= news?.title_ru || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Title (English) *</label>
+              <input type="text" name="title_en" required value="<%= news?.title_en || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+        </div>
+
+        <!-- Excerpts -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-align-left text-blue-600"></i> Excerpts</h3>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Excerpt (Uzbek)</label>
+              <textarea name="excerpt_uz" rows="2" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= news?.excerpt_uz || '' %></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Excerpt (Russian)</label>
+              <textarea name="excerpt_ru" rows="2" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= news?.excerpt_ru || '' %></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Excerpt (English)</label>
+              <textarea name="excerpt_en" rows="2" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= news?.excerpt_en || '' %></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Tabs -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-align-justify text-blue-600"></i> Content</h3>
+          <div class="flex border-b mb-4 gap-1">
+            <button type="button" onclick="switchTab('uz')" id="tab-uz" class="px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600">UZ</button>
+            <button type="button" onclick="switchTab('ru')" id="tab-ru" class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-gray-700">RU</button>
+            <button type="button" onclick="switchTab('en')" id="tab-en" class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-gray-700">EN</button>
+          </div>
+          <div id="content-uz">
+            <textarea name="content_uz" rows="12" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"><%= news?.content_uz || '' %></textarea>
+          </div>
+          <div id="content-ru" class="hidden">
+            <textarea name="content_ru" rows="12" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"><%= news?.content_ru || '' %></textarea>
+          </div>
+          <div id="content-en" class="hidden">
+            <textarea name="content_en" rows="12" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"><%= news?.content_en || '' %></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-5">
+        <!-- Publish Box -->
+        <div class="bg-white rounded-xl shadow-sm p-5">
+          <h3 class="font-semibold text-gray-800 mb-4">Publish</h3>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Status</label>
+            <select name="status" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="draft" <%= news?.status==='draft'?'selected':'' %>>Draft</option>
+              <option value="published" <%= news?.status==='published'?'selected':'' %>>Published</option>
+            </select>
+          </div>
+          <div class="mb-5">
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Category</label>
+            <select name="category" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="general" <%= news?.category==='general'?'selected':'' %>>General</option>
+              <option value="sports" <%= news?.category==='sports'?'selected':'' %>>Sports</option>
+              <option value="science" <%= news?.category==='science'?'selected':'' %>>Science</option>
+              <option value="arts" <%= news?.category==='arts'?'selected':'' %>>Arts</option>
+              <option value="events" <%= news?.category==='events'?'selected':'' %>>Events</option>
+              <option value="academics" <%= news?.category==='academics'?'selected':'' %>>Academics</option>
+            </select>
+          </div>
+          <button type="submit" class="w-full py-2.5 bg-blue-900 text-white rounded-lg text-sm font-semibold hover:bg-blue-800 transition">
+            <i class="fas fa-save mr-1.5"></i> <%= news ? 'Update' : 'Publish' %>
+          </button>
+        </div>
+
+        <!-- Image -->
+        <div class="bg-white rounded-xl shadow-sm p-5">
+          <h3 class="font-semibold text-gray-800 mb-4">Featured Image</h3>
+          <% if (news?.image) { %>
+            <img src="<%= news.image %>" class="w-full h-36 object-cover rounded-lg mb-3">
+          <% } %>
+          <label class="block w-full border-2 border-dashed border-gray-200 rounded-lg p-4 text-center cursor-pointer hover:border-blue-400 transition">
+            <i class="fas fa-cloud-upload-alt text-gray-400 text-2xl mb-1 block"></i>
+            <span class="text-sm text-gray-500">Click to upload image</span>
+            <input type="file" name="image" accept="image/*" class="hidden" onchange="previewImg(this)">
+          </label>
+          <img id="preview" class="hidden w-full h-36 object-cover rounded-lg mt-3">
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+function switchTab(lang) {
+  ['uz','ru','en'].forEach(l => {
+    document.getElementById(`content-${l}`).classList.toggle('hidden', l !== lang);
+    const tab = document.getElementById(`tab-${l}`);
+    tab.classList.toggle('text-blue-600', l === lang);
+    tab.classList.toggle('border-b-2', l === lang);
+    tab.classList.toggle('border-blue-600', l === lang);
+    tab.classList.toggle('text-gray-400', l !== lang);
+  });
+}
+function previewImg(input) {
+  const file = input.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.getElementById('preview');
+      img.src = e.target.result;
+      img.classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
+  }
+}
+</script>

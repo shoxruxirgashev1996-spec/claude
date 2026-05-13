@@ -1,0 +1,22 @@
+<div class="min-h-screen flex items-center justify-center px-4 py-20">
+  <div class="text-center max-w-md">
+    <div class="text-9xl font-bold text-red-100 mb-4">500</div>
+    <h1 class="text-3xl font-bold text-gray-900 mb-3">Server Xatosi</h1>
+    <p class="text-gray-500 mb-4">
+      <% if(lang==='uz'){%>Tizimda xato yuz berdi. Iltimos, keyinroq urinib ko'ring.<%}else if(lang==='ru'){%>Произошла ошибка сервера. Пожалуйста, попробуйте позже.<%}else{%>A server error occurred. Please try again later.<%}%>
+    </p>
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 text-left">
+        <p class="text-red-700 text-sm font-mono"><%= error %></p>
+      </div>
+    <% } %>
+    <div class="flex justify-center gap-4">
+      <a href="/" class="px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:opacity-90 transition flex items-center gap-2">
+        <i class="fas fa-home"></i> Bosh sahifa
+      </a>
+      <button onclick="history.back()" class="px-6 py-3 border border-gray-200 text-gray-600 rounded-xl font-semibold hover:bg-gray-50 transition flex items-center gap-2">
+        <i class="fas fa-arrow-left"></i> Orqaga
+      </button>
+    </div>
+  </div>
+</div>

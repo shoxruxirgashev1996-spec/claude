@@ -1,0 +1,172 @@
+<div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-6">
+  <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-blue-600">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Total News</p>
+        <p class="text-3xl font-bold text-gray-800 mt-1"><%= stats.totalNews %></p>
+      </div>
+      <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+        <i class="fas fa-newspaper text-blue-600 text-xl"></i>
+      </div>
+    </div>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-green-500">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Applications</p>
+        <p class="text-3xl font-bold text-gray-800 mt-1"><%= stats.totalApplications %></p>
+        <p class="text-xs text-orange-500 mt-0.5"><i class="fas fa-clock mr-1"></i><%= stats.pendingApps %> pending</p>
+      </div>
+      <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
+        <i class="fas fa-file-alt text-green-600 text-xl"></i>
+      </div>
+    </div>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-purple-500">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Messages</p>
+        <p class="text-3xl font-bold text-gray-800 mt-1"><%= stats.totalContacts %></p>
+        <p class="text-xs text-red-500 mt-0.5"><i class="fas fa-circle mr-1"></i><%= stats.unreadContacts %> unread</p>
+      </div>
+      <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
+        <i class="fas fa-envelope text-purple-600 text-xl"></i>
+      </div>
+    </div>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-yellow-500">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Gallery Items</p>
+        <p class="text-3xl font-bold text-gray-800 mt-1"><%= stats.totalGallery %></p>
+      </div>
+      <div class="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center">
+        <i class="fas fa-images text-yellow-600 text-xl"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Budget Overview -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+  <div class="bg-white rounded-xl shadow-sm p-5">
+    <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Total Income</p>
+    <p class="text-2xl font-bold text-green-600 mt-1"><%= (stats.income || 0).toLocaleString() %> UZS</p>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm p-5">
+    <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Total Expense</p>
+    <p class="text-2xl font-bold text-red-500 mt-1"><%= (stats.expense || 0).toLocaleString() %> UZS</p>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm p-5">
+    <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Balance</p>
+    <p class="text-2xl font-bold <%= (stats.income - stats.expense) >= 0 ? 'text-green-600' : 'text-red-500' %> mt-1">
+      <%= ((stats.income || 0) - (stats.expense || 0)).toLocaleString() %> UZS
+    </p>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+  <!-- Monthly News Chart -->
+  <div class="bg-white rounded-xl shadow-sm p-6">
+    <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+      <i class="fas fa-chart-line text-blue-600"></i> Monthly News
+    </h3>
+    <canvas id="newsChart" height="200"></canvas>
+  </div>
+
+  <!-- Applications Chart -->
+  <div class="bg-white rounded-xl shadow-sm p-6">
+    <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+      <i class="fas fa-chart-bar text-green-600"></i> Monthly Applications
+    </h3>
+    <canvas id="appChart" height="200"></canvas>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <!-- Recent News -->
+  <div class="bg-white rounded-xl shadow-sm">
+    <div class="px-6 py-4 border-b flex items-center justify-between">
+      <h3 class="font-bold text-gray-800">Recent News</h3>
+      <a href="/admin/news" class="text-blue-600 hover:text-blue-800 text-sm">View all →</a>
+    </div>
+    <div class="divide-y">
+      <% if (recentNews.length === 0) { %>
+        <p class="px-6 py-4 text-gray-400 text-sm text-center">No news yet</p>
+      <% } %>
+      <% recentNews.forEach(n => { %>
+        <div class="px-6 py-4 flex items-center gap-3">
+          <% if (n.image) { %>
+            <img src="<%= n.image %>" alt="" class="w-12 h-12 rounded-lg object-cover flex-shrink-0">
+          <% } else { %>
+            <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-newspaper text-gray-400"></i>
+            </div>
+          <% } %>
+          <div class="flex-1 min-w-0">
+            <p class="font-medium text-gray-800 text-sm truncate"><%= n.title_uz %></p>
+            <p class="text-gray-400 text-xs mt-0.5"><%= n.createdAt.toLocaleDateString() %></p>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-full <%= n.status==='published'?'bg-green-100 text-green-700':'bg-gray-100 text-gray-500' %>">
+            <%= n.status %>
+          </span>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+
+  <!-- Recent Applications -->
+  <div class="bg-white rounded-xl shadow-sm">
+    <div class="px-6 py-4 border-b flex items-center justify-between">
+      <h3 class="font-bold text-gray-800">Recent Applications</h3>
+      <a href="/admin/applications" class="text-blue-600 hover:text-blue-800 text-sm">View all →</a>
+    </div>
+    <div class="divide-y">
+      <% if (recentApps.length === 0) { %>
+        <p class="px-6 py-4 text-gray-400 text-sm text-center">No applications yet</p>
+      <% } %>
+      <% recentApps.forEach(a => { %>
+        <div class="px-6 py-4 flex items-center justify-between">
+          <div>
+            <p class="font-medium text-gray-800 text-sm"><%= a.first_name %> <%= a.last_name %></p>
+            <p class="text-gray-400 text-xs"><%= a.phone %> · <%= a.createdAt.toLocaleDateString() %></p>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-full
+            <%= a.status==='accepted'?'bg-green-100 text-green-700':a.status==='rejected'?'bg-red-100 text-red-700':'bg-yellow-100 text-yellow-700' %>">
+            <%= a.status %>
+          </span>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</div>
+
+<script>
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const newsData = <%- JSON.stringify(monthlyNews) %>;
+const appData = <%- JSON.stringify(monthlyApps) %>;
+
+const newsCounts = Array(12).fill(0);
+newsData.forEach(d => { newsCounts[d._id.month - 1] = d.count; });
+
+const appCounts = Array(12).fill(0);
+appData.forEach(d => { appCounts[d._id.month - 1] = d.count; });
+
+new Chart(document.getElementById('newsChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [{ label: 'News', data: newsCounts, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.08)', tension: 0.4, fill: true, pointBackgroundColor: '#2563eb' }]
+  },
+  options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+});
+
+new Chart(document.getElementById('appChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{ label: 'Applications', data: appCounts, backgroundColor: 'rgba(16,185,129,0.8)', borderRadius: 6 }]
+  },
+  options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+});
+</script>

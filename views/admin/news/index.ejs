@@ -1,0 +1,102 @@
+<div class="flex items-center justify-between mb-6">
+  <div></div>
+  <a href="/admin/news/create" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-900 text-white rounded-lg text-sm font-semibold hover:bg-blue-800 transition">
+    <i class="fas fa-plus"></i> Create News
+  </a>
+</div>
+
+<!-- Filters -->
+<div class="bg-white rounded-xl shadow-sm p-4 mb-5">
+  <form method="GET" class="flex flex-wrap gap-3">
+    <input type="text" name="search" value="<%= query.search || '' %>" placeholder="Search..." class="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1 min-w-0">
+    <select name="status" class="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <option value="">All Status</option>
+      <option value="published" <%= query.status==='published'?'selected':'' %>>Published</option>
+      <option value="draft" <%= query.status==='draft'?'selected':'' %>>Draft</option>
+    </select>
+    <select name="category" class="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <option value="">All Categories</option>
+      <option value="general">General</option>
+      <option value="sports">Sports</option>
+      <option value="science">Science</option>
+      <option value="arts">Arts</option>
+      <option value="events">Events</option>
+    </select>
+    <button type="submit" class="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-700">
+      <i class="fas fa-search mr-1"></i> Search
+    </button>
+    <a href="/admin/news" class="px-4 py-2 border rounded-lg text-sm text-gray-600 hover:bg-gray-50">Clear</a>
+  </form>
+</div>
+
+<!-- Table -->
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 border-b">
+      <tr>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Image</th>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Title</th>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Category</th>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Status</th>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Views</th>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Date</th>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-50">
+      <% if (news.length === 0) { %>
+        <tr><td colspan="7" class="px-6 py-12 text-center text-gray-400"><i class="fas fa-newspaper text-3xl mb-2 block"></i>No news found</td></tr>
+      <% } %>
+      <% news.forEach(n => { %>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-3">
+            <% if (n.image) { %>
+              <img src="<%= n.image %>" class="w-14 h-10 object-cover rounded-lg">
+            <% } else { %>
+              <div class="w-14 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400"><i class="fas fa-image"></i></div>
+            <% } %>
+          </td>
+          <td class="px-6 py-3">
+            <p class="font-medium text-gray-800 max-w-xs truncate"><%= n.title_uz %></p>
+            <p class="text-gray-400 text-xs truncate max-w-xs"><%= n.title_ru %></p>
+          </td>
+          <td class="px-6 py-3"><span class="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full capitalize"><%= n.category %></span></td>
+          <td class="px-6 py-3">
+            <span class="text-xs px-2 py-1 rounded-full font-medium <%= n.status==='published'?'bg-green-100 text-green-700':'bg-gray-100 text-gray-600' %>">
+              <%= n.status %>
+            </span>
+          </td>
+          <td class="px-6 py-3 text-gray-500"><%= n.views %></td>
+          <td class="px-6 py-3 text-gray-500 text-xs"><%= n.createdAt.toLocaleDateString() %></td>
+          <td class="px-6 py-3">
+            <div class="flex items-center gap-2">
+              <a href="/news/<%= n.slug %>" target="_blank" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600" title="Preview">
+                <i class="fas fa-eye text-xs"></i>
+              </a>
+              <a href="/admin/news/<%= n._id %>/edit" class="w-8 h-8 rounded-lg bg-blue-50 hover:bg-blue-100 flex items-center justify-center text-blue-600" title="Edit">
+                <i class="fas fa-pen text-xs"></i>
+              </a>
+              <form method="POST" action="/admin/news/<%= n._id %>/delete" onsubmit="return confirm('Delete this news?')">
+                <button type="submit" class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-100 flex items-center justify-center text-red-600" title="Delete">
+                  <i class="fas fa-trash text-xs"></i>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+<% if (pages > 1) { %>
+  <div class="flex justify-center gap-2 mt-5">
+    <% for (let i = 1; i <= pages; i++) { %>
+      <a href="?page=<%= i %>&status=<%= query.status||'' %>&search=<%= query.search||'' %>"
+        class="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-medium <%= i===page?'bg-blue-900 text-white':'bg-white text-gray-600 hover:bg-gray-50 border' %>">
+        <%= i %>
+      </a>
+    <% } %>
+  </div>
+<% } %>

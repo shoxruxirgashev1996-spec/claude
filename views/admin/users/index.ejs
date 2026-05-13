@@ -1,0 +1,99 @@
+<!-- Create User Form -->
+<div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+  <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-user-plus text-blue-600"></i> Create New User</h3>
+  <form method="POST" action="/admin/users/create">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5">Full Name *</label>
+        <input type="text" name="name" required class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="John Doe">
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5">Email *</label>
+        <input type="email" name="email" required class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="admin@school.uz">
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5">Password *</label>
+        <input type="password" name="password" required minlength="6" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Min 6 characters">
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5">Role *</label>
+        <select name="role" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="admin">Admin</option>
+          <option value="superadmin">Super Admin</option>
+        </select>
+      </div>
+    </div>
+    <div class="mt-4">
+      <button type="submit" class="px-6 py-2.5 bg-blue-900 text-white rounded-lg text-sm font-semibold hover:bg-blue-800 transition">
+        <i class="fas fa-user-plus mr-1.5"></i> Create User
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Users Table -->
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 border-b">
+      <tr>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">User</th>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Email</th>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Role</th>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Status</th>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Last Login</th>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Created</th>
+        <th class="text-left px-6 py-3 text-gray-500 font-semibold text-xs uppercase">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y">
+      <% if (users.length === 0) { %>
+        <tr><td colspan="7" class="px-6 py-12 text-center text-gray-400">No users found</td></tr>
+      <% } %>
+      <% users.forEach(u => { %>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-sm">
+                <%= u.name.charAt(0).toUpperCase() %>
+              </div>
+              <span class="font-medium text-gray-800"><%= u.name %></span>
+            </div>
+          </td>
+          <td class="px-6 py-4 text-gray-600"><%= u.email %></td>
+          <td class="px-6 py-4">
+            <span class="text-xs px-2.5 py-1 rounded-full font-semibold <%= u.role==='superadmin'?'bg-purple-100 text-purple-700':'bg-blue-100 text-blue-700' %>">
+              <%= u.role %>
+            </span>
+          </td>
+          <td class="px-6 py-4">
+            <span class="text-xs px-2.5 py-1 rounded-full font-medium <%= u.isActive?'bg-green-100 text-green-700':'bg-red-100 text-red-500' %>">
+              <%= u.isActive ? 'Active' : 'Inactive' %>
+            </span>
+          </td>
+          <td class="px-6 py-4 text-gray-400 text-xs">
+            <%= u.lastLogin ? new Date(u.lastLogin).toLocaleString() : 'Never' %>
+          </td>
+          <td class="px-6 py-4 text-gray-400 text-xs"><%= u.createdAt.toLocaleDateString() %></td>
+          <td class="px-6 py-4">
+            <div class="flex gap-2">
+              <% if (u._id.toString() !== currentUser.id.toString()) { %>
+                <form method="POST" action="/admin/users/<%= u._id %>/toggle">
+                  <button type="submit" class="px-3 py-1.5 text-xs rounded-lg font-medium <%= u.isActive?'bg-yellow-50 text-yellow-700 hover:bg-yellow-100':'bg-green-50 text-green-700 hover:bg-green-100' %>">
+                    <%= u.isActive ? 'Disable' : 'Enable' %>
+                  </button>
+                </form>
+                <form method="POST" action="/admin/users/<%= u._id %>/delete" onsubmit="return confirm('Delete user <%= u.name %>?')">
+                  <button type="submit" class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-100 flex items-center justify-center text-red-600">
+                    <i class="fas fa-trash text-xs"></i>
+                  </button>
+                </form>
+              <% } else { %>
+                <span class="text-gray-400 text-xs italic">Current user</span>
+              <% } %>
+            </div>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
