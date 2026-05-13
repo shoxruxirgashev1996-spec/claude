@@ -1,0 +1,105 @@
+<!-- Page Header -->
+<div class="bg-primary text-white py-16 px-4">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="text-4xl font-bold mb-3">
+      <% if(lang==='uz'){%>Maktab haqida<%}else if(lang==='ru'){%>О школе<%}else{%>About Our School<%}%>
+    </h1>
+    <p class="text-white/60 flex items-center gap-2 text-sm">
+      <a href="/" class="hover:text-white">
+        <% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Home<%}%>
+      </a>
+      <i class="fas fa-chevron-right text-xs"></i>
+      <span><% if(lang==='uz'){%>Maktab haqida<%}else if(lang==='ru'){%>О школе<%}else{%>About<%}%></span>
+    </p>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 py-14">
+  <!-- Mission & Vision -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
+    <% if (about.mission_uz || about.mission_ru || about.mission_en) { %>
+    <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 card-hover">
+      <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-5">
+        <i class="fas fa-bullseye text-blue-600 text-2xl"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">
+        <% if(lang==='uz'){%>Missiya<%}else if(lang==='ru'){%>Миссия<%}else{%>Mission<%}%>
+      </h2>
+      <p class="text-gray-600 leading-relaxed">
+        <%= about[`mission_${lang}`] || about.mission_uz || '' %>
+      </p>
+    </div>
+    <% } %>
+
+    <% if (about.vision_uz || about.vision_ru || about.vision_en) { %>
+    <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 card-hover">
+      <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mb-5">
+        <i class="fas fa-eye text-green-600 text-2xl"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">
+        <% if(lang==='uz'){%>Vizyon<%}else if(lang==='ru'){%>Видение<%}else{%>Vision<%}%>
+      </h2>
+      <p class="text-gray-600 leading-relaxed">
+        <%= about[`vision_${lang}`] || about.vision_uz || '' %>
+      </p>
+    </div>
+    <% } %>
+  </div>
+
+  <!-- History -->
+  <% if (about.history_uz || about.history_ru || about.history_en) { %>
+  <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-14">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+        <i class="fas fa-history text-purple-600 text-2xl"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-900">
+        <% if(lang==='uz'){%>Maktab tarixi<%}else if(lang==='ru'){%>История школы<%}else{%>School History<%}%>
+      </h2>
+    </div>
+    <p class="text-gray-600 leading-relaxed text-lg whitespace-pre-line">
+      <%= about[`history_${lang}`] || about.history_uz || '' %>
+    </p>
+  </div>
+  <% } %>
+
+  <!-- Directors -->
+  <% if (about.directors && about.directors.length > 0) { %>
+  <div>
+    <div class="text-center mb-10">
+      <p class="text-secondary font-semibold text-sm uppercase tracking-wider mb-1"><% if(lang==='uz'){%>Rahbariyat<%}else if(lang==='ru'){%>Руководство<%}else{%>Leadership<%}%></p>
+      <h2 class="text-3xl font-bold text-gray-900">
+        <% if(lang==='uz'){%>Maktab rahbariyati<%}else if(lang==='ru'){%>Руководство школы<%}else{%>School Directors<%}%>
+      </h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+      <% about.directors.forEach(d => { %>
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 card-hover text-center">
+          <div class="h-56 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center overflow-hidden">
+            <% if (d.image) { %>
+              <img src="<%= d.image %>" alt="<%= d.name %>" class="w-full h-full object-cover object-top">
+            <% } else { %>
+              <div class="w-24 h-24 rounded-full bg-blue-200 flex items-center justify-center">
+                <i class="fas fa-user text-blue-400 text-4xl"></i>
+              </div>
+            <% } %>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-gray-900 text-lg"><%= d.name %></h3>
+            <p class="text-secondary font-medium text-sm mt-1">
+              <%= d[`position_${lang}`] || d.position_uz || d.position_en || '' %>
+            </p>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+  <% } %>
+
+  <% if (!about.mission_uz && !about.history_uz && (!about.directors || about.directors.length === 0)) { %>
+    <div class="text-center py-20 text-gray-400">
+      <i class="fas fa-school text-5xl mb-4 block"></i>
+      <p class="text-lg"><% if(lang==='uz'){%>Kontent admin tomonidan to'ldirilishi kerak<%}else if(lang==='ru'){%>Контент должен быть заполнен администратором<%}else{%>Content will be added by admin<%}%></p>
+    </div>
+  <% } %>
+</div>

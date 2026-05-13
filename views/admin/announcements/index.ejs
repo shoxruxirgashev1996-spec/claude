@@ -1,0 +1,88 @@
+<!-- Create Form -->
+<div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+  <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-plus text-blue-600"></i> New Announcement</h3>
+  <form method="POST" action="/admin/announcements/create">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5">Title (UZ) *</label>
+        <input type="text" name="title_uz" required class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5">Title (RU) *</label>
+        <input type="text" name="title_ru" required class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5">Title (EN) *</label>
+        <input type="text" name="title_en" required class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5">Content (UZ)</label>
+        <textarea name="content_uz" rows="3" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5">Content (RU)</label>
+        <textarea name="content_ru" rows="3" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5">Content (EN)</label>
+        <textarea name="content_en" rows="3" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+      </div>
+    </div>
+    <div class="flex items-end gap-4">
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5">Expires At</label>
+        <input type="date" name="expiresAt" class="border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5">Active</label>
+        <select name="isActive" class="border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+      <button type="submit" class="px-6 py-2.5 bg-blue-900 text-white rounded-lg text-sm font-semibold hover:bg-blue-800">
+        <i class="fas fa-plus mr-1.5"></i> Create
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- List -->
+<div class="space-y-3">
+  <% if (announcements.length === 0) { %>
+    <div class="bg-white rounded-xl p-12 text-center text-gray-400">
+      <i class="fas fa-bullhorn text-3xl mb-2 block"></i> No announcements yet
+    </div>
+  <% } %>
+  <% announcements.forEach(a => { %>
+    <div class="bg-white rounded-xl shadow-sm p-5 flex items-start justify-between gap-4">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 <%= a.isActive ? 'bg-green-100' : 'bg-gray-100' %>">
+          <i class="fas fa-bullhorn <%= a.isActive ? 'text-green-600' : 'text-gray-400' %>"></i>
+        </div>
+        <div>
+          <p class="font-semibold text-gray-800"><%= a.title_uz %></p>
+          <p class="text-gray-500 text-xs mt-0.5"><%= a.title_ru %></p>
+          <% if (a.content_uz) { %><p class="text-gray-600 text-sm mt-1.5"><%= a.content_uz %></p><% } %>
+          <p class="text-gray-400 text-xs mt-1.5"><%= a.createdAt.toLocaleDateString() %>
+            <% if (a.expiresAt) { %> · Expires: <%= new Date(a.expiresAt).toLocaleDateString() %><% } %>
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <form method="POST" action="/admin/announcements/<%= a._id %>/toggle">
+          <button type="submit" class="px-3 py-1.5 rounded-lg text-xs font-medium <%= a.isActive ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' %>">
+            <%= a.isActive ? 'Active' : 'Inactive' %>
+          </button>
+        </form>
+        <form method="POST" action="/admin/announcements/<%= a._id %>/delete" onsubmit="return confirm('Delete?')">
+          <button type="submit" class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-100 flex items-center justify-center text-red-600">
+            <i class="fas fa-trash text-xs"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  <% }) %>
+</div>

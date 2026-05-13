@@ -1,0 +1,21 @@
+<div class="min-h-screen flex items-center justify-center px-4 py-20">
+  <div class="text-center max-w-md">
+    <div class="text-9xl font-bold text-primary/10 mb-4">404</div>
+    <h1 class="text-3xl font-bold text-gray-900 mb-3">
+      <% if(lang==='uz'){%>Sahifa topilmadi<%}else if(lang==='ru'){%>Страница не найдена<%}else{%>Page Not Found<%}%>
+    </h1>
+    <p class="text-gray-500 mb-8">
+      <% if(lang==='uz'){%>Siz qidirgan sahifa mavjud emas yoki ko'chirilgan.<%}else if(lang==='ru'){%>Страница, которую вы ищете, не существует или была перемещена.<%}else{%>The page you're looking for doesn't exist or has been moved.<%}%>
+    </p>
+    <div class="flex justify-center gap-4">
+      <a href="/" class="px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:opacity-90 transition flex items-center gap-2">
+        <i class="fas fa-home"></i>
+        <% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Go Home<%}%>
+      </a>
+      <button onclick="history.back()" class="px-6 py-3 border border-gray-200 text-gray-600 rounded-xl font-semibold hover:bg-gray-50 transition flex items-center gap-2">
+        <i class="fas fa-arrow-left"></i>
+        <% if(lang==='uz'){%>Orqaga<%}else if(lang==='ru'){%>Назад<%}else{%>Go Back<%}%>
+      </button>
+    </div>
+  </div>
+</div>

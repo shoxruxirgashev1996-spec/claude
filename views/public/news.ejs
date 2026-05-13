@@ -1,0 +1,88 @@
+<!-- Header -->
+<div class="bg-primary text-white py-16 px-4">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="text-4xl font-bold mb-3"><% if(lang==='uz'){%>Yangiliklar<%}else if(lang==='ru'){%>Новости<%}else{%>News & Updates<%}%></h1>
+    <p class="text-white/60 flex items-center gap-2 text-sm">
+      <a href="/" class="hover:text-white"><% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Home<%}%></a>
+      <i class="fas fa-chevron-right text-xs"></i>
+      <span><% if(lang==='uz'){%>Yangiliklar<%}else if(lang==='ru'){%>Новости<%}else{%>News<%}%></span>
+    </p>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 py-12">
+  <!-- Filter Bar -->
+  <div class="flex flex-wrap gap-3 mb-8">
+    <a href="/news" class="px-4 py-2 rounded-full text-sm font-medium <%= !query.category ? 'bg-primary text-white' : 'bg-white text-gray-600 border hover:bg-gray-50' %>">
+      <% if(lang==='uz'){%>Barchasi<%}else if(lang==='ru'){%>Все<%}else{%>All<%}%>
+    </a>
+    <% categories.forEach(cat => { %>
+      <a href="/news?category=<%= cat %>" class="px-4 py-2 rounded-full text-sm font-medium capitalize <%= query.category===cat ? 'bg-primary text-white' : 'bg-white text-gray-600 border hover:bg-gray-50' %>">
+        <%= cat %>
+      </a>
+    <% }) %>
+  </div>
+
+  <!-- News Grid -->
+  <% if (news.length === 0) { %>
+    <div class="text-center py-20 text-gray-400">
+      <i class="fas fa-newspaper text-5xl mb-4 block"></i>
+      <p><% if(lang==='uz'){%>Yangiliklar yo'q<%}else if(lang==='ru'){%>Новостей нет<%}else{%>No news available<%}%></p>
+    </div>
+  <% } %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+    <% news.forEach(n => { %>
+      <article class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <% if (n.image) { %>
+          <div class="h-52 overflow-hidden">
+            <img src="<%= n.image %>" alt="<%= n[`title_${lang}`] %>" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+          </div>
+        <% } else { %>
+          <div class="h-52 bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
+            <i class="fas fa-newspaper text-blue-200 text-4xl"></i>
+          </div>
+        <% } %>
+        <div class="p-6">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full font-medium capitalize"><%= n.category %></span>
+            <span class="text-gray-400 text-xs"><%= n.createdAt.toLocaleDateString() %></span>
+            <span class="text-gray-300 text-xs ml-auto"><i class="fas fa-eye mr-1"></i><%= n.views %></span>
+          </div>
+          <h2 class="font-bold text-gray-900 text-lg mb-2 leading-tight line-clamp-2">
+            <%= n[`title_${lang}`] || n.title_uz %>
+          </h2>
+          <p class="text-gray-500 text-sm line-clamp-3 mb-4">
+            <%= n[`excerpt_${lang}`] || (n[`content_${lang}`] || '').substring(0, 130) %>...
+          </p>
+          <a href="/news/<%= n.slug %>" class="inline-flex items-center gap-1.5 text-primary font-semibold text-sm hover:gap-3 transition-all">
+            <% if(lang==='uz'){%>Batafsil o'qish<%}else if(lang==='ru'){%>Читать далее<%}else{%>Read More<%}%>
+            <i class="fas fa-arrow-right text-xs"></i>
+          </a>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+
+  <!-- Pagination -->
+  <% if (pages > 1) { %>
+    <div class="flex justify-center gap-2 mt-10">
+      <% if (page > 1) { %>
+        <a href="?page=<%= page-1 %>&category=<%= query.category||'' %>" class="w-10 h-10 rounded-xl flex items-center justify-center bg-white border hover:bg-gray-50">
+          <i class="fas fa-chevron-left text-sm text-gray-600"></i>
+        </a>
+      <% } %>
+      <% for (let i = 1; i <= pages; i++) { %>
+        <a href="?page=<%= i %>&category=<%= query.category||'' %>"
+          class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-medium <%= i===page ? 'bg-primary text-white' : 'bg-white border text-gray-600 hover:bg-gray-50' %>">
+          <%= i %>
+        </a>
+      <% } %>
+      <% if (page < pages) { %>
+        <a href="?page=<%= page+1 %>&category=<%= query.category||'' %>" class="w-10 h-10 rounded-xl flex items-center justify-center bg-white border hover:bg-gray-50">
+          <i class="fas fa-chevron-right text-sm text-gray-600"></i>
+        </a>
+      <% } %>
+    </div>
+  <% } %>
+</div>
