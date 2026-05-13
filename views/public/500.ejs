@@ -3,7 +3,7 @@
     <div class="text-9xl font-bold text-red-100 mb-4">500</div>
     <h1 class="text-3xl font-bold text-gray-900 mb-3">Server Xatosi</h1>
     <p class="text-gray-500 mb-4">
-      <% if(lang==='uz'){%>Tizimda xato yuz berdi. Iltimos, keyinroq urinib ko'ring.<%}else if(lang==='ru'){%>Произошла ошибка сервера. Пожалуйста, попробуйте позже.<%}else{%>A server error occurred. Please try again later.<%}%>
+      <% if(typeof lang !== 'undefined' && lang==='uz'){%>Tizimda xato yuz berdi. Iltimos, keyinroq urinib koring.<%}else if(typeof lang !== 'undefined' && lang==='ru'){%>Произошла ошибка сервера. Пожалуйста, попробуйте позже.<%}else{%>A server error occurred. Please try again later.<%}%>
     </p>
     <% if (typeof error !== 'undefined' && error) { %>
       <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 text-left">

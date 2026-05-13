@@ -8,7 +8,6 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGODB_URI
-        sync: false       # Render dashboarddan qo'lda kiritiladi
+        sync: false
       - key: SESSION_SECRET
-        generateValue: true  # Render avtomatik yaratadi
-    autoDeploy: true
+        generateValue: true

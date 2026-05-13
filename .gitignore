@@ -1,6 +1,10 @@
 node_modules/
 .env
-public/uploads/*
-!public/uploads/.gitkeep
+public/uploads/news/*
+public/uploads/gallery/*
+public/uploads/logos/*
+public/uploads/banners/*
+public/uploads/directors/*
+!public/uploads/**/.gitkeep
 *.log
 .DS_Store
