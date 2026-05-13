@@ -2,12 +2,13 @@ services:
   - type: web
     name: school-cms
     env: node
+    plan: free
     buildCommand: npm install
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
       - key: MONGODB_URI
-        sync: false
+        value: mongodb+srv://Shoxrux19960219:Shoxrux19960219@cluster0.jenomkb.mongodb.net/school_cms?retryWrites=true&w=majority&appName=Cluster0
       - key: SESSION_SECRET
-        generateValue: true
+        value: SchoolCMS_Render_Secret_2024_xyz789abc_secure
