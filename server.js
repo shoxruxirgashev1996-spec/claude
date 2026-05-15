@@ -13,7 +13,10 @@ const { injectGlobals, setLanguage } = require('./middleware');
 
 const app = express();
 
-// ── Uploads papkalarini avtomatik yaratish ────────────────────────────────────
+// ── Render proxy uchun MUHIM ──────────────────────────────────────────────────
+app.set('trust proxy', 1);
+
+// ── Uploads papkalarini yaratish ──────────────────────────────────────────────
 ['news', 'gallery', 'logos', 'banners', 'directors'].forEach(dir => {
   const fullPath = path.join(__dirname, 'public', 'uploads', dir);
   if (!fs.existsSync(fullPath)) fs.mkdirSync(fullPath, { recursive: true });
@@ -39,26 +42,26 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ── Session ───────────────────────────────────────────────────────────────────
-const sessionConfig = {
+const sessionStore = MongoStore.create({
+  mongoUrl: process.env.MONGODB_URI,
+  touchAfter: 24 * 3600,
+  ttl: 7 * 24 * 60 * 60
+});
+
+app.use(session({
   secret: process.env.SESSION_SECRET || 'school-cms-secret-2024',
   resave: false,
   saveUninitialized: false,
+  store: sessionStore,
+  proxy: true,
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production'
+    secure: false,   // Render da false qoldiramiz - proxy hal qiladi
+    sameSite: 'lax'
   }
-};
+}));
 
-if (process.env.MONGODB_URI) {
-  sessionConfig.store = MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI,
-    touchAfter: 24 * 3600,
-    ttl: 7 * 24 * 60 * 60
-  });
-}
-
-app.use(session(sessionConfig));
 app.use(flash());
 
 // ── Language & Globals ────────────────────────────────────────────────────────
