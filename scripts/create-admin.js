@@ -1,56 +1,61 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://Shoxrux19960219:Shoxrux19960219@cluster0.jenomkb.mongodb.net/school_cms?retryWrites=true&w=majority&appName=Cluster0';
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error('❌ MONGODB_URI yoq!');
+  process.exit(1);
+}
 
 async function createAdmin() {
   try {
-    console.log('MongoDB ga ulanmoqda...');
+    console.log('🔗 MongoDB ga ulanmoqda...');
     await mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 15000 });
-    console.log('✅ Ulandi!');
+    console.log('✅ MongoDB ulandi!');
 
-    // User modelini to'g'ridan-to'g'ri schema bilan yaratamiz
-    const bcrypt = require('bcryptjs');
-    
-    const userSchema = new mongoose.Schema({
-      name: String,
-      email: { type: String, unique: true },
-      password: String,
-      role: String,
-      isActive: { type: Boolean, default: true },
-      lastLogin: Date
-    }, { timestamps: true });
+    const db = mongoose.connection.db;
+    const usersCollection = db.collection('users');
 
-    const User = mongoose.models.User || mongoose.model('User', userSchema);
+    // Barcha userlarni ko'rsatamiz
+    const allUsers = await usersCollection.find({}).toArray();
+    console.log('📊 Jami userlar:', allUsers.length);
+    allUsers.forEach(u => console.log('  -', u.email, '|', u.role));
 
-    // Avval o'chir
-    await User.deleteMany({ email: 'superadmin@school.uz' });
-    console.log('Eski admin o\'chirildi');
+    // Eskisini o'chiramiz
+    await usersCollection.deleteMany({ email: 'superadmin@school.uz' });
+    console.log('🗑️  Eski admin ochirildi');
 
-    // Yangi hash
-    const password = await bcrypt.hash('admin123', 12);
-    
-    // Yangi admin yaratish
-    const admin = await User.create({
+    // Yangi hash yaratamiz
+    const hash = await bcrypt.hash('admin123', 12);
+    console.log('🔑 Hash yaratildi');
+
+    // To'g'ridan-to'g'ri collection ga kiritamiz
+    const result = await usersCollection.insertOne({
       name: 'Super Admin',
       email: 'superadmin@school.uz',
-      password: password,
+      password: hash,
       role: 'superadmin',
-      isActive: true
+      isActive: true,
+      lastLogin: null,
+      createdAt: new Date(),
+      updatedAt: new Date()
     });
 
-    console.log('✅ Admin yaratildi!');
-    console.log('   ID:', admin._id);
-    console.log('   Email: superadmin@school.uz');
-    console.log('   Parol: admin123');
-    console.log('   Role:', admin.role);
+    console.log('✅ Admin yaratildi! ID:', result.insertedId);
 
     // Tekshiramiz
-    const found = await User.findOne({ email: 'superadmin@school.uz' });
-    const isMatch = await bcrypt.compare('admin123', found.password);
-    console.log('✅ Parol tekshiruvi:', isMatch ? 'TO\'G\'RI' : 'XATO');
+    const saved = await usersCollection.findOne({ email: 'superadmin@school.uz' });
+    const check = await bcrypt.compare('admin123', saved.password);
+    console.log('✅ Parol tekshiruvi:', check ? 'TOGRI ✅' : 'XATO ❌');
+    console.log('✅ isActive:', saved.isActive);
+    console.log('✅ role:', saved.role);
 
     await mongoose.disconnect();
+    console.log('\n🎉 Admin tayyor!');
+    console.log('   Email: superadmin@school.uz');
+    console.log('   Parol: admin123');
     process.exit(0);
   } catch(err) {
     console.error('❌ Xato:', err.message);
