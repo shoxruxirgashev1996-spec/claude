@@ -1,62 +1,60 @@
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
 exports.getLogin = (req, res) => {
   if (req.session && req.session.userId) return res.redirect('/admin/dashboard');
-  res.render('admin/login', { layout: false, title: 'Admin Login' });
+  const error = req.query.error || null;
+  res.render('admin/login', { layout: false, title: 'Admin Login', error });
 };
 
 exports.postLogin = async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const { email, password } = req.body;
-    
-    console.log('🔐 Login urinish:', email);
-    
+    console.log('LOGIN:', email);
+
     if (!email || !password) {
-      req.flash('error', 'Email va parol kiritish shart');
-      return res.redirect('/admin/login');
+      return res.redirect('/admin/login?error=' + encodeURIComponent('Email va parol kiritish shart'));
     }
 
-    const user = await User.findOne({ 
-      email: email.toLowerCase().trim(),
-      isActive: true 
-    });
-    
-    console.log('👤 User topildi:', user ? 'HA' : 'YOQ');
-    
+    const user = await User.findOne({ email: email.toLowerCase().trim() });
+
     if (!user) {
-      req.flash('error', 'Email yoki parol noto\'g\'ri');
-      return res.redirect('/admin/login');
+      console.log('USER TOPILMADI:', email);
+      return res.redirect('/admin/login?error=' + encodeURIComponent('Email yoki parol notogri'));
     }
 
-    const isMatch = await user.comparePassword(password);
-    console.log('🔑 Parol to\'g\'ri:', isMatch ? 'HA' : 'YOQ');
-    
+    console.log('USER TOPILDI:', user.email, '| isActive:', user.isActive);
+
+    if (!user.isActive) {
+      return res.redirect('/admin/login?error=' + encodeURIComponent('Akkaunt faol emas'));
+    }
+
+    // Parolni tekshirish
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log('PAROL:', isMatch ? 'TOGRI' : 'NOTOGRI');
+
     if (!isMatch) {
-      req.flash('error', 'Email yoki parol noto\'g\'ri');
-      return res.redirect('/admin/login');
+      return res.redirect('/admin/login?error=' + encodeURIComponent('Email yoki parol notogri'));
     }
 
+    // Session saqlash
     req.session.userId = user._id.toString();
     req.session.userName = user.name;
     req.session.role = user.role;
-    
-    await User.findByIdAndUpdate(user._id, { lastLogin: new Date() });
-    
-    console.log('✅ Login muvaffaqiyatli:', user.email, '| Role:', user.role);
-    
+
     req.session.save((err) => {
       if (err) {
-        console.error('Session save xatosi:', err);
-        req.flash('error', 'Session xatosi');
-        return res.redirect('/admin/login');
+        console.error('SESSION XATO:', err);
+        return res.redirect('/admin/login?error=' + encodeURIComponent('Session xatosi'));
       }
+      console.log('LOGIN OK ->', user.email);
       res.redirect('/admin/dashboard');
     });
 
   } catch (err) {
-    console.error('❌ Login xatosi:', err.message);
-    req.flash('error', 'Tizimda xato yuz berdi: ' + err.message);
-    res.redirect('/admin/login');
+    console.error('LOGIN XATO:', err.message);
+    res.redirect('/admin/login?error=' + encodeURIComponent('Xato: ' + err.message));
   }
 };
 
