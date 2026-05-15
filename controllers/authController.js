@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
+const User = require('../models/User');
 
 exports.getLogin = (req, res) => {
   if (req.session && req.session.userId) return res.redirect('/admin/dashboard');
@@ -10,33 +10,29 @@ exports.getLogin = (req, res) => {
 exports.postLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
-    console.log('🔐 Login:', email);
+    console.log('🔐 Login urinish:', email);
 
     if (!email || !password) {
       return res.redirect('/admin/login?error=' + encodeURIComponent('Email va parol kiritish shart'));
     }
 
-    // To'g'ridan MongoDB collection ishlatamiz
-    const db = mongoose.connection.db;
-    const user = await db.collection('users').findOne({ 
-      email: email.toLowerCase().trim() 
-    });
-
-    console.log('👤 User:', user ? user.email : 'TOPILMADI');
+    // User modelini ishlatamiz
+    const user = await User.findOne({ email: email.toLowerCase().trim() }).select('+password');
+    console.log('👤 User topildi:', user ? 'HA - ' + user.email : 'YOQ');
 
     if (!user) {
-      return res.redirect('/admin/login?error=' + encodeURIComponent('Email yoki parol notogri'));
+      return res.redirect('/admin/login?error=' + encodeURIComponent('Email topilmadi'));
     }
 
-    if (!user.isActive) {
-      return res.redirect('/admin/login?error=' + encodeURIComponent('Akkaunt faol emas'));
-    }
+    console.log('🔒 isActive:', user.isActive);
+    console.log('🔒 role:', user.role);
+    console.log('🔒 password hash bor:', !!user.password);
 
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log('🔑 Parol:', isMatch ? 'TOGRI' : 'NOTOGRI');
+    console.log('🔑 Parol togri:', isMatch ? 'HA' : 'YOQ');
 
     if (!isMatch) {
-      return res.redirect('/admin/login?error=' + encodeURIComponent('Email yoki parol notogri'));
+      return res.redirect('/admin/login?error=' + encodeURIComponent('Parol notogri'));
     }
 
     req.session.userId = user._id.toString();
@@ -45,16 +41,16 @@ exports.postLogin = async (req, res) => {
 
     req.session.save((err) => {
       if (err) {
-        console.error('Session xato:', err);
-        return res.redirect('/admin/login?error=' + encodeURIComponent('Session xatosi'));
+        console.error('❌ Session xato:', err);
+        return res.redirect('/admin/login?error=' + encodeURIComponent('Session xatosi: ' + err.message));
       }
-      console.log('✅ Login OK:', user.email);
+      console.log('✅ Login muvaffaqiyatli!');
       res.redirect('/admin/dashboard');
     });
 
   } catch (err) {
-    console.error('❌ Xato:', err.message);
-    res.redirect('/admin/login?error=' + encodeURIComponent('Xato: ' + err.message));
+    console.error('❌ Login xato:', err.message);
+    res.redirect('/admin/login?error=' + encodeURIComponent(err.message));
   }
 };
 
