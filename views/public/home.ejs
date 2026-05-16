@@ -1,57 +1,51 @@
-<!-- Announcements Ticker -->
-<% if (announcements.length > 0) { %>
-<div class="announcement-bar py-2.5 overflow-hidden">
+<!-- ── Announcement Ticker ── -->
+<% if (announcements && announcements.length > 0) { %>
+<div style="background:var(--secondary);" class="py-2 overflow-hidden">
   <div class="max-w-7xl mx-auto px-4 flex items-center gap-4">
-    <span class="text-white font-bold text-xs uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full flex-shrink-0">
-      <i class="fas fa-bullhorn mr-1"></i>
+    <span class="text-white text-xs font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full flex-shrink-0 flex items-center gap-1.5">
+      <i class="fas fa-bullhorn"></i>
       <% if(lang==='uz'){%>E'lon<%}else if(lang==='ru'){%>Объявление<%}else{%>Notice<%}%>
     </span>
     <div class="overflow-hidden flex-1">
-      <div class="ticker-wrap">
-        <div class="ticker" style="animation: ticker 20s linear infinite; white-space: nowrap;">
-          <% announcements.forEach(a => { %>
-            <span class="text-white text-sm mx-8">
-              <i class="fas fa-circle text-white/30 text-xs mr-2"></i>
-              <%= a[`title_${lang}`] || a.title_uz %>
-            </span>
-          <% }) %>
-        </div>
+      <div class="ticker-inner text-white text-sm">
+        <% announcements.forEach(a => { %>
+          <span class="mx-10"><i class="fas fa-circle text-white/30 text-xs mr-2"></i><%= a['title_' + lang] || a.title_uz %></span>
+        <% }) %>
       </div>
     </div>
   </div>
 </div>
-<style>
-@keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
-</style>
 <% } %>
 
-<!-- Hero Banner -->
-<section class="hero-section text-white py-24 px-4 relative overflow-hidden">
+<!-- ── Hero Banner ── -->
+<section class="relative overflow-hidden" style="
+  <% if(settings.bg_type==='image' && settings.banner_image){ %>
+    background: linear-gradient(rgba(15,30,70,0.82), rgba(15,30,70,0.72)), url('<%= settings.banner_image %>') center/cover no-repeat;
+  <% } else { %>
+    background: linear-gradient(135deg, var(--primary) 0%, #1e4a9e 60%, #0d2b6e 100%);
+  <% } %>
+  min-height: 480px; display:flex; align-items:center;">
+  <!-- Pattern overlay -->
   <div class="absolute inset-0 opacity-5">
-    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-      <defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/>
-      </pattern></defs>
-      <rect width="100%" height="100%" fill="url(#grid)" />
-    </svg>
+    <svg width="100%" height="100%"><defs><pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="white"/></pattern></defs><rect width="100%" height="100%" fill="url(#dots)"/></svg>
   </div>
-  <div class="max-w-7xl mx-auto text-center relative">
-    <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 text-white/90 px-4 py-2 rounded-full text-sm mb-6">
-      <i class="fas fa-star text-yellow-300"></i>
-      <% if(lang==='uz'){%>O'zbekiston Presidential Maktablari<%}else if(lang==='ru'){%>Президентские школы Узбекистана<%}else{%>Presidential Schools of Uzbekistan<%}%>
+  <div class="max-w-7xl mx-auto px-4 py-20 text-center text-white relative z-10 w-full">
+    <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 px-4 py-2 rounded-full text-sm mb-6">
+      <i class="fas fa-star text-yellow-400 text-xs"></i>
+      <% if(lang==='uz'){%>O'zbekiston Respublikasi Prezident Maktablari<%}else if(lang==='ru'){%>Президентские школы Республики Узбекистан<%}else{%>Presidential Schools of the Republic of Uzbekistan<%}%>
     </div>
-    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight" style="font-family: 'Playfair Display', serif;">
-      <%= settings[`banner_title_${lang}`] || settings.banner_title_uz || (lang==='uz' ? 'Bilimli avlod – kelajak poydevori' : lang==='ru' ? 'Знающее поколение — основа будущего' : 'Educated Generation — Foundation of the Future') %>
+    <h1 class="text-4xl md:text-6xl font-extrabold mb-5 leading-tight">
+      <%= settings['banner_title_' + lang] || settings.banner_title_uz || (lang==='uz'?'Bilimli avlod – kelajak poydevori':lang==='ru'?'Знающее поколение — основа будущего':'Educated Generation — Foundation of the Future') %>
     </h1>
     <p class="text-xl text-white/75 max-w-2xl mx-auto mb-10">
-      <%= settings[`banner_subtitle_${lang}`] || settings.banner_subtitle_uz || (lang==='uz' ? 'Zamonaviy ta\'lim, ilm va innovatsiya markazi' : lang==='ru' ? 'Центр современного образования, науки и инноваций' : 'Center of modern education, science and innovation') %>
+      <%= settings['banner_subtitle_' + lang] || settings.banner_subtitle_uz || (lang==='uz'?'Zamonaviy talim, ilm va innovatsiya markazi':lang==='ru'?'Центр современного образования, науки и инноваций':'Center of modern education, science and innovation') %>
     </p>
     <div class="flex flex-wrap gap-4 justify-center">
-      <a href="/admission" class="inline-flex items-center gap-2 px-8 py-4 bg-secondary text-white rounded-xl font-bold text-lg hover:opacity-90 transition shadow-lg">
+      <a href="/admission" class="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-lg btn-secondary shadow-lg">
         <i class="fas fa-pen-to-square"></i>
         <% if(lang==='uz'){%>Ariza topshirish<%}else if(lang==='ru'){%>Подать заявку<%}else{%>Apply Now<%}%>
       </a>
-      <a href="/about" class="inline-flex items-center gap-2 px-8 py-4 bg-white/10 border border-white/30 text-white rounded-xl font-bold text-lg hover:bg-white/20 transition backdrop-blur">
+      <a href="/about" class="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-lg bg-white/10 border border-white/30 hover:bg-white/20 transition backdrop-blur">
         <i class="fas fa-info-circle"></i>
         <% if(lang==='uz'){%>Batafsil<%}else if(lang==='ru'){%>Подробнее<%}else{%>Learn More<%}%>
       </a>
@@ -59,32 +53,32 @@
   </div>
 </section>
 
-<!-- Stats Bar -->
-<% if (stats && (stats.students_count || stats.teachers_count)) { %>
-<section class="bg-white shadow-sm py-8">
-  <div class="max-w-7xl mx-auto px-4">
+<!-- ── Stats ── -->
+<% if (stats && (stats.students_count || stats.teachers_count || stats.awards_count || stats.graduates_count)) { %>
+<section class="bg-white shadow-sm border-b">
+  <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-      <% if (stats.students_count) { %>
-      <div class="group">
-        <p class="text-4xl font-bold text-primary group-hover:scale-110 transition-transform inline-block"><%= stats.students_count.toLocaleString() %>+</p>
-        <p class="text-gray-500 text-sm mt-1"><% if(lang==='uz'){%>O'quvchilar<%}else if(lang==='ru'){%>Учеников<%}else{%>Students<%}%></p>
+      <% if(stats.students_count){ %>
+      <div>
+        <p class="text-4xl font-extrabold" style="color:var(--primary)"><%= stats.students_count.toLocaleString() %></p>
+        <p class="text-gray-500 text-sm mt-1"><% if(lang==='uz'){%>Jami o'quvchilar<%}else if(lang==='ru'){%>Всего учеников<%}else{%>Total Students<%}%></p>
       </div>
       <% } %>
-      <% if (stats.teachers_count) { %>
-      <div class="group">
-        <p class="text-4xl font-bold text-primary group-hover:scale-110 transition-transform inline-block"><%= stats.teachers_count %>+</p>
+      <% if(stats.teachers_count){ %>
+      <div>
+        <p class="text-4xl font-extrabold" style="color:var(--primary)"><%= stats.teachers_count %>+</p>
         <p class="text-gray-500 text-sm mt-1"><% if(lang==='uz'){%>O'qituvchilar<%}else if(lang==='ru'){%>Учителей<%}else{%>Teachers<%}%></p>
       </div>
       <% } %>
-      <% if (stats.awards_count) { %>
-      <div class="group">
-        <p class="text-4xl font-bold text-primary group-hover:scale-110 transition-transform inline-block"><%= stats.awards_count %>+</p>
+      <% if(stats.awards_count){ %>
+      <div>
+        <p class="text-4xl font-extrabold" style="color:var(--primary)"><%= stats.awards_count %>+</p>
         <p class="text-gray-500 text-sm mt-1"><% if(lang==='uz'){%>Mukofotlar<%}else if(lang==='ru'){%>Наград<%}else{%>Awards<%}%></p>
       </div>
       <% } %>
-      <% if (stats.graduates_count) { %>
-      <div class="group">
-        <p class="text-4xl font-bold text-primary group-hover:scale-110 transition-transform inline-block"><%= stats.graduates_count.toLocaleString() %>+</p>
+      <% if(stats.graduates_count){ %>
+      <div>
+        <p class="text-4xl font-extrabold" style="color:var(--primary)"><%= stats.graduates_count.toLocaleString() %>+</p>
         <p class="text-gray-500 text-sm mt-1"><% if(lang==='uz'){%>Bitiruvchilar<%}else if(lang==='ru'){%>Выпускников<%}else{%>Graduates<%}%></p>
       </div>
       <% } %>
@@ -93,52 +87,48 @@
 </section>
 <% } %>
 
-<!-- Latest News -->
+<!-- ── Latest News ── -->
 <section class="py-16 px-4">
   <div class="max-w-7xl mx-auto">
     <div class="flex items-end justify-between mb-10">
       <div>
-        <p class="text-secondary font-semibold text-sm uppercase tracking-wider mb-1"><% if(lang==='uz'){%>So'nggi yangiliklar<%}else if(lang==='ru'){%>Последние новости<%}else{%>Latest News<%}%></p>
-        <h2 class="text-3xl font-bold text-gray-900">
-          <% if(lang==='uz'){%>Yangiliklar<%}else if(lang==='ru'){%>Новости<%}else{%>News & Updates<%}%>
-        </h2>
+        <p class="section-subtitle"><% if(lang==='uz'){%>So'nggi yangiliklar<%}else if(lang==='ru'){%>Последние новости<%}else{%>Latest News<%}%></p>
+        <h2 class="section-title"><% if(lang==='uz'){%>Yangiliklar<%}else if(lang==='ru'){%>Новости<%}else{%>News & Updates<%}%></h2>
       </div>
-      <a href="/news" class="hidden md:inline-flex items-center gap-2 text-primary hover:text-blue-800 font-semibold text-sm">
-        <% if(lang==='uz'){%>Barchasi<%}else if(lang==='ru'){%>Все новости<%}else{%>View All<%}%> <i class="fas fa-arrow-right"></i>
+      <a href="/news" class="hidden md:inline-flex items-center gap-2 font-semibold text-sm hover:underline" style="color:var(--primary)">
+        <% if(lang==='uz'){%>Barchasi<%}else if(lang==='ru'){%>Все новости<%}else{%>View All<%}%> <i class="fas fa-arrow-right text-xs"></i>
       </a>
     </div>
-
-    <% if (latestNews.length === 0) { %>
-      <div class="text-center py-16 text-gray-400">
-        <i class="fas fa-newspaper text-4xl mb-3 block"></i>
-        <p><% if(lang==='uz'){%>Yangiliklar yo'q<%}else if(lang==='ru'){%>Нет новостей<%}else{%>No news available<%}%></p>
+    <% if(latestNews.length === 0){ %>
+      <div class="text-center py-16 bg-white rounded-2xl border border-gray-100">
+        <i class="fas fa-newspaper text-4xl text-gray-200 mb-3 block"></i>
+        <p class="text-gray-400"><% if(lang==='uz'){%>Yangiliklar yo'q<%}else if(lang==='ru'){%>Нет новостей<%}else{%>No news available<%}%></p>
       </div>
     <% } %>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-      <% latestNews.forEach((news, i) => { %>
-        <article class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-          <% if (news.image) { %>
-            <div class="h-52 overflow-hidden">
-              <img src="<%= news.image %>" alt="<%= news[`title_${lang}`] %>" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-            </div>
-          <% } else { %>
-            <div class="h-52 bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
-              <i class="fas fa-newspaper text-blue-200 text-4xl"></i>
-            </div>
-          <% } %>
-          <div class="p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% latestNews.forEach((n, i) => { %>
+        <article class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
+          <div class="h-52 overflow-hidden bg-gray-50">
+            <% if(n.image){ %>
+              <img src="<%= n.image %>" alt="" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+            <% } else { %>
+              <div class="w-full h-full flex items-center justify-center" style="background:linear-gradient(135deg,#f0f4ff,#e8eeff)">
+                <i class="fas fa-newspaper text-4xl" style="color:var(--primary);opacity:.2"></i>
+              </div>
+            <% } %>
+          </div>
+          <div class="p-5 flex flex-col flex-1">
             <div class="flex items-center gap-2 mb-3">
-              <span class="text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full font-medium capitalize"><%= news.category %></span>
-              <span class="text-xs text-gray-400"><%= news.createdAt.toLocaleDateString() %></span>
+              <span class="text-xs px-2.5 py-1 rounded-full font-medium capitalize" style="background:#eff6ff;color:var(--primary)"><%= n.category %></span>
+              <span class="text-gray-400 text-xs"><%= n.createdAt.toLocaleDateString() %></span>
             </div>
-            <h3 class="font-bold text-gray-900 text-lg mb-2 leading-tight line-clamp-2">
-              <%= news[`title_${lang}`] || news.title_uz %>
+            <h3 class="font-bold text-gray-900 text-base mb-2 leading-snug line-clamp-2 flex-1">
+              <%= n['title_' + lang] || n.title_uz %>
             </h3>
             <p class="text-gray-500 text-sm line-clamp-2 mb-4">
-              <%= news[`excerpt_${lang}`] || news[`content_${lang}`]?.substring(0,120) || '' %>...
+              <%= (n['excerpt_' + lang] || n['content_' + lang] || '').substring(0, 110) %>...
             </p>
-            <a href="/news/<%= news.slug %>" class="inline-flex items-center gap-1.5 text-primary font-semibold text-sm hover:gap-3 transition-all">
+            <a href="/news/<%= n.slug %>" class="inline-flex items-center gap-1.5 font-semibold text-sm hover:gap-3 transition-all" style="color:var(--primary)">
               <% if(lang==='uz'){%>Batafsil o'qish<%}else if(lang==='ru'){%>Читать далее<%}else{%>Read More<%}%>
               <i class="fas fa-arrow-right text-xs"></i>
             </a>
@@ -146,35 +136,27 @@
         </article>
       <% }) %>
     </div>
-
-    <div class="text-center mt-8 md:hidden">
-      <a href="/news" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary rounded-xl font-semibold hover:bg-primary hover:text-white transition">
-        <% if(lang==='uz'){%>Barcha yangiliklar<%}else if(lang==='ru'){%>Все новости<%}else{%>All News<%}%>
-      </a>
-    </div>
   </div>
 </section>
 
-<!-- Gallery Preview -->
-<% if (gallery.length > 0) { %>
-<section class="py-16 px-4 bg-gray-50">
+<!-- ── Gallery Preview ── -->
+<% if(gallery && gallery.length > 0){ %>
+<section class="py-16 px-4 bg-gray-100">
   <div class="max-w-7xl mx-auto">
     <div class="flex items-end justify-between mb-10">
       <div>
-        <p class="text-secondary font-semibold text-sm uppercase tracking-wider mb-1"><% if(lang==='uz'){%>Rasmlar<%}else if(lang==='ru'){%>Фотографии<%}else{%>Photos<%}%></p>
-        <h2 class="text-3xl font-bold text-gray-900">
-          <% if(lang==='uz'){%>Galereya<%}else if(lang==='ru'){%>Галерея<%}else{%>Gallery<%}%>
-        </h2>
+        <p class="section-subtitle"><% if(lang==='uz'){%>Foto lavhalar<%}else if(lang==='ru'){%>Фотографии<%}else{%>Photos<%}%></p>
+        <h2 class="section-title"><% if(lang==='uz'){%>Galereya<%}else if(lang==='ru'){%>Галерея<%}else{%>Gallery<%}%></h2>
       </div>
-      <a href="/gallery" class="hidden md:inline-flex items-center gap-2 text-primary font-semibold text-sm hover:underline">
-        <% if(lang==='uz'){%>Barchasi<%}else if(lang==='ru'){%>Все фото<%}else{%>View All<%}%> <i class="fas fa-arrow-right"></i>
+      <a href="/gallery" class="hidden md:inline-flex items-center gap-2 font-semibold text-sm hover:underline" style="color:var(--primary)">
+        <% if(lang==='uz'){%>Barchasi<%}else if(lang==='ru'){%>Все фото<%}else{%>View All<%}%> <i class="fas fa-arrow-right text-xs"></i>
       </a>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <% gallery.forEach((img, i) => { %>
+      <% gallery.forEach(img => { %>
         <div class="relative overflow-hidden rounded-xl aspect-square group cursor-pointer" onclick="openLightbox('<%= img.image %>')">
-          <img src="<%= img.image %>" alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-          <div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+          <img src="<%= img.image %>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
             <i class="fas fa-expand text-white text-xl"></i>
           </div>
         </div>
@@ -184,21 +166,21 @@
 </section>
 <% } %>
 
-<!-- Quick Links CTA -->
-<section class="py-16 px-4 bg-primary text-white">
-  <div class="max-w-4xl mx-auto text-center">
-    <h2 class="text-3xl font-bold mb-4">
-      <% if(lang==='uz'){%>Bizga qo'shiling<%}else if(lang==='ru'){%>Присоединяйтесь к нам<%}else{%>Join Our School Family<%}%>
+<!-- ── CTA ── -->
+<section class="py-16 px-4" style="background:var(--primary);">
+  <div class="max-w-4xl mx-auto text-center text-white">
+    <h2 class="text-3xl md:text-4xl font-extrabold mb-4">
+      <% if(lang==='uz'){%>Bizga qo'shiling!<%}else if(lang==='ru'){%>Присоединяйтесь к нам!<%}else{%>Join Our School Family!<%}%>
     </h2>
     <p class="text-white/70 text-lg mb-8">
       <% if(lang==='uz'){%>Kelajak uchun eng yaxshi ta'limni tanlang<%}else if(lang==='ru'){%>Выберите лучшее образование для будущего<%}else{%>Choose the best education for the future<%}%>
     </p>
     <div class="flex flex-wrap gap-4 justify-center">
-      <a href="/admission" class="px-8 py-4 bg-secondary text-white rounded-xl font-bold text-lg hover:opacity-90 transition">
+      <a href="/admission" class="px-8 py-4 rounded-xl font-bold text-white text-lg btn-secondary shadow-lg">
         <i class="fas fa-graduation-cap mr-2"></i>
         <% if(lang==='uz'){%>Hozir ro'yxatdan o'ting<%}else if(lang==='ru'){%>Зарегистрируйтесь сейчас<%}else{%>Register Now<%}%>
       </a>
-      <a href="/contact" class="px-8 py-4 bg-white/10 border border-white/30 text-white rounded-xl font-bold text-lg hover:bg-white/20 transition">
+      <a href="/contact" class="px-8 py-4 rounded-xl font-bold text-white text-lg bg-white/10 border border-white/30 hover:bg-white/20 transition">
         <i class="fas fa-envelope mr-2"></i>
         <% if(lang==='uz'){%>Bog'laning<%}else if(lang==='ru'){%>Связаться<%}else{%>Contact Us<%}%>
       </a>
@@ -208,15 +190,11 @@
 
 <!-- Lightbox -->
 <div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4" onclick="closeLightbox()">
-  <img id="lightbox-img" src="" class="max-w-full max-h-full rounded-lg object-contain">
-  <button class="absolute top-4 right-4 text-white text-2xl w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full">
-    <i class="fas fa-times"></i>
-  </button>
+  <img id="lb-img" src="" class="max-w-full max-h-[90vh] rounded-xl object-contain">
+  <button class="absolute top-4 right-4 text-white text-2xl w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full"><i class="fas fa-times"></i></button>
 </div>
 <script>
-function openLightbox(src) {
-  document.getElementById('lightbox-img').src = src;
-  document.getElementById('lightbox').classList.remove('hidden');
-}
-function closeLightbox() { document.getElementById('lightbox').classList.add('hidden'); }
+function openLightbox(src){ document.getElementById('lb-img').src=src; document.getElementById('lightbox').classList.remove('hidden'); }
+function closeLightbox(){ document.getElementById('lightbox').classList.add('hidden'); }
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
 </script>
