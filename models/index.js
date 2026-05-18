@@ -69,7 +69,29 @@ const settingsSchema = new mongoose.Schema({
   value: { type: mongoose.Schema.Types.Mixed }
 }, { timestamps: true });
 
-// About
+// Staff (Xodimlar)
+const staffSchema = new mongoose.Schema({
+  full_name: { type: String, required: true },
+  position_uz: { type: String, default: '' },
+  position_ru: { type: String, default: '' },
+  position_en: { type: String, default: '' },
+  department_uz: { type: String, default: '' },
+  department_ru: { type: String, default: '' },
+  department_en: { type: String, default: '' },
+  bio_uz: { type: String, default: '' },
+  bio_ru: { type: String, default: '' },
+  bio_en: { type: String, default: '' },
+  image: { type: String, default: '' },
+  phone: { type: String, default: '' },
+  email: { type: String, default: '' },
+  education: { type: String, default: '' },
+  experience: { type: String, default: '' },
+  type: { type: String, enum: ['rahbariyat', 'oqituvchi', 'xodim'], default: 'xodim' },
+  order: { type: Number, default: 0 },
+  isActive: { type: Boolean, default: true }
+}, { timestamps: true });
+
+// About (Maktab haqida)
 const aboutSchema = new mongoose.Schema({
   mission_uz: { type: String, default: '' },
   mission_ru: { type: String, default: '' },
@@ -79,15 +101,7 @@ const aboutSchema = new mongoose.Schema({
   vision_en: { type: String, default: '' },
   history_uz: { type: String, default: '' },
   history_ru: { type: String, default: '' },
-  history_en: { type: String, default: '' },
-  directors: [{
-    name: { type: String },
-    position_uz: { type: String, default: '' },
-    position_ru: { type: String, default: '' },
-    position_en: { type: String, default: '' },
-    image: { type: String, default: '' },
-    order: { type: Number, default: 0 }
-  }]
+  history_en: { type: String, default: '' }
 }, { timestamps: true });
 
 // Stats
@@ -105,6 +119,7 @@ module.exports = {
   Budget: mongoose.model('Budget', budgetSchema),
   Announcement: mongoose.model('Announcement', announcementSchema),
   Settings: mongoose.model('Settings', settingsSchema),
+  Staff: mongoose.model('Staff', staffSchema),
   About: mongoose.model('About', aboutSchema),
   Stats: mongoose.model('Stats', statsSchema)
 };

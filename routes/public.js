@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const publicController = require('../controllers/publicController');
 const newsController = require('../controllers/newsController');
+const staffController = require('../controllers/staffController');
 
 router.get('/', publicController.home);
-router.get('/about', publicController.about);
+router.get('/about', staffController.publicAbout);
 router.get('/admission', publicController.admission);
 router.post('/apply', publicController.applyPost);
 router.get('/gallery', publicController.gallery);

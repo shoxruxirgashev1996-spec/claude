@@ -16,16 +16,19 @@ const createStorage = (folder) => multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
   const allowed = /jpeg|jpg|png|gif|webp/;
-  const ext = allowed.test(path.extname(file.originalname).toLowerCase());
-  const mime = allowed.test(file.mimetype);
-  if (ext && mime) cb(null, true);
-  else cb(new Error('Only image files allowed'));
+  if (allowed.test(path.extname(file.originalname).toLowerCase()) && allowed.test(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Faqat rasm fayllari qabul qilinadi'));
+  }
 };
 
-const uploadNews = multer({ storage: createStorage('news'), fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
-const uploadGallery = multer({ storage: createStorage('gallery'), fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
-const uploadLogo = multer({ storage: createStorage('logos'), fileFilter, limits: { fileSize: 2 * 1024 * 1024 } });
-const uploadBanner = multer({ storage: createStorage('banners'), fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
-const uploadDirector = multer({ storage: createStorage('directors'), fileFilter, limits: { fileSize: 2 * 1024 * 1024 } });
+const opts = { fileFilter, limits: { fileSize: 5 * 1024 * 1024 } };
 
-module.exports = { uploadNews, uploadGallery, uploadLogo, uploadBanner, uploadDirector };
+module.exports = {
+  uploadNews:     multer({ storage: createStorage('news'), ...opts }),
+  uploadGallery:  multer({ storage: createStorage('gallery'), ...opts }),
+  uploadLogo:     multer({ storage: createStorage('logos'), ...opts }),
+  uploadBanner:   multer({ storage: createStorage('banners'), ...opts }),
+  uploadStaff:    multer({ storage: createStorage('staff'), ...opts }),
+};

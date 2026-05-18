@@ -1,0 +1,80 @@
+<div class="flex items-center justify-between mb-6">
+  <div class="flex gap-2">
+    <a href="/admin/staff" class="px-3 py-1.5 rounded-lg text-sm font-medium <%= !query.type?'bg-blue-900 text-white':'bg-white border text-gray-600 hover:bg-gray-50' %>">Barchasi</a>
+    <a href="/admin/staff?type=rahbariyat" class="px-3 py-1.5 rounded-lg text-sm font-medium <%= query.type==='rahbariyat'?'bg-purple-700 text-white':'bg-white border text-gray-600 hover:bg-gray-50' %>">👑 Rahbariyat</a>
+    <a href="/admin/staff?type=oqituvchi" class="px-3 py-1.5 rounded-lg text-sm font-medium <%= query.type==='oqituvchi'?'bg-green-700 text-white':'bg-white border text-gray-600 hover:bg-gray-50' %>">📚 O'qituvchilar</a>
+    <a href="/admin/staff?type=xodim" class="px-3 py-1.5 rounded-lg text-sm font-medium <%= query.type==='xodim'?'bg-orange-600 text-white':'bg-white border text-gray-600 hover:bg-gray-50' %>">👤 Xodimlar</a>
+  </div>
+  <a href="/admin/staff/create" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-900 text-white rounded-lg text-sm font-semibold hover:bg-blue-800">
+    <i class="fas fa-plus"></i> Xodim qo'shish
+  </a>
+</div>
+
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 border-b">
+      <tr>
+        <th class="text-left px-5 py-3 text-gray-500 font-semibold text-xs uppercase">Xodim</th>
+        <th class="text-left px-5 py-3 text-gray-500 font-semibold text-xs uppercase">Lavozim</th>
+        <th class="text-left px-5 py-3 text-gray-500 font-semibold text-xs uppercase">Bo'lim</th>
+        <th class="text-left px-5 py-3 text-gray-500 font-semibold text-xs uppercase">Turi</th>
+        <th class="text-left px-5 py-3 text-gray-500 font-semibold text-xs uppercase">Holat</th>
+        <th class="text-left px-5 py-3 text-gray-500 font-semibold text-xs uppercase">Tartib</th>
+        <th class="text-left px-5 py-3 text-gray-500 font-semibold text-xs uppercase">Amallar</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y">
+      <% if(staff.length===0){ %>
+        <tr><td colspan="7" class="px-5 py-16 text-center text-gray-400">
+          <i class="fas fa-users text-4xl mb-3 block"></i>
+          Xodimlar yo'q. "Xodim qo'shish" tugmasini bosing.
+        </td></tr>
+      <% } %>
+      <% staff.forEach(s => { %>
+        <tr class="hover:bg-gray-50">
+          <td class="px-5 py-3">
+            <div class="flex items-center gap-3">
+              <% if(s.image){ %>
+                <img src="<%= s.image %>" class="w-10 h-10 rounded-full object-cover flex-shrink-0 border">
+              <% } else { %>
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-blue-700 font-bold text-sm">
+                  <%= s.full_name.charAt(0).toUpperCase() %>
+                </div>
+              <% } %>
+              <div>
+                <p class="font-semibold text-gray-900"><%= s.full_name %></p>
+                <% if(s.phone){ %><p class="text-gray-400 text-xs"><%= s.phone %></p><% } %>
+              </div>
+            </div>
+          </td>
+          <td class="px-5 py-3 text-gray-700"><%= s.position_uz || '—' %></td>
+          <td class="px-5 py-3 text-gray-500"><%= s.department_uz || '—' %></td>
+          <td class="px-5 py-3">
+            <span class="text-xs px-2.5 py-1 rounded-full font-medium
+              <%= s.type==='rahbariyat'?'bg-purple-100 text-purple-700':s.type==='oqituvchi'?'bg-green-100 text-green-700':'bg-orange-100 text-orange-700' %>">
+              <%= s.type==='rahbariyat'?'Rahbariyat':s.type==='oqituvchi'?"O'qituvchi":'Xodim' %>
+            </span>
+          </td>
+          <td class="px-5 py-3">
+            <span class="text-xs px-2 py-1 rounded-full <%= s.isActive?'bg-green-100 text-green-700':'bg-gray-100 text-gray-500' %>">
+              <%= s.isActive ? 'Faol' : 'Nofaol' %>
+            </span>
+          </td>
+          <td class="px-5 py-3 text-gray-500"><%= s.order %></td>
+          <td class="px-5 py-3">
+            <div class="flex gap-2">
+              <a href="/admin/staff/<%= s._id %>/edit" class="w-8 h-8 rounded-lg bg-blue-50 hover:bg-blue-100 flex items-center justify-center text-blue-600">
+                <i class="fas fa-pen text-xs"></i>
+              </a>
+              <form method="POST" action="/admin/staff/<%= s._id %>/delete" onsubmit="return confirm('O\'chirishni tasdiqlaysizmi?')">
+                <button type="submit" class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-100 flex items-center justify-center text-red-500">
+                  <i class="fas fa-trash text-xs"></i>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

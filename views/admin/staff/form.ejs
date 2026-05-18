@@ -1,0 +1,194 @@
+<div class="max-w-4xl">
+  <a href="/admin/staff" class="inline-flex items-center gap-2 text-gray-500 hover:text-gray-800 text-sm mb-6">
+    <i class="fas fa-arrow-left"></i> Xodimlar ro'yxatiga qaytish
+  </a>
+
+  <form method="POST" action="<%= staff ? `/admin/staff/${staff._id}/edit` : '/admin/staff/create' %>" enctype="multipart/form-data">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- Asosiy ma'lumotlar -->
+      <div class="lg:col-span-2 space-y-5">
+
+        <!-- Ism va lavozim -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="font-bold text-gray-800 mb-4"><i class="fas fa-user text-blue-600 mr-2"></i>Asosiy ma'lumotlar</h3>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1.5">Ism-familiya <span class="text-red-500">*</span></label>
+              <input type="text" name="full_name" required value="<%= staff?.full_name || '' %>"
+                placeholder="Masalan: Aliyev Bobur Hamidovich"
+                class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Telefon</label>
+                <input type="text" name="phone" value="<%= staff?.phone || '' %>"
+                  placeholder="+998 90 000 00 00"
+                  class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Email</label>
+                <input type="email" name="email" value="<%= staff?.email || '' %>"
+                  placeholder="email@school.uz"
+                  class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1.5">Ma'lumoti</label>
+              <input type="text" name="education" value="<%= staff?.education || '' %>"
+                placeholder="Masalan: Oliy ma'lumot, NUUz, 2005"
+                class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1.5">Ish tajribasi</label>
+              <input type="text" name="experience" value="<%= staff?.experience || '' %>"
+                placeholder="Masalan: 15 yil pedagogik tajriba"
+                class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+        </div>
+
+        <!-- Lavozim -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="font-bold text-gray-800 mb-4"><i class="fas fa-briefcase text-green-600 mr-2"></i>Lavozim va Bo'lim</h3>
+          <div class="space-y-3">
+            <div class="grid grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Lavozim (UZ)</label>
+                <input type="text" name="position_uz" value="<%= staff?.position_uz || '' %>"
+                  placeholder="Maktab direktori"
+                  class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Lavozim (RU)</label>
+                <input type="text" name="position_ru" value="<%= staff?.position_ru || '' %>"
+                  placeholder="Директор школы"
+                  class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Lavozim (EN)</label>
+                <input type="text" name="position_en" value="<%= staff?.position_en || '' %>"
+                  placeholder="School Principal"
+                  class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Bo'lim (UZ)</label>
+                <input type="text" name="department_uz" value="<%= staff?.department_uz || '' %>"
+                  placeholder="Matematika bo'limi"
+                  class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Bo'lim (RU)</label>
+                <input type="text" name="department_ru" value="<%= staff?.department_ru || '' %>"
+                  placeholder="Отдел математики"
+                  class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Bo'lim (EN)</label>
+                <input type="text" name="department_en" value="<%= staff?.department_en || '' %>"
+                  placeholder="Math Department"
+                  class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bio -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="font-bold text-gray-800 mb-4"><i class="fas fa-align-left text-purple-600 mr-2"></i>Qisqacha tarjimayi hol</h3>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1.5">UZ</label>
+              <textarea name="bio_uz" rows="4" placeholder="Xodim haqida qisqacha ma'lumot (o'zbek tilida)"
+                class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= staff?.bio_uz || '' %></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1.5">RU</label>
+              <textarea name="bio_ru" rows="4" placeholder="Краткая биография (на русском)"
+                class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= staff?.bio_ru || '' %></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1.5">EN</label>
+              <textarea name="bio_en" rows="4" placeholder="Short biography (in English)"
+                class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= staff?.bio_en || '' %></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-5">
+
+        <!-- Saqlash -->
+        <div class="bg-white rounded-xl shadow-sm p-5">
+          <h3 class="font-semibold text-gray-800 mb-4">Saqlash</h3>
+          <div class="mb-3">
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Xodim turi <span class="text-red-500">*</span></label>
+            <select name="type" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="rahbariyat" <%= staff?.type==='rahbariyat'?'selected':'' %>>👑 Rahbariyat</option>
+              <option value="oqituvchi" <%= staff?.type==='oqituvchi'?'selected':'' %>>📚 O'qituvchi</option>
+              <option value="xodim" <%= !staff||staff?.type==='xodim'?'selected':'' %>>👤 Xodim</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Ko'rsatish tartibi</label>
+            <input type="number" name="order" value="<%= staff?.order || 0 %>" min="0"
+              class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <p class="text-xs text-gray-400 mt-1">Kichik raqam — yuqorida ko'rinadi</p>
+          </div>
+          <div class="mb-5">
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Holat</label>
+            <select name="isActive" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="true" <%= staff?.isActive!==false?'selected':'' %>>✅ Faol (saytda ko'rinadi)</option>
+              <option value="false" <%= staff?.isActive===false?'selected':'' %>>⛔ Nofaol (yashirin)</option>
+            </select>
+          </div>
+          <button type="submit" class="w-full py-3 bg-blue-900 text-white rounded-lg text-sm font-bold hover:bg-blue-800 transition">
+            <i class="fas fa-save mr-1.5"></i> <%= staff ? 'Yangilash' : "Saqlash" %>
+          </button>
+        </div>
+
+        <!-- Rasm -->
+        <div class="bg-white rounded-xl shadow-sm p-5">
+          <h3 class="font-semibold text-gray-800 mb-3">Xodim rasmi</h3>
+          <% if(staff?.image){ %>
+            <div class="mb-3 text-center">
+              <img src="<%= staff.image %>" class="w-32 h-32 rounded-full object-cover mx-auto border-4 border-gray-100 shadow">
+            </div>
+          <% } else { %>
+            <div class="mb-3 flex justify-center">
+              <div class="w-32 h-32 rounded-full bg-gray-100 flex items-center justify-center border-4 border-gray-50">
+                <i class="fas fa-user text-gray-300 text-4xl"></i>
+              </div>
+            </div>
+          <% } %>
+          <label class="block w-full border-2 border-dashed border-gray-200 rounded-xl p-4 text-center cursor-pointer hover:border-blue-400 transition">
+            <i class="fas fa-camera text-gray-300 text-2xl mb-1 block"></i>
+            <span class="text-sm text-gray-500">Rasm yuklash</span>
+            <span class="text-xs text-gray-400 block">JPG, PNG • Kvadrat shakl tavsiya etiladi</span>
+            <input type="file" name="image" accept="image/*" class="hidden" onchange="previewStaff(this)">
+          </label>
+          <div id="staff-preview-wrap" class="hidden mt-3 text-center">
+            <img id="staff-preview" class="w-32 h-32 rounded-full object-cover mx-auto border-4 border-blue-100">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+function previewStaff(input) {
+  if (input.files[0]) {
+    const r = new FileReader();
+    r.onload = e => {
+      document.getElementById('staff-preview').src = e.target.result;
+      document.getElementById('staff-preview-wrap').classList.remove('hidden');
+    };
+    r.readAsDataURL(input.files[0]);
+  }
+}
+</script>

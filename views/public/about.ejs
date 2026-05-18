@@ -1,13 +1,11 @@
-<!-- Page Header -->
+<!-- Header -->
 <div class="bg-primary text-white py-16 px-4">
   <div class="max-w-7xl mx-auto">
-    <h1 class="text-4xl font-bold mb-3">
-      <% if(lang==='uz'){%>Maktab haqida<%}else if(lang==='ru'){%>О школе<%}else{%>About Our School<%}%>
+    <h1 class="text-4xl font-extrabold mb-3">
+      <% if(lang==='uz'){%>Maktab haqida<%}else if(lang==='ru'){%>О школе<%}else{%>About School<%}%>
     </h1>
     <p class="text-white/60 flex items-center gap-2 text-sm">
-      <a href="/" class="hover:text-white">
-        <% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Home<%}%>
-      </a>
+      <a href="/" class="hover:text-white"><% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Home<%}%></a>
       <i class="fas fa-chevron-right text-xs"></i>
       <span><% if(lang==='uz'){%>Maktab haqida<%}else if(lang==='ru'){%>О школе<%}else{%>About<%}%></span>
     </p>
@@ -15,80 +13,86 @@
 </div>
 
 <div class="max-w-7xl mx-auto px-4 py-14">
-  <!-- Mission & Vision -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
-    <% if (about.mission_uz || about.mission_ru || about.mission_en) { %>
+
+  <!-- Missiya & Vizyon -->
+  <% if(about.mission_uz || about.vision_uz){ %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-7 mb-14">
+    <% if(about.mission_uz){ %>
     <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 card-hover">
-      <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-5">
-        <i class="fas fa-bullseye text-blue-600 text-2xl"></i>
+      <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background:#eff6ff">
+        <i class="fas fa-bullseye text-2xl" style="color:var(--primary)"></i>
       </div>
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">
+      <h2 class="text-2xl font-bold text-gray-900 mb-3">
         <% if(lang==='uz'){%>Missiya<%}else if(lang==='ru'){%>Миссия<%}else{%>Mission<%}%>
       </h2>
-      <p class="text-gray-600 leading-relaxed">
-        <%= about[`mission_${lang}`] || about.mission_uz || '' %>
-      </p>
+      <p class="text-gray-600 leading-relaxed"><%= about['mission_'+lang] || about.mission_uz %></p>
     </div>
     <% } %>
-
-    <% if (about.vision_uz || about.vision_ru || about.vision_en) { %>
+    <% if(about.vision_uz){ %>
     <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 card-hover">
-      <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mb-5">
+      <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background:#f0fdf4">
         <i class="fas fa-eye text-green-600 text-2xl"></i>
       </div>
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">
+      <h2 class="text-2xl font-bold text-gray-900 mb-3">
         <% if(lang==='uz'){%>Vizyon<%}else if(lang==='ru'){%>Видение<%}else{%>Vision<%}%>
       </h2>
-      <p class="text-gray-600 leading-relaxed">
-        <%= about[`vision_${lang}`] || about.vision_uz || '' %>
-      </p>
+      <p class="text-gray-600 leading-relaxed"><%= about['vision_'+lang] || about.vision_uz %></p>
     </div>
     <% } %>
   </div>
+  <% } %>
 
-  <!-- History -->
-  <% if (about.history_uz || about.history_ru || about.history_en) { %>
+  <!-- Tarix -->
+  <% if(about.history_uz){ %>
   <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-14">
-    <div class="flex items-center gap-4 mb-6">
-      <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+    <div class="flex items-center gap-4 mb-5">
+      <div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:#fdf4ff">
         <i class="fas fa-history text-purple-600 text-2xl"></i>
       </div>
       <h2 class="text-2xl font-bold text-gray-900">
         <% if(lang==='uz'){%>Maktab tarixi<%}else if(lang==='ru'){%>История школы<%}else{%>School History<%}%>
       </h2>
     </div>
-    <p class="text-gray-600 leading-relaxed text-lg whitespace-pre-line">
-      <%= about[`history_${lang}`] || about.history_uz || '' %>
-    </p>
+    <p class="text-gray-600 leading-relaxed text-lg whitespace-pre-line"><%= about['history_'+lang] || about.history_uz %></p>
   </div>
   <% } %>
 
-  <!-- Directors -->
-  <% if (about.directors && about.directors.length > 0) { %>
-  <div>
+  <!-- Rahbariyat -->
+  <% if(rahbariyat && rahbariyat.length > 0){ %>
+  <div class="mb-14">
     <div class="text-center mb-10">
-      <p class="text-secondary font-semibold text-sm uppercase tracking-wider mb-1"><% if(lang==='uz'){%>Rahbariyat<%}else if(lang==='ru'){%>Руководство<%}else{%>Leadership<%}%></p>
-      <h2 class="text-3xl font-bold text-gray-900">
-        <% if(lang==='uz'){%>Maktab rahbariyati<%}else if(lang==='ru'){%>Руководство школы<%}else{%>School Directors<%}%>
+      <p class="text-secondary font-bold text-sm uppercase tracking-wider mb-1">
+        <% if(lang==='uz'){%>Boshqaruv<%}else if(lang==='ru'){%>Руководство<%}else{%>Leadership<%}%>
+      </p>
+      <h2 class="text-3xl font-extrabold text-gray-900">
+        <% if(lang==='uz'){%>Maktab rahbariyati<%}else if(lang==='ru'){%>Руководство школы<%}else{%>School Leadership<%}%>
       </h2>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-      <% about.directors.forEach(d => { %>
-        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 card-hover text-center">
-          <div class="h-56 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center overflow-hidden">
-            <% if (d.image) { %>
-              <img src="<%= d.image %>" alt="<%= d.name %>" class="w-full h-full object-cover object-top">
+      <% rahbariyat.forEach(s => { %>
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 card-hover">
+          <div class="h-64 overflow-hidden" style="background:linear-gradient(135deg,#f0f4ff,#e0e8ff)">
+            <% if(s.image){ %>
+              <img src="<%= s.image %>" alt="<%= s.full_name %>" class="w-full h-full object-cover object-top">
             <% } else { %>
-              <div class="w-24 h-24 rounded-full bg-blue-200 flex items-center justify-center">
-                <i class="fas fa-user text-blue-400 text-4xl"></i>
+              <div class="w-full h-full flex items-center justify-center">
+                <div class="w-28 h-28 rounded-full bg-white/50 flex items-center justify-center">
+                  <i class="fas fa-user text-5xl" style="color:var(--primary);opacity:.3"></i>
+                </div>
               </div>
             <% } %>
           </div>
           <div class="p-5">
-            <h3 class="font-bold text-gray-900 text-lg"><%= d.name %></h3>
-            <p class="text-secondary font-medium text-sm mt-1">
-              <%= d[`position_${lang}`] || d.position_uz || d.position_en || '' %>
-            </p>
+            <h3 class="font-bold text-gray-900 text-lg"><%= s.full_name %></h3>
+            <p class="font-semibold text-sm mt-1" style="color:var(--secondary)"><%= s['position_'+lang] || s.position_uz %></p>
+            <% if(s.department_uz){ %><p class="text-gray-400 text-sm"><%= s['department_'+lang] || s.department_uz %></p><% } %>
+            <% if(s.bio_uz){ %><p class="text-gray-600 text-sm mt-3 line-clamp-3"><%= s['bio_'+lang] || s.bio_uz %></p><% } %>
+            <% if(s.phone || s.email){ %>
+            <div class="mt-4 pt-4 border-t space-y-1.5">
+              <% if(s.phone){ %><p class="text-gray-500 text-xs"><i class="fas fa-phone mr-2"></i><%= s.phone %></p><% } %>
+              <% if(s.email){ %><p class="text-gray-500 text-xs"><i class="fas fa-envelope mr-2"></i><%= s.email %></p><% } %>
+            </div>
+            <% } %>
           </div>
         </div>
       <% }) %>
@@ -96,10 +100,73 @@
   </div>
   <% } %>
 
-  <% if (!about.mission_uz && !about.history_uz && (!about.directors || about.directors.length === 0)) { %>
-    <div class="text-center py-20 text-gray-400">
-      <i class="fas fa-school text-5xl mb-4 block"></i>
-      <p class="text-lg"><% if(lang==='uz'){%>Kontent admin tomonidan to'ldirilishi kerak<%}else if(lang==='ru'){%>Контент должен быть заполнен администратором<%}else{%>Content will be added by admin<%}%></p>
+  <!-- O'qituvchilar -->
+  <% if(oqituvchilar && oqituvchilar.length > 0){ %>
+  <div class="mb-14">
+    <div class="text-center mb-10">
+      <p class="text-secondary font-bold text-sm uppercase tracking-wider mb-1">
+        <% if(lang==='uz'){%>Pedagogik jamoa<%}else if(lang==='ru'){%>Педагогический коллектив<%}else{%>Teaching Staff<%}%>
+      </p>
+      <h2 class="text-3xl font-extrabold text-gray-900">
+        <% if(lang==='uz'){%>O'qituvchilarimiz<%}else if(lang==='ru'){%>Наши учителя<%}else{%>Our Teachers<%}%>
+      </h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+      <% oqituvchilar.forEach(s => { %>
+        <div class="bg-white rounded-2xl p-5 text-center shadow-sm border border-gray-100 card-hover">
+          <% if(s.image){ %>
+            <img src="<%= s.image %>" class="w-20 h-20 rounded-full object-cover object-top mx-auto mb-3 border-4 border-gray-50 shadow">
+          <% } else { %>
+            <div class="w-20 h-20 rounded-full mx-auto mb-3 flex items-center justify-center" style="background:linear-gradient(135deg,#eff6ff,#dbeafe)">
+              <i class="fas fa-chalkboard-teacher text-2xl" style="color:var(--primary);opacity:.4"></i>
+            </div>
+          <% } %>
+          <h3 class="font-bold text-gray-900 text-sm"><%= s.full_name %></h3>
+          <p class="text-xs mt-1 font-medium" style="color:var(--secondary)"><%= s['position_'+lang] || s.position_uz %></p>
+          <% if(s.department_uz){ %><p class="text-gray-400 text-xs mt-0.5"><%= s['department_'+lang] || s.department_uz %></p><% } %>
+          <% if(s.experience){ %><p class="text-gray-400 text-xs mt-1"><i class="fas fa-clock mr-1"></i><%= s.experience %></p><% } %>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+  <% } %>
+
+  <!-- Xodimlar -->
+  <% if(xodimlar && xodimlar.length > 0){ %>
+  <div>
+    <div class="text-center mb-10">
+      <p class="text-secondary font-bold text-sm uppercase tracking-wider mb-1">
+        <% if(lang==='uz'){%>Texnik xodimlar<%}else if(lang==='ru'){%>Технический персонал<%}else{%>Staff Members<%}%>
+      </p>
+      <h2 class="text-3xl font-extrabold text-gray-900">
+        <% if(lang==='uz'){%>Xodimlarimiz<%}else if(lang==='ru'){%>Наши сотрудники<%}else{%>Our Staff<%}%>
+      </h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <% xodimlar.forEach(s => { %>
+        <div class="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100 card-hover">
+          <% if(s.image){ %>
+            <img src="<%= s.image %>" class="w-16 h-16 rounded-full object-cover mx-auto mb-2 border-2 border-gray-50">
+          <% } else { %>
+            <div class="w-16 h-16 rounded-full mx-auto mb-2 bg-orange-50 flex items-center justify-center">
+              <i class="fas fa-user text-orange-300 text-xl"></i>
+            </div>
+          <% } %>
+          <h3 class="font-semibold text-gray-800 text-xs"><%= s.full_name %></h3>
+          <p class="text-gray-400 text-xs mt-0.5"><%= s['position_'+lang] || s.position_uz %></p>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+  <% } %>
+
+  <!-- Bo'sh holat -->
+  <% if(!about.mission_uz && !about.history_uz && rahbariyat.length===0 && oqituvchilar.length===0 && xodimlar.length===0){ %>
+    <div class="text-center py-24 text-gray-400">
+      <i class="fas fa-school text-6xl mb-4 block opacity-20"></i>
+      <p class="text-xl font-medium">Ma'lumotlar admin tomonidan kiritilishi kerak</p>
+      <p class="text-sm mt-2">Admin panel → Maktab haqida / Xodimlar</p>
     </div>
   <% } %>
+
 </div>
