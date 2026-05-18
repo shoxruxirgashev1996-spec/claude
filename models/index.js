@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Contact Message
+// Contact
 const contactSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
@@ -20,10 +20,12 @@ const applicationSchema = new mongoose.Schema({
 
 // Gallery
 const gallerySchema = new mongoose.Schema({
-  title_uz: { type: String },
-  title_ru: { type: String },
-  title_en: { type: String },
-  image: { type: String, required: true },
+  title_uz: { type: String, default: '' },
+  title_ru: { type: String, default: '' },
+  title_en: { type: String, default: '' },
+  image: { type: String, default: '' },
+  video_url: { type: String, default: '' },
+  type: { type: String, enum: ['image', 'video'], default: 'image' },
   category: { type: String, default: 'general' },
   isActive: { type: Boolean, default: true }
 }, { timestamps: true });
@@ -32,12 +34,12 @@ const gallerySchema = new mongoose.Schema({
 const budgetSchema = new mongoose.Schema({
   type: { type: String, enum: ['income', 'expense'], required: true },
   category_uz: { type: String, required: true },
-  category_ru: { type: String, required: true },
-  category_en: { type: String, required: true },
+  category_ru: { type: String, default: '' },
+  category_en: { type: String, default: '' },
   amount: { type: Number, required: true },
-  description_uz: { type: String },
-  description_ru: { type: String },
-  description_en: { type: String },
+  description_uz: { type: String, default: '' },
+  description_ru: { type: String, default: '' },
+  description_en: { type: String, default: '' },
   date: { type: Date, required: true, default: Date.now },
   year: { type: Number },
   month: { type: Number }
@@ -52,13 +54,13 @@ budgetSchema.pre('save', function(next) {
 // Announcement
 const announcementSchema = new mongoose.Schema({
   title_uz: { type: String, required: true },
-  title_ru: { type: String, required: true },
-  title_en: { type: String, required: true },
-  content_uz: { type: String },
-  content_ru: { type: String },
-  content_en: { type: String },
+  title_ru: { type: String, default: '' },
+  title_en: { type: String, default: '' },
+  content_uz: { type: String, default: '' },
+  content_ru: { type: String, default: '' },
+  content_en: { type: String, default: '' },
   isActive: { type: Boolean, default: true },
-  expiresAt: { type: Date }
+  expiresAt: { type: Date, default: null }
 }, { timestamps: true });
 
 // Settings
@@ -67,23 +69,23 @@ const settingsSchema = new mongoose.Schema({
   value: { type: mongoose.Schema.Types.Mixed }
 }, { timestamps: true });
 
-// About Page
+// About
 const aboutSchema = new mongoose.Schema({
-  mission_uz: { type: String },
-  mission_ru: { type: String },
-  mission_en: { type: String },
-  vision_uz: { type: String },
-  vision_ru: { type: String },
-  vision_en: { type: String },
-  history_uz: { type: String },
-  history_ru: { type: String },
-  history_en: { type: String },
+  mission_uz: { type: String, default: '' },
+  mission_ru: { type: String, default: '' },
+  mission_en: { type: String, default: '' },
+  vision_uz: { type: String, default: '' },
+  vision_ru: { type: String, default: '' },
+  vision_en: { type: String, default: '' },
+  history_uz: { type: String, default: '' },
+  history_ru: { type: String, default: '' },
+  history_en: { type: String, default: '' },
   directors: [{
     name: { type: String },
-    position_uz: { type: String },
-    position_ru: { type: String },
-    position_en: { type: String },
-    image: { type: String },
+    position_uz: { type: String, default: '' },
+    position_ru: { type: String, default: '' },
+    position_en: { type: String, default: '' },
+    image: { type: String, default: '' },
     order: { type: Number, default: 0 }
   }]
 }, { timestamps: true });

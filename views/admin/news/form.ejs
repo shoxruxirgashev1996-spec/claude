@@ -1,111 +1,122 @@
 <div class="max-w-5xl">
   <a href="/admin/news" class="inline-flex items-center gap-2 text-gray-500 hover:text-gray-800 text-sm mb-6">
-    <i class="fas fa-arrow-left"></i> Back to News
+    <i class="fas fa-arrow-left"></i> Orqaga
   </a>
 
   <form method="POST" action="<%= news ? `/admin/news/${news._id}/edit` : '/admin/news/create' %>" enctype="multipart/form-data">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Main Content -->
+
+      <!-- Main -->
       <div class="lg:col-span-2 space-y-5">
-        <!-- Titles -->
+
+        <!-- Sarlavha -->
         <div class="bg-white rounded-xl shadow-sm p-6">
-          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-heading text-blue-600"></i> Titles</h3>
-          <div class="space-y-4">
+          <h3 class="font-semibold text-gray-800 mb-4"><i class="fas fa-heading text-blue-600 mr-2"></i>Sarlavha</h3>
+          <div class="space-y-3">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1.5">Title (Uzbek) *</label>
-              <input type="text" name="title_uz" required value="<%= news?.title_uz || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <label class="block text-xs font-semibold text-gray-600 mb-1">UZ <span class="text-red-500">*</span></label>
+              <input type="text" name="title_uz" required value="<%= news?.title_uz || '' %>"
+                placeholder="Sarlavha (o'zbek tilida)"
+                class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1.5">Title (Russian) *</label>
-              <input type="text" name="title_ru" required value="<%= news?.title_ru || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <label class="block text-xs font-semibold text-gray-600 mb-1">RU <span class="text-gray-400">(ixtiyoriy)</span></label>
+              <input type="text" name="title_ru" value="<%= news?.title_ru || '' %>"
+                placeholder="Заголовок (русский)"
+                class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1.5">Title (English) *</label>
-              <input type="text" name="title_en" required value="<%= news?.title_en || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <label class="block text-xs font-semibold text-gray-600 mb-1">EN <span class="text-gray-400">(ixtiyoriy)</span></label>
+              <input type="text" name="title_en" value="<%= news?.title_en || '' %>"
+                placeholder="Title (English)"
+                class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
           </div>
         </div>
 
-        <!-- Excerpts -->
+        <!-- Qisqacha -->
         <div class="bg-white rounded-xl shadow-sm p-6">
-          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-align-left text-blue-600"></i> Excerpts</h3>
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1.5">Excerpt (Uzbek)</label>
-              <textarea name="excerpt_uz" rows="2" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= news?.excerpt_uz || '' %></textarea>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1.5">Excerpt (Russian)</label>
-              <textarea name="excerpt_ru" rows="2" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= news?.excerpt_ru || '' %></textarea>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1.5">Excerpt (English)</label>
-              <textarea name="excerpt_en" rows="2" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= news?.excerpt_en || '' %></textarea>
-            </div>
+          <h3 class="font-semibold text-gray-800 mb-4"><i class="fas fa-align-left text-blue-600 mr-2"></i>Qisqacha tavsif</h3>
+          <div class="space-y-3">
+            <textarea name="excerpt_uz" rows="2" placeholder="Qisqacha tavsif (UZ)" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= news?.excerpt_uz || '' %></textarea>
+            <textarea name="excerpt_ru" rows="2" placeholder="Краткое описание (RU)" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= news?.excerpt_ru || '' %></textarea>
+            <textarea name="excerpt_en" rows="2" placeholder="Short description (EN)" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= news?.excerpt_en || '' %></textarea>
           </div>
         </div>
 
-        <!-- Content Tabs -->
+        <!-- Matn -->
         <div class="bg-white rounded-xl shadow-sm p-6">
-          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-align-justify text-blue-600"></i> Content</h3>
           <div class="flex border-b mb-4 gap-1">
-            <button type="button" onclick="switchTab('uz')" id="tab-uz" class="px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600">UZ</button>
+            <button type="button" onclick="switchTab('uz')" id="tab-uz" class="px-4 py-2 text-sm font-semibold text-blue-600 border-b-2 border-blue-600">UZ *</button>
             <button type="button" onclick="switchTab('ru')" id="tab-ru" class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-gray-700">RU</button>
             <button type="button" onclick="switchTab('en')" id="tab-en" class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-gray-700">EN</button>
           </div>
           <div id="content-uz">
-            <textarea name="content_uz" rows="12" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"><%= news?.content_uz || '' %></textarea>
+            <textarea name="content_uz" rows="14" placeholder="Yangilik matni (o'zbek tilida) *" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= news?.content_uz || '' %></textarea>
           </div>
           <div id="content-ru" class="hidden">
-            <textarea name="content_ru" rows="12" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"><%= news?.content_ru || '' %></textarea>
+            <textarea name="content_ru" rows="14" placeholder="Текст новости (русский)" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= news?.content_ru || '' %></textarea>
           </div>
           <div id="content-en" class="hidden">
-            <textarea name="content_en" rows="12" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"><%= news?.content_en || '' %></textarea>
+            <textarea name="content_en" rows="14" placeholder="News content (English)" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= news?.content_en || '' %></textarea>
           </div>
         </div>
       </div>
 
       <!-- Sidebar -->
       <div class="space-y-5">
-        <!-- Publish Box -->
+
+        <!-- Publish -->
         <div class="bg-white rounded-xl shadow-sm p-5">
-          <h3 class="font-semibold text-gray-800 mb-4">Publish</h3>
-          <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">Status</label>
+          <h3 class="font-semibold text-gray-800 mb-4">Nashriyot</h3>
+          <div class="mb-3">
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Holat</label>
             <select name="status" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="draft" <%= news?.status==='draft'?'selected':'' %>>Draft</option>
-              <option value="published" <%= news?.status==='published'?'selected':'' %>>Published</option>
+              <option value="draft" <%= news?.status==='draft'?'selected':'' %>>Qoralama</option>
+              <option value="published" <%= news?.status==='published'?'selected':'' %>>Nashr etilgan</option>
             </select>
           </div>
           <div class="mb-5">
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">Category</label>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Kategoriya</label>
             <select name="category" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="general" <%= news?.category==='general'?'selected':'' %>>General</option>
-              <option value="sports" <%= news?.category==='sports'?'selected':'' %>>Sports</option>
-              <option value="science" <%= news?.category==='science'?'selected':'' %>>Science</option>
-              <option value="arts" <%= news?.category==='arts'?'selected':'' %>>Arts</option>
-              <option value="events" <%= news?.category==='events'?'selected':'' %>>Events</option>
-              <option value="academics" <%= news?.category==='academics'?'selected':'' %>>Academics</option>
+              <option value="general" <%= news?.category==='general'||!news?'selected':'' %>>Umumiy</option>
+              <option value="sports" <%= news?.category==='sports'?'selected':'' %>>Sport</option>
+              <option value="science" <%= news?.category==='science'?'selected':'' %>>Fan</option>
+              <option value="arts" <%= news?.category==='arts'?'selected':'' %>>San'at</option>
+              <option value="events" <%= news?.category==='events'?'selected':'' %>>Tadbirlar</option>
+              <option value="academics" <%= news?.category==='academics'?'selected':'' %>>Ta'lim</option>
+              <option value="announcements" <%= news?.category==='announcements'?'selected':'' %>>E'lonlar</option>
             </select>
           </div>
-          <button type="submit" class="w-full py-2.5 bg-blue-900 text-white rounded-lg text-sm font-semibold hover:bg-blue-800 transition">
-            <i class="fas fa-save mr-1.5"></i> <%= news ? 'Update' : 'Publish' %>
+          <button type="submit" class="w-full py-3 bg-blue-900 text-white rounded-lg text-sm font-bold hover:bg-blue-800 transition">
+            <i class="fas fa-save mr-1.5"></i> <%= news ? 'Yangilash' : 'Saqlash' %>
           </button>
         </div>
 
-        <!-- Image -->
+        <!-- Rasm -->
         <div class="bg-white rounded-xl shadow-sm p-5">
-          <h3 class="font-semibold text-gray-800 mb-4">Featured Image</h3>
+          <h3 class="font-semibold text-gray-800 mb-3">Asosiy rasm</h3>
           <% if (news?.image) { %>
             <img src="<%= news.image %>" class="w-full h-36 object-cover rounded-lg mb-3">
           <% } %>
           <label class="block w-full border-2 border-dashed border-gray-200 rounded-lg p-4 text-center cursor-pointer hover:border-blue-400 transition">
-            <i class="fas fa-cloud-upload-alt text-gray-400 text-2xl mb-1 block"></i>
-            <span class="text-sm text-gray-500">Click to upload image</span>
+            <i class="fas fa-cloud-upload-alt text-gray-300 text-3xl mb-1 block"></i>
+            <span class="text-sm text-gray-500">Rasm yuklash</span>
+            <span class="text-xs text-gray-400 block mt-1">JPG, PNG, WEBP • Max 5MB</span>
             <input type="file" name="image" accept="image/*" class="hidden" onchange="previewImg(this)">
           </label>
-          <img id="preview" class="hidden w-full h-36 object-cover rounded-lg mt-3">
+          <img id="img-preview" class="hidden w-full h-36 object-cover rounded-lg mt-3">
         </div>
+
+        <!-- Video -->
+        <div class="bg-white rounded-xl shadow-sm p-5">
+          <h3 class="font-semibold text-gray-800 mb-3"><i class="fab fa-youtube text-red-500 mr-1.5"></i>Video URL</h3>
+          <input type="url" name="video_url" value="<%= news?.video_url || '' %>"
+            placeholder="https://www.youtube.com/watch?v=..."
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <p class="text-xs text-gray-400 mt-1.5">YouTube yoki boshqa video havolasi</p>
+        </div>
+
       </div>
     </div>
   </form>
@@ -114,24 +125,24 @@
 <script>
 function switchTab(lang) {
   ['uz','ru','en'].forEach(l => {
-    document.getElementById(`content-${l}`).classList.toggle('hidden', l !== lang);
-    const tab = document.getElementById(`tab-${l}`);
-    tab.classList.toggle('text-blue-600', l === lang);
-    tab.classList.toggle('border-b-2', l === lang);
-    tab.classList.toggle('border-blue-600', l === lang);
-    tab.classList.toggle('text-gray-400', l !== lang);
+    document.getElementById('content-'+l).classList.toggle('hidden', l!==lang);
+    const t = document.getElementById('tab-'+l);
+    t.classList.toggle('text-blue-600', l===lang);
+    t.classList.toggle('border-b-2', l===lang);
+    t.classList.toggle('border-blue-600', l===lang);
+    t.classList.toggle('text-gray-400', l!==lang);
+    t.classList.toggle('font-semibold', l===lang);
   });
 }
 function previewImg(input) {
-  const file = input.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = document.getElementById('preview');
+  if (input.files[0]) {
+    const r = new FileReader();
+    r.onload = e => {
+      const img = document.getElementById('img-preview');
       img.src = e.target.result;
       img.classList.remove('hidden');
     };
-    reader.readAsDataURL(file);
+    r.readAsDataURL(input.files[0]);
   }
 }
 </script>

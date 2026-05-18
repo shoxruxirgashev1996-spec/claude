@@ -1,187 +1,353 @@
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-  <div class="lg:col-span-2 space-y-6">
-    <!-- Site Settings -->
-    <form method="POST" action="/admin/settings/save" enctype="multipart/form-data">
-      <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="font-bold text-gray-800 mb-5 flex items-center gap-2"><i class="fas fa-globe text-blue-600"></i> Site Settings</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Site Name (UZ)</label>
-            <input type="text" name="site_name_uz" value="<%= settings.site_name_uz || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Site Name (RU)</label>
-            <input type="text" name="site_name_ru" value="<%= settings.site_name_ru || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Site Name (EN)</label>
-            <input type="text" name="site_name_en" value="<%= settings.site_name_en || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
+<div class="space-y-6">
+
+  <!-- ── Asosiy Sozlamalar ── -->
+  <form method="POST" action="/admin/settings/save" enctype="multipart/form-data">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- Sayt nomi & Logo -->
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <h3 class="font-bold text-gray-800 mb-5 flex items-center gap-2">
+        <i class="fas fa-globe text-blue-600"></i> Sayt nomi & Logo
+      </h3>
+      <div class="space-y-3 mb-5">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Sayt nomi (UZ)</label>
+          <input type="text" name="site_name_uz" value="<%= settings.site_name_uz || '' %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Primary Color</label>
-            <div class="flex gap-2">
-              <input type="color" name="primary_color" value="<%= settings.primary_color || '#1e3a5f' %>" class="h-10 w-16 border rounded-lg cursor-pointer">
-              <input type="text" id="primaryHex" value="<%= settings.primary_color || '#1e3a5f' %>" class="flex-1 border rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Sayt nomi (RU)</label>
+          <input type="text" name="site_name_ru" value="<%= settings.site_name_ru || '' %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Sayt nomi (EN)</label>
+          <input type="text" name="site_name_en" value="<%= settings.site_name_en || '' %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 mb-2">Logo</label>
+        <div class="flex items-center gap-4">
+          <% if(settings.logo){ %>
+            <img src="<%= settings.logo %>" class="h-14 w-14 object-contain rounded-xl border p-1">
+          <% } else { %>
+            <div class="h-14 w-14 rounded-xl border-2 border-dashed border-gray-200 flex items-center justify-center text-gray-300">
+              <i class="fas fa-image text-xl"></i>
             </div>
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Secondary Color</label>
-            <div class="flex gap-2">
-              <input type="color" name="secondary_color" value="<%= settings.secondary_color || '#c8a84b' %>" class="h-10 w-16 border rounded-lg cursor-pointer">
-              <input type="text" id="secondaryHex" value="<%= settings.secondary_color || '#c8a84b' %>" class="flex-1 border rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-          </div>
+          <% } %>
+          <label class="flex-1 border-2 border-dashed border-gray-200 rounded-lg p-3 text-center cursor-pointer hover:border-blue-400 transition">
+            <i class="fas fa-upload text-gray-400 mr-1.5"></i>
+            <span class="text-sm text-gray-500">Logo yuklash</span>
+            <input type="file" name="logo" accept="image/*" class="hidden" onchange="previewLogo(this)">
+          </label>
         </div>
+        <img id="logo-preview" class="hidden h-14 mt-2 rounded-xl">
+      </div>
+    </div>
 
-        <!-- Logo -->
-        <div class="mb-5">
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Logo</label>
-          <div class="flex items-center gap-4">
-            <% if (settings.logo) { %><img src="<%= settings.logo %>" class="h-12 w-12 object-contain rounded border"><% } %>
-            <input type="file" name="logo" accept="image/*" class="border rounded-lg px-3 py-2 text-sm file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:bg-blue-50 file:text-blue-700">
+    <!-- Ranglar -->
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <h3 class="font-bold text-gray-800 mb-5 flex items-center gap-2">
+        <i class="fas fa-palette text-purple-600"></i> Rang sxemasi
+      </h3>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-2">Asosiy rang (Primary)</label>
+          <div class="flex items-center gap-3">
+            <input type="color" name="primary_color" value="<%= settings.primary_color || '#1a3a6e' %>"
+              class="h-12 w-20 rounded-lg border cursor-pointer p-1"
+              oninput="document.getElementById('primary_hex').value=this.value;updatePreview()">
+            <input id="primary_hex" type="text" value="<%= settings.primary_color || '#1a3a6e' %>"
+              class="flex-1 border rounded-lg px-3 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
         </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-2">Ikkinchi rang (Secondary)</label>
+          <div class="flex items-center gap-3">
+            <input type="color" name="secondary_color" value="<%= settings.secondary_color || '#e8a020' %>"
+              class="h-12 w-20 rounded-lg border cursor-pointer p-1"
+              oninput="document.getElementById('secondary_hex').value=this.value;updatePreview()">
+            <input id="secondary_hex" type="text" value="<%= settings.secondary_color || '#e8a020' %>"
+              class="flex-1 border rounded-lg px-3 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+        </div>
+        <!-- Preview -->
+        <div id="color-preview" class="rounded-xl overflow-hidden mt-3">
+          <div id="preview-primary" class="p-3 text-white text-sm font-semibold" style="background:<%= settings.primary_color || '#1a3a6e' %>">
+            Asosiy rang namunasi (Navigation, Header)
+          </div>
+          <div id="preview-secondary" class="p-3 text-white text-sm font-semibold" style="background:<%= settings.secondary_color || '#e8a020' %>">
+            Ikkinchi rang namunasi (Tugmalar, Accent)
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <!-- Background -->
-        <div class="mb-5">
-          <label class="block text-xs font-medium text-gray-600 mb-2">Background Type</label>
-          <div class="flex gap-4 mb-3">
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="bg_type" value="color" <%= settings.bg_type!=='image'?'checked':'' %> class="text-blue-600">
-              <span class="text-sm">Solid Color</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="bg_type" value="image" <%= settings.bg_type==='image'?'checked':'' %> class="text-blue-600">
-              <span class="text-sm">Image</span>
-            </label>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs text-gray-500 mb-1">BG Color</label>
-              <input type="color" name="bg_color" value="<%= settings.bg_color || '#f8fafc' %>" class="h-10 w-full border rounded-lg cursor-pointer">
-            </div>
-            <div>
-              <label class="block text-xs text-gray-500 mb-1">BG Image</label>
-              <input type="file" name="bg_image" accept="image/*" class="border rounded-lg px-2 py-2 text-sm file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-gray-100 file:text-gray-600 w-full">
-            </div>
-          </div>
+    <!-- Hero Banner -->
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <h3 class="font-bold text-gray-800 mb-5 flex items-center gap-2">
+        <i class="fas fa-image text-green-600"></i> Hero Banner
+      </h3>
+      <div class="space-y-3 mb-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Sarlavha (UZ)</label>
+          <input type="text" name="banner_title_uz" value="<%= settings.banner_title_uz || '' %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Sarlavha (RU)</label>
+          <input type="text" name="banner_title_ru" value="<%= settings.banner_title_ru || '' %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Sarlavha (EN)</label>
+          <input type="text" name="banner_title_en" value="<%= settings.banner_title_en || '' %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Tagline (UZ)</label>
+          <input type="text" name="banner_subtitle_uz" value="<%= settings.banner_subtitle_uz || '' %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Tagline (RU)</label>
+          <input type="text" name="banner_subtitle_ru" value="<%= settings.banner_subtitle_ru || '' %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Tagline (EN)</label>
+          <input type="text" name="banner_subtitle_en" value="<%= settings.banner_subtitle_en || '' %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 mb-2">Banner fon rasmi</label>
+        <div class="flex items-center gap-3">
+          <% if(settings.banner_image){ %>
+            <img src="<%= settings.banner_image %>" class="h-14 w-20 object-cover rounded-lg border flex-shrink-0">
+          <% } %>
+          <label class="flex-1 border-2 border-dashed border-gray-200 rounded-lg p-3 text-center cursor-pointer hover:border-blue-400 transition">
+            <i class="fas fa-upload text-gray-400 mr-1.5"></i>
+            <span class="text-sm text-gray-500">Banner rasmi yuklash</span>
+            <input type="file" name="banner_image" accept="image/*" class="hidden">
+          </label>
+        </div>
+      </div>
+    </div>
 
-        <h4 class="font-semibold text-gray-700 mb-3 mt-5">Banner</h4>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Banner Title (UZ)</label>
-            <input type="text" name="banner_title_uz" value="<%= settings.banner_title_uz || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Banner Title (RU)</label>
-            <input type="text" name="banner_title_ru" value="<%= settings.banner_title_ru || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Banner Title (EN)</label>
-            <input type="text" name="banner_title_en" value="<%= settings.banner_title_en || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
+    <!-- Fon & Video -->
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <h3 class="font-bold text-gray-800 mb-5 flex items-center gap-2">
+        <i class="fas fa-film text-red-500"></i> Fon & Video
+      </h3>
+      <div class="mb-4">
+        <label class="block text-xs font-semibold text-gray-600 mb-2">Fon turi</label>
+        <div class="flex gap-3">
+          <label class="flex items-center gap-2 cursor-pointer p-3 border rounded-lg flex-1 hover:bg-gray-50">
+            <input type="radio" name="bg_type" value="color" <%= settings.bg_type!=='image' && settings.bg_type!=='video'?'checked':'' %> class="text-blue-600">
+            <span class="text-sm font-medium">🎨 Rang</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-3 border rounded-lg flex-1 hover:bg-gray-50">
+            <input type="radio" name="bg_type" value="image" <%= settings.bg_type==='image'?'checked':'' %> class="text-blue-600">
+            <span class="text-sm font-medium">🖼️ Rasm</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-3 border rounded-lg flex-1 hover:bg-gray-50">
+            <input type="radio" name="bg_type" value="video" <%= settings.bg_type==='video'?'checked':'' %> class="text-blue-600">
+            <span class="text-sm font-medium">🎬 Video</span>
+          </label>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Subtitle (UZ)</label>
-            <input type="text" name="banner_subtitle_uz" value="<%= settings.banner_subtitle_uz || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Subtitle (RU)</label>
-            <input type="text" name="banner_subtitle_ru" value="<%= settings.banner_subtitle_ru || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Subtitle (EN)</label>
-            <input type="text" name="banner_subtitle_en" value="<%= settings.banner_subtitle_en || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Fon rangi</label>
+          <input type="color" name="bg_color" value="<%= settings.bg_color || '#f8fafc' %>"
+            class="h-10 w-full border rounded-lg cursor-pointer p-1">
         </div>
-        <div class="mb-5">
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Banner Image</label>
-          <div class="flex items-center gap-4">
-            <% if (settings.banner_image) { %><img src="<%= settings.banner_image %>" class="h-16 w-24 object-cover rounded-lg border"><% } %>
-            <input type="file" name="banner_image" accept="image/*" class="border rounded-lg px-3 py-2 text-sm file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:bg-blue-50 file:text-blue-700">
-          </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Fon rasmi</label>
+          <label class="block border-2 border-dashed border-gray-200 rounded-lg p-3 text-center cursor-pointer hover:border-blue-400 transition">
+            <% if(settings.bg_image){ %>
+              <img src="<%= settings.bg_image %>" class="h-16 mx-auto object-cover rounded mb-1">
+            <% } %>
+            <span class="text-sm text-gray-500"><i class="fas fa-upload mr-1"></i>Fon rasmi yuklash</span>
+            <input type="file" name="bg_image" accept="image/*" class="hidden">
+          </label>
         </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">
+            <i class="fab fa-youtube text-red-500 mr-1"></i>Hero Video URL (YouTube/MP4)
+          </label>
+          <input type="url" name="hero_video_url" value="<%= settings.hero_video_url || '' %>"
+            placeholder="https://www.youtube.com/embed/VIDEO_ID"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <p class="text-xs text-gray-400 mt-1">YouTube embed URL yoki to'g'ridan MP4 havolasi</p>
+        </div>
+      </div>
+    </div>
 
-        <h4 class="font-semibold text-gray-700 mb-3 mt-5">Contact Info</h4>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Phone</label>
-            <input type="text" name="footer_phone" value="<%= settings.footer_phone || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Email</label>
-            <input type="text" name="footer_email" value="<%= settings.footer_email || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1.5">Address (UZ)</label>
-            <input type="text" name="footer_address_uz" value="<%= settings.footer_address_uz || '' %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
+    <!-- Aloqa ma'lumotlari -->
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <h3 class="font-bold text-gray-800 mb-5 flex items-center gap-2">
+        <i class="fas fa-address-book text-teal-600"></i> Aloqa ma'lumotlari
+      </h3>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5"><i class="fas fa-phone text-green-500 mr-1"></i>Telefon</label>
+          <input type="text" name="footer_phone" value="<%= settings.footer_phone || '' %>"
+            placeholder="+998 71 200 00 00"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5"><i class="fas fa-envelope text-blue-500 mr-1"></i>Email</label>
+          <input type="text" name="footer_email" value="<%= settings.footer_email || '' %>"
+            placeholder="info@school.uz"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5"><i class="fas fa-map-marker-alt text-red-500 mr-1"></i>Manzil (UZ)</label>
+          <input type="text" name="footer_address_uz" value="<%= settings.footer_address_uz || '' %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5"><i class="fab fa-telegram text-blue-400 mr-1"></i>Telegram</label>
+          <input type="text" name="social_telegram" value="<%= settings.social_telegram || '' %>"
+            placeholder="https://t.me/kanalname"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5"><i class="fab fa-instagram text-pink-500 mr-1"></i>Instagram</label>
+          <input type="text" name="social_instagram" value="<%= settings.social_instagram || '' %>"
+            placeholder="https://instagram.com/..."
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5"><i class="fab fa-youtube text-red-500 mr-1"></i>YouTube</label>
+          <input type="text" name="social_youtube" value="<%= settings.social_youtube || '' %>"
+            placeholder="https://youtube.com/..."
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5"><i class="fab fa-facebook text-blue-600 mr-1"></i>Facebook</label>
+          <input type="text" name="social_facebook" value="<%= settings.social_facebook || '' %>"
+            placeholder="https://facebook.com/..."
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+      </div>
+    </div>
 
-        <button type="submit" class="px-6 py-2.5 bg-blue-900 text-white rounded-lg text-sm font-semibold hover:bg-blue-800">
-          <i class="fas fa-save mr-1.5"></i> Save Settings
+    <!-- SEO -->
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <h3 class="font-bold text-gray-800 mb-5 flex items-center gap-2">
+        <i class="fas fa-search text-orange-500"></i> SEO Sozlamalari
+      </h3>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Meta sarlavha (UZ)</label>
+          <input type="text" name="meta_title_uz" value="<%= settings.meta_title_uz || '' %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Meta tavsif (UZ)</label>
+          <textarea name="meta_desc_uz" rows="3" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"><%= settings.meta_desc_uz || '' %></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Favicon URL</label>
+          <input type="text" name="favicon_url" value="<%= settings.favicon_url || '' %>"
+            placeholder="/uploads/logos/favicon.ico"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mt-6 flex items-center gap-4">
+    <button type="submit" class="px-8 py-3 bg-blue-900 text-white rounded-xl font-bold hover:bg-blue-800 transition text-sm">
+      <i class="fas fa-save mr-2"></i> Barcha sozlamalarni saqlash
+    </button>
+    <a href="/" target="_blank" class="px-6 py-3 border rounded-xl text-gray-600 hover:bg-gray-50 transition text-sm font-medium">
+      <i class="fas fa-external-link-alt mr-1.5"></i> Saytni ko'rish
+    </a>
+  </div>
+  </form>
+
+  <!-- Statistika -->
+  <div class="bg-white rounded-xl shadow-sm p-6">
+    <h3 class="font-bold text-gray-800 mb-5 flex items-center gap-2">
+      <i class="fas fa-chart-bar text-green-600"></i> Sayt statistikasi (bosh sahifada ko'rsatiladi)
+    </h3>
+    <form method="POST" action="/admin/settings/stats">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">O'quvchilar soni</label>
+          <input type="number" name="students_count" value="<%= stats.students_count || 0 %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">O'qituvchilar</label>
+          <input type="number" name="teachers_count" value="<%= stats.teachers_count || 0 %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Mukofotlar</label>
+          <input type="number" name="awards_count" value="<%= stats.awards_count || 0 %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Bitiruvchilar</label>
+          <input type="number" name="graduates_count" value="<%= stats.graduates_count || 0 %>"
+            class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+      </div>
+      <button type="submit" class="px-6 py-2.5 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition text-sm">
+        <i class="fas fa-save mr-1.5"></i> Statistikani saqlash
+      </button>
+    </form>
+  </div>
+
+  <!-- Parol o'zgartirish -->
+  <div class="bg-white rounded-xl shadow-sm p-6">
+    <h3 class="font-bold text-gray-800 mb-5 flex items-center gap-2">
+      <i class="fas fa-key text-yellow-500"></i> Parolni o'zgartirish
+    </h3>
+    <form method="POST" action="/admin/settings/password" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 mb-1.5">Joriy parol</label>
+        <input type="password" name="current_password" required
+          class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 mb-1.5">Yangi parol</label>
+        <input type="password" name="new_password" required minlength="6"
+          class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex items-end">
+        <button type="submit" class="w-full py-2.5 bg-yellow-500 text-white rounded-xl font-bold hover:bg-yellow-600 transition text-sm">
+          <i class="fas fa-key mr-1.5"></i> O'zgartirish
         </button>
       </div>
     </form>
   </div>
 
-  <!-- Right Column -->
-  <div class="space-y-6">
-    <!-- Stats -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
-      <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-chart-bar text-blue-600"></i> Site Statistics</h3>
-      <form method="POST" action="/admin/settings/stats" class="space-y-3">
-        <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Students Count</label>
-          <input type="number" name="students_count" value="<%= stats.students_count || 0 %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Teachers Count</label>
-          <input type="number" name="teachers_count" value="<%= stats.teachers_count || 0 %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Awards Count</label>
-          <input type="number" name="awards_count" value="<%= stats.awards_count || 0 %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Graduates Count</label>
-          <input type="number" name="graduates_count" value="<%= stats.graduates_count || 0 %>" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <button type="submit" class="w-full py-2.5 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700">
-          <i class="fas fa-save mr-1.5"></i> Save Stats
-        </button>
-      </form>
-    </div>
-
-    <!-- Change Password -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
-      <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-key text-yellow-500"></i> Change Password</h3>
-      <form method="POST" action="/admin/settings/password" class="space-y-3">
-        <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Current Password</label>
-          <input type="password" name="current_password" required class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">New Password</label>
-          <input type="password" name="new_password" required minlength="6" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <button type="submit" class="w-full py-2.5 bg-yellow-500 text-white rounded-lg text-sm font-semibold hover:bg-yellow-600">
-          <i class="fas fa-key mr-1.5"></i> Change Password
-        </button>
-      </form>
-    </div>
-  </div>
 </div>
 
 <script>
-document.querySelectorAll('input[type=color]').forEach(c => {
-  c.addEventListener('input', () => {
-    const hex = document.getElementById(c.name === 'primary_color' ? 'primaryHex' : 'secondaryHex');
-    if (hex) hex.value = c.value;
-  });
-});
+function updatePreview() {
+  const primary = document.querySelector('input[name=primary_color]').value;
+  const secondary = document.querySelector('input[name=secondary_color]').value;
+  document.getElementById('preview-primary').style.background = primary;
+  document.getElementById('preview-secondary').style.background = secondary;
+}
+function previewLogo(input) {
+  if (input.files[0]) {
+    const r = new FileReader();
+    r.onload = e => {
+      const img = document.getElementById('logo-preview');
+      img.src = e.target.result;
+      img.classList.remove('hidden');
+    };
+    r.readAsDataURL(input.files[0]);
+  }
+}
 </script>
