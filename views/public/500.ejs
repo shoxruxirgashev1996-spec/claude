@@ -1,22 +1,18 @@
-<div class="min-h-screen flex items-center justify-center px-4 py-20">
-  <div class="text-center max-w-md">
-    <div class="text-9xl font-bold text-red-100 mb-4">500</div>
-    <h1 class="text-3xl font-bold text-gray-900 mb-3">Server Xatosi</h1>
-    <p class="text-gray-500 mb-4">
-      <% if(typeof lang !== 'undefined' && lang==='uz'){%>Tizimda xato yuz berdi. Iltimos, keyinroq urinib koring.<%}else if(typeof lang !== 'undefined' && lang==='ru'){%>Произошла ошибка сервера. Пожалуйста, попробуйте позже.<%}else{%>A server error occurred. Please try again later.<%}%>
-    </p>
-    <% if (typeof error !== 'undefined' && error) { %>
+<div class="min-h-screen flex items-center justify-center px-6" style="background:linear-gradient(135deg,#fff5f5,#fef2f2)">
+  <div class="text-center max-w-lg">
+    <div class="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-6 bg-red-500">
+      <i class="fas fa-exclamation-triangle text-white text-3xl"></i>
+    </div>
+    <h1 class="text-2xl font-black text-gray-900 mb-3">Server xatosi</h1>
+    <p class="text-gray-500 mb-4">Tizimda xato yuz berdi. Sahifani yangilang yoki keyinroq urinib ko'ring.</p>
+    <% if(typeof error!=='undefined'&&error){ %>
       <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 text-left">
         <p class="text-red-700 text-sm font-mono"><%= error %></p>
       </div>
     <% } %>
     <div class="flex justify-center gap-4">
-      <a href="/" class="px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:opacity-90 transition flex items-center gap-2">
-        <i class="fas fa-home"></i> Bosh sahifa
-      </a>
-      <button onclick="history.back()" class="px-6 py-3 border border-gray-200 text-gray-600 rounded-xl font-semibold hover:bg-gray-50 transition flex items-center gap-2">
-        <i class="fas fa-arrow-left"></i> Orqaga
-      </button>
+      <a href="/" class="btn btn-primary py-3 px-6"><i class="fas fa-home"></i> Bosh sahifa</a>
+      <button onclick="location.reload()" class="btn py-3 px-6" style="background:#f1f5f9;color:#374151"><i class="fas fa-redo"></i> Yangilash</button>
     </div>
   </div>
 </div>

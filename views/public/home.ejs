@@ -1,163 +1,261 @@
 <!-- ── Announcement Ticker ── -->
-<% if (announcements && announcements.length > 0) { %>
-<div style="background:var(--secondary);" class="py-2 overflow-hidden">
-  <div class="max-w-7xl mx-auto px-4 flex items-center gap-4">
-    <span class="text-white text-xs font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full flex-shrink-0 flex items-center gap-1.5">
-      <i class="fas fa-bullhorn"></i>
+<% if(announcements && announcements.length){ %>
+<div style="background:var(--secondary)" class="py-2.5 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 flex items-center gap-4">
+    <span class="flex-shrink-0 text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full">
+      <i class="fas fa-bullhorn text-xs"></i>
       <% if(lang==='uz'){%>E'lon<%}else if(lang==='ru'){%>Объявление<%}else{%>Notice<%}%>
     </span>
     <div class="overflow-hidden flex-1">
-      <div class="ticker-inner text-white text-sm">
-        <% announcements.forEach(a => { %>
-          <span class="mx-10"><i class="fas fa-circle text-white/30 text-xs mr-2"></i><%= a['title_' + lang] || a.title_uz %></span>
-        <% }) %>
+      <div class="ticker-track text-white text-sm">
+        <% [1,2].forEach(() => { announcements.forEach(a => { %>
+          <span class="mx-12 flex-shrink-0">
+            <i class="fas fa-circle text-white/30 mr-2 text-xs"></i>
+            <%= a['title_'+lang] || a.title_uz %>
+          </span>
+        <% }) }) %>
       </div>
     </div>
   </div>
 </div>
 <% } %>
 
-<!-- ── Hero Banner ── -->
-<section class="relative overflow-hidden" style="
+<!-- ── Hero Section ── -->
+<section class="relative overflow-hidden" style="min-height:560px;display:flex;align-items:center;
   <% if(settings.bg_type==='image' && settings.banner_image){ %>
-    background: linear-gradient(rgba(15,30,70,0.82), rgba(15,30,70,0.72)), url('<%= settings.banner_image %>') center/cover no-repeat;
+    background: linear-gradient(135deg, rgba(10,28,70,.88) 0%, rgba(15,42,94,.78) 100%), url('<%= settings.banner_image %>') center/cover no-repeat;
   <% } else { %>
-    background: linear-gradient(135deg, var(--primary) 0%, #1e4a9e 60%, #0d2b6e 100%);
-  <% } %>
-  min-height: 480px; display:flex; align-items:center;">
-  <!-- Pattern overlay -->
-  <div class="absolute inset-0 opacity-5">
-    <svg width="100%" height="100%"><defs><pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="white"/></pattern></defs><rect width="100%" height="100%" fill="url(#dots)"/></svg>
+    background: linear-gradient(135deg, var(--primary) 0%, #1a3a8f 55%, #0d1f52 100%);
+  <% } %>">
+
+  <!-- Geometric shapes -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full opacity-5" style="background:var(--secondary)"></div>
+    <div class="absolute -bottom-32 -left-20 w-80 h-80 rounded-full opacity-5" style="background:#fff"></div>
+    <svg class="absolute inset-0 w-full h-full opacity-4" xmlns="http://www.w3.org/2000/svg">
+      <defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="white" stroke-width=".6"/></pattern></defs>
+      <rect width="100%" height="100%" fill="url(#grid)"/>
+    </svg>
   </div>
-  <div class="max-w-7xl mx-auto px-4 py-20 text-center text-white relative z-10 w-full">
-    <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 px-4 py-2 rounded-full text-sm mb-6">
-      <i class="fas fa-star text-yellow-400 text-xs"></i>
-      <% if(lang==='uz'){%>O'zbekiston Respublikasi Prezident Maktablari<%}else if(lang==='ru'){%>Президентские школы Республики Узбекистан<%}else{%>Presidential Schools of the Republic of Uzbekistan<%}%>
-    </div>
-    <h1 class="text-4xl md:text-6xl font-extrabold mb-5 leading-tight">
-      <%= settings['banner_title_' + lang] || settings.banner_title_uz || (lang==='uz'?'Bilimli avlod – kelajak poydevori':lang==='ru'?'Знающее поколение — основа будущего':'Educated Generation — Foundation of the Future') %>
-    </h1>
-    <p class="text-xl text-white/75 max-w-2xl mx-auto mb-10">
-      <%= settings['banner_subtitle_' + lang] || settings.banner_subtitle_uz || (lang==='uz'?'Zamonaviy talim, ilm va innovatsiya markazi':lang==='ru'?'Центр современного образования, науки и инноваций':'Center of modern education, science and innovation') %>
-    </p>
-    <div class="flex flex-wrap gap-4 justify-center">
-      <a href="/admission" class="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-lg btn-secondary shadow-lg">
-        <i class="fas fa-pen-to-square"></i>
-        <% if(lang==='uz'){%>Ariza topshirish<%}else if(lang==='ru'){%>Подать заявку<%}else{%>Apply Now<%}%>
-      </a>
-      <a href="/about" class="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-lg bg-white/10 border border-white/30 hover:bg-white/20 transition backdrop-blur">
-        <i class="fas fa-info-circle"></i>
-        <% if(lang==='uz'){%>Batafsil<%}else if(lang==='ru'){%>Подробнее<%}else{%>Learn More<%}%>
-      </a>
+
+  <div class="max-w-7xl mx-auto px-6 py-24 w-full relative z-10">
+    <div class="max-w-3xl">
+      <div class="animate-fadeInUp">
+        <span class="badge mb-5 text-white" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)">
+          <i class="fas fa-award" style="color:var(--secondary)"></i>
+          <% if(lang==='uz'){%>O'zbekiston Prezident Maktablari<%}else if(lang==='ru'){%>Президентские школы Узбекистана<%}else{%>Presidential Schools of Uzbekistan<%}%>
+        </span>
+      </div>
+      <h1 class="text-white text-4xl md:text-6xl font-black leading-tight mb-5 animate-fadeInUp delay-100">
+        <%= settings['banner_title_'+lang] || settings.banner_title_uz ||
+          (lang==='uz'?'Bilimli avlod —<br>kelajak poydevori':lang==='ru'?'Знающее поколение —<br>основа будущего':'Educated Generation —<br>Foundation of the Future') %>
+      </h1>
+      <p class="text-white/70 text-lg md:text-xl leading-relaxed mb-10 max-w-xl animate-fadeInUp delay-200">
+        <%= settings['banner_subtitle_'+lang] || settings.banner_subtitle_uz ||
+          (lang==='uz'?"Zamonaviy ta'lim, ilm va innovatsiya markazi":lang==='ru'?'Центр современного образования, науки и инноваций':'Center of modern education, science and innovation') %>
+      </p>
+      <div class="flex flex-wrap gap-4 animate-fadeInUp delay-300">
+        <a href="/admission" class="btn btn-secondary text-base px-8 py-4">
+          <i class="fas fa-pen-alt"></i>
+          <% if(lang==='uz'){%>Ariza topshirish<%}else if(lang==='ru'){%>Подать заявку<%}else{%>Apply Now<%}%>
+        </a>
+        <a href="/about" class="btn btn-outline text-base px-8 py-4">
+          <i class="fas fa-play-circle"></i>
+          <% if(lang==='uz'){%>Maktab haqida<%}else if(lang==='ru'){%>О школе<%}else{%>About School<%}%>
+        </a>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ── Stats ── -->
-<% if (stats && (stats.students_count || stats.teachers_count || stats.awards_count || stats.graduates_count)) { %>
-<section class="bg-white shadow-sm border-b">
-  <div class="max-w-7xl mx-auto px-4 py-8">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-      <% if(stats.students_count){ %>
-      <div>
-        <p class="text-4xl font-extrabold" style="color:var(--primary)"><%= stats.students_count.toLocaleString() %></p>
-        <p class="text-gray-500 text-sm mt-1"><% if(lang==='uz'){%>Jami o'quvchilar<%}else if(lang==='ru'){%>Всего учеников<%}else{%>Total Students<%}%></p>
-      </div>
-      <% } %>
-      <% if(stats.teachers_count){ %>
-      <div>
-        <p class="text-4xl font-extrabold" style="color:var(--primary)"><%= stats.teachers_count %>+</p>
-        <p class="text-gray-500 text-sm mt-1"><% if(lang==='uz'){%>O'qituvchilar<%}else if(lang==='ru'){%>Учителей<%}else{%>Teachers<%}%></p>
-      </div>
-      <% } %>
-      <% if(stats.awards_count){ %>
-      <div>
-        <p class="text-4xl font-extrabold" style="color:var(--primary)"><%= stats.awards_count %>+</p>
-        <p class="text-gray-500 text-sm mt-1"><% if(lang==='uz'){%>Mukofotlar<%}else if(lang==='ru'){%>Наград<%}else{%>Awards<%}%></p>
-      </div>
-      <% } %>
-      <% if(stats.graduates_count){ %>
-      <div>
-        <p class="text-4xl font-extrabold" style="color:var(--primary)"><%= stats.graduates_count.toLocaleString() %>+</p>
-        <p class="text-gray-500 text-sm mt-1"><% if(lang==='uz'){%>Bitiruvchilar<%}else if(lang==='ru'){%>Выпускников<%}else{%>Graduates<%}%></p>
-      </div>
-      <% } %>
+<% if(stats && (stats.students_count || stats.teachers_count || stats.awards_count || stats.graduates_count)){ %>
+<section class="relative z-10">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="bg-white rounded-2xl shadow-xl -mt-10 grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100 overflow-hidden border border-gray-100">
+      <% const statItems = [
+        {val: stats.students_count, icon:'fa-user-graduate', uz:"O'quvchilar", ru:'Учеников', en:'Students'},
+        {val: stats.teachers_count, icon:'fa-chalkboard-teacher', uz:"O'qituvchilar", ru:'Учителей', en:'Teachers'},
+        {val: stats.awards_count, icon:'fa-medal', uz:'Mukofotlar', ru:'Наград', en:'Awards'},
+        {val: stats.graduates_count, icon:'fa-scroll', uz:'Bitiruvchilar', ru:'Выпускников', en:'Graduates'},
+      ].filter(s => s.val); %>
+      <% statItems.forEach((s, i) => { %>
+        <div class="p-6 text-center group">
+          <div class="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center transition group-hover:scale-110" style="background:var(--primary-light)">
+            <i class="fas <%= s.icon %> text-xl" style="color:var(--primary)"></i>
+          </div>
+          <p class="text-3xl font-black" style="color:var(--primary)"><%= s.val.toLocaleString() %>+</p>
+          <p class="text-gray-500 text-xs font-medium mt-1"><%= s[lang] || s.uz %></p>
+        </div>
+      <% }) %>
     </div>
   </div>
 </section>
 <% } %>
 
 <!-- ── Latest News ── -->
-<section class="py-16 px-4">
+<section class="py-20 px-6">
   <div class="max-w-7xl mx-auto">
-    <div class="flex items-end justify-between mb-10">
+    <div class="flex items-end justify-between mb-12">
       <div>
-        <p class="section-subtitle"><% if(lang==='uz'){%>So'nggi yangiliklar<%}else if(lang==='ru'){%>Последние новости<%}else{%>Latest News<%}%></p>
-        <h2 class="section-title"><% if(lang==='uz'){%>Yangiliklar<%}else if(lang==='ru'){%>Новости<%}else{%>News & Updates<%}%></h2>
+        <p class="section-label mb-2"><% if(lang==='uz'){%>So'nggi voqealar<%}else if(lang==='ru'){%>Последние события<%}else{%>Latest Updates<%}%></p>
+        <h2 class="section-title"><% if(lang==='uz'){%>Yangiliklar<%}else if(lang==='ru'){%>Новости<%}else{%>News & Events<%}%></h2>
+        <div class="divider"></div>
       </div>
-      <a href="/news" class="hidden md:inline-flex items-center gap-2 font-semibold text-sm hover:underline" style="color:var(--primary)">
-        <% if(lang==='uz'){%>Barchasi<%}else if(lang==='ru'){%>Все новости<%}else{%>View All<%}%> <i class="fas fa-arrow-right text-xs"></i>
+      <a href="/news" class="btn btn-primary hidden md:inline-flex py-2.5 px-5 text-sm">
+        <% if(lang==='uz'){%>Barchasi<%}else if(lang==='ru'){%>Все новости<%}else{%>View All<%}%>
+        <i class="fas fa-arrow-right text-xs"></i>
       </a>
     </div>
-    <% if(latestNews.length === 0){ %>
-      <div class="text-center py-16 bg-white rounded-2xl border border-gray-100">
-        <i class="fas fa-newspaper text-4xl text-gray-200 mb-3 block"></i>
-        <p class="text-gray-400"><% if(lang==='uz'){%>Yangiliklar yo'q<%}else if(lang==='ru'){%>Нет новостей<%}else{%>No news available<%}%></p>
+
+    <% if(!latestNews || latestNews.length===0){ %>
+      <div class="text-center py-20 bg-white rounded-2xl border border-gray-100">
+        <i class="fas fa-newspaper text-5xl text-gray-200 mb-4 block"></i>
+        <p class="text-gray-400 font-medium"><% if(lang==='uz'){%>Yangiliklar hali yo'q<%}else if(lang==='ru'){%>Новостей пока нет<%}else{%>No news yet<%}%></p>
       </div>
-    <% } %>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <% latestNews.forEach((n, i) => { %>
-        <article class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
-          <div class="h-52 overflow-hidden bg-gray-50">
-            <% if(n.image){ %>
-              <img src="<%= n.image %>" alt="" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-            <% } else { %>
-              <div class="w-full h-full flex items-center justify-center" style="background:linear-gradient(135deg,#f0f4ff,#e8eeff)">
-                <i class="fas fa-newspaper text-4xl" style="color:var(--primary);opacity:.2"></i>
-              </div>
-            <% } %>
-          </div>
-          <div class="p-5 flex flex-col flex-1">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="text-xs px-2.5 py-1 rounded-full font-medium capitalize" style="background:#eff6ff;color:var(--primary)"><%= n.category %></span>
-              <span class="text-gray-400 text-xs"><%= n.createdAt.toLocaleDateString() %></span>
+    <% } else { %>
+    <!-- Featured + Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Featured (first news) -->
+      <% const featured = latestNews[0]; %>
+      <div class="lg:col-span-1 card group">
+        <div class="relative h-64 overflow-hidden bg-gray-100">
+          <% if(featured.image){ %>
+            <img src="<%= featured.image %>" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <% } else { %>
+            <div class="w-full h-full flex items-center justify-center" style="background:linear-gradient(135deg,#f0f4ff,#dde5ff)">
+              <i class="fas fa-newspaper text-5xl opacity-20" style="color:var(--primary)"></i>
             </div>
-            <h3 class="font-bold text-gray-900 text-base mb-2 leading-snug line-clamp-2 flex-1">
-              <%= n['title_' + lang] || n.title_uz %>
+          <% } %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-5">
+            <span class="badge text-white text-xs mb-2" style="background:var(--secondary)"><%= featured.category %></span>
+            <h3 class="text-white font-bold text-lg leading-snug line-clamp-2">
+              <%= featured['title_'+lang] || featured.title_uz %>
             </h3>
-            <p class="text-gray-500 text-sm line-clamp-2 mb-4">
-              <%= (n['excerpt_' + lang] || n['content_' + lang] || '').substring(0, 110) %>...
-            </p>
-            <a href="/news/<%= n.slug %>" class="inline-flex items-center gap-1.5 font-semibold text-sm hover:gap-3 transition-all" style="color:var(--primary)">
-              <% if(lang==='uz'){%>Batafsil o'qish<%}else if(lang==='ru'){%>Читать далее<%}else{%>Read More<%}%>
-              <i class="fas fa-arrow-right text-xs"></i>
+          </div>
+        </div>
+        <div class="p-5">
+          <p class="text-gray-500 text-sm line-clamp-3 mb-4"><%= (featured['excerpt_'+lang] || featured['content_'+lang] || '').substring(0,140) %>...</p>
+          <div class="flex items-center justify-between">
+            <span class="text-gray-400 text-xs"><i class="far fa-calendar mr-1.5"></i><%= featured.createdAt.toLocaleDateString() %></span>
+            <a href="/news/<%= featured.slug %>" class="text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all" style="color:var(--primary)">
+              <% if(lang==='uz'){%>O'qish<%}else if(lang==='ru'){%>Читать<%}else{%>Read<%}%> <i class="fas fa-arrow-right text-xs"></i>
             </a>
           </div>
-        </article>
+        </div>
+      </div>
+
+      <!-- Other news -->
+      <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <% latestNews.slice(1, 5).forEach(n => { %>
+          <div class="card group">
+            <div class="h-44 overflow-hidden bg-gray-100">
+              <% if(n.image){ %>
+                <img src="<%= n.image %>" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <% } else { %>
+                <div class="w-full h-full flex items-center justify-center" style="background:linear-gradient(135deg,#f8faff,#eef2ff)">
+                  <i class="fas fa-newspaper text-3xl opacity-20" style="color:var(--primary)"></i>
+                </div>
+              <% } %>
+            </div>
+            <div class="p-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs font-semibold capitalize" style="color:var(--secondary)"><%= n.category %></span>
+                <span class="text-gray-300 text-xs">•</span>
+                <span class="text-gray-400 text-xs"><%= n.createdAt.toLocaleDateString() %></span>
+              </div>
+              <h3 class="font-bold text-gray-900 text-sm leading-snug line-clamp-2 mb-3">
+                <%= n['title_'+lang] || n.title_uz %>
+              </h3>
+              <a href="/news/<%= n.slug %>" class="text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all" style="color:var(--primary)">
+                <% if(lang==='uz'){%>Batafsil<%}else if(lang==='ru'){%>Подробнее<%}else{%>Read More<%}%> <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+    <% } %>
+
+    <div class="text-center mt-8 md:hidden">
+      <a href="/news" class="btn btn-primary">
+        <% if(lang==='uz'){%>Barcha yangiliklar<%}else if(lang==='ru'){%>Все новости<%}else{%>All News<%}%>
+        <i class="fas fa-arrow-right text-xs"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Why Us ── -->
+<section class="py-16 px-6" style="background:linear-gradient(135deg,#f8f9ff,#f0f4ff)">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <p class="section-label mb-2"><% if(lang==='uz'){%>Nima uchun biz?<%}else if(lang==='ru'){%>Почему мы?<%}else{%>Why Choose Us?<%}%></p>
+      <h2 class="section-title"><% if(lang==='uz'){%>Bizning afzalliklarimiz<%}else if(lang==='ru'){%>Наши преимущества<%}else{%>Our Advantages<%}%></h2>
+      <div class="divider mx-auto"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <% const features = [
+        { icon:'fa-brain', color:'#6366f1', bgColor:'#eef2ff',
+          uz:"Zamonaviy ta'lim", ru:'Современное образование', en:'Modern Education',
+          duz:"STEM fanlariga asoslangan chuqur va keng qamrovli o'quv dasturi",
+          dru:'Глубокая программа обучения, основанная на STEM науках',
+          den:'Deep and comprehensive curriculum based on STEM sciences' },
+        { icon:'fa-users', color:'#10b981', bgColor:'#ecfdf5',
+          uz:"Tajribali o'qituvchilar", ru:'Опытные учителя', en:'Expert Teachers',
+          duz:"Yuqori malakali va fidokor o'qituvchilar jamoasi",
+          dru:'Команда высококвалифицированных и преданных учителей',
+          den:'Highly qualified and dedicated team of teachers' },
+        { icon:'fa-trophy', color:'#f59e0b', bgColor:'#fffbeb',
+          uz:'Xalqaro muvaffaqiyatlar', ru:'Международные достижения', en:'International Achievements',
+          duz:"Xalqaro olimpiadalar va musobaqalarda o'quvchilarimizning yutuqlari",
+          dru:'Достижения наших учеников на международных олимпиадах',
+          den:'Achievements of our students at international olympiads' },
+        { icon:'fa-building', color:'#3b82f6', bgColor:'#eff6ff',
+          uz:'Zamonaviy infratuzilma', ru:'Современная инфраструктура', en:'Modern Infrastructure',
+          duz:"Eng zamonaviy laboratoriyalar, kutubxona va sport inshootlari",
+          dru:'Современные лаборатории, библиотека и спортивные сооружения',
+          den:'State-of-the-art laboratories, library and sports facilities' },
+      ] %>
+      <% features.forEach(f => { %>
+        <div class="card p-6 text-center group">
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 transition group-hover:scale-110" style="background:<%= f.bgColor %>">
+            <i class="fas <%= f.icon %> text-2xl" style="color:<%= f.color %>"></i>
+          </div>
+          <h3 class="font-bold text-gray-900 text-base mb-2"><%= f[lang] || f.uz %></h3>
+          <p class="text-gray-500 text-sm leading-relaxed"><%= f['d'+lang] || f.duz %></p>
+        </div>
       <% }) %>
     </div>
   </div>
 </section>
 
-<!-- ── Gallery Preview ── -->
+<!-- ── Gallery ── -->
 <% if(gallery && gallery.length > 0){ %>
-<section class="py-16 px-4 bg-gray-100">
+<section class="py-20 px-6">
   <div class="max-w-7xl mx-auto">
-    <div class="flex items-end justify-between mb-10">
+    <div class="flex items-end justify-between mb-12">
       <div>
-        <p class="section-subtitle"><% if(lang==='uz'){%>Foto lavhalar<%}else if(lang==='ru'){%>Фотографии<%}else{%>Photos<%}%></p>
-        <h2 class="section-title"><% if(lang==='uz'){%>Galereya<%}else if(lang==='ru'){%>Галерея<%}else{%>Gallery<%}%></h2>
+        <p class="section-label mb-2"><% if(lang==='uz'){%>Hayot lahzalari<%}else if(lang==='ru'){%>Моменты жизни<%}else{%>Moments of Life<%}%></p>
+        <h2 class="section-title"><% if(lang==='uz'){%>Foto galereya<%}else if(lang==='ru'){%>Фотогалерея<%}else{%>Photo Gallery<%}%></h2>
+        <div class="divider"></div>
       </div>
-      <a href="/gallery" class="hidden md:inline-flex items-center gap-2 font-semibold text-sm hover:underline" style="color:var(--primary)">
-        <% if(lang==='uz'){%>Barchasi<%}else if(lang==='ru'){%>Все фото<%}else{%>View All<%}%> <i class="fas fa-arrow-right text-xs"></i>
+      <a href="/gallery" class="btn btn-primary hidden md:inline-flex py-2.5 px-5 text-sm">
+        <% if(lang==='uz'){%>Barchasi<%}else if(lang==='ru'){%>Все фото<%}else{%>View All<%}%>
+        <i class="fas fa-arrow-right text-xs"></i>
       </a>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <% gallery.forEach(img => { %>
-        <div class="relative overflow-hidden rounded-xl aspect-square group cursor-pointer" onclick="openLightbox('<%= img.image %>')">
-          <img src="<%= img.image %>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-            <i class="fas fa-expand text-white text-xl"></i>
+      <% gallery.slice(0,8).forEach((img, i) => { %>
+        <div class="relative overflow-hidden rounded-xl group cursor-pointer <%= i===0?'md:col-span-2 md:row-span-2':'' %>"
+          style="aspect-ratio:<%= i===0?'1':'1' %>"
+          onclick="openLightbox('<%= img.image %>')">
+          <img src="<%= img.image %>" alt="" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-600" style="min-height:160px">
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" style="background:rgba(15,42,94,.5)">
+            <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
+              <i class="fas fa-expand-alt text-white"></i>
+            </div>
           </div>
         </div>
       <% }) %>
@@ -166,35 +264,55 @@
 </section>
 <% } %>
 
-<!-- ── CTA ── -->
-<section class="py-16 px-4" style="background:var(--primary);">
-  <div class="max-w-4xl mx-auto text-center text-white">
-    <h2 class="text-3xl md:text-4xl font-extrabold mb-4">
-      <% if(lang==='uz'){%>Bizga qo'shiling!<%}else if(lang==='ru'){%>Присоединяйтесь к нам!<%}else{%>Join Our School Family!<%}%>
+<!-- ── CTA Banner ── -->
+<section class="py-20 px-6 relative overflow-hidden" style="background:var(--primary)">
+  <div class="absolute inset-0">
+    <div class="absolute top-0 right-0 w-80 h-80 rounded-full opacity-5" style="background:var(--secondary);transform:translate(40px,-40px)"></div>
+    <div class="absolute bottom-0 left-0 w-64 h-64 rounded-full opacity-5" style="background:#fff;transform:translate(-30px,30px)"></div>
+  </div>
+  <div class="max-w-4xl mx-auto text-center relative z-10">
+    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6" style="background:rgba(255,255,255,.1)">
+      <i class="fas fa-graduation-cap text-2xl" style="color:var(--secondary)"></i>
+    </div>
+    <h2 class="text-white text-3xl md:text-4xl font-black mb-4">
+      <% if(lang==='uz'){%>Kelajagingizni bugun boshlang!<%}else if(lang==='ru'){%>Начните своё будущее сегодня!<%}else{%>Start Your Future Today!<%}%>
     </h2>
-    <p class="text-white/70 text-lg mb-8">
-      <% if(lang==='uz'){%>Kelajak uchun eng yaxshi ta'limni tanlang<%}else if(lang==='ru'){%>Выберите лучшее образование для будущего<%}else{%>Choose the best education for the future<%}%>
+    <p class="text-white/65 text-lg mb-10 max-w-xl mx-auto">
+      <% if(lang==='uz'){%>Prezident maktabiga o'qishga kirish imkoniyatingiz bor. Ariza topshiring va kelajagingizni qurishni boshlang.<%}else if(lang==='ru'){%>У вас есть возможность поступить в Президентскую школу. Подайте заявку и начните строить своё будущее.<%}else{%>You have the opportunity to enter the Presidential School. Submit your application and start building your future.<%}%>
     </p>
     <div class="flex flex-wrap gap-4 justify-center">
-      <a href="/admission" class="px-8 py-4 rounded-xl font-bold text-white text-lg btn-secondary shadow-lg">
-        <i class="fas fa-graduation-cap mr-2"></i>
-        <% if(lang==='uz'){%>Hozir ro'yxatdan o'ting<%}else if(lang==='ru'){%>Зарегистрируйтесь сейчас<%}else{%>Register Now<%}%>
+      <a href="/admission" class="btn btn-secondary text-base px-10 py-4">
+        <i class="fas fa-pen-alt"></i>
+        <% if(lang==='uz'){%>Hozir ariza topshiring<%}else if(lang==='ru'){%>Подать заявку сейчас<%}else{%>Apply Now<%}%>
       </a>
-      <a href="/contact" class="px-8 py-4 rounded-xl font-bold text-white text-lg bg-white/10 border border-white/30 hover:bg-white/20 transition">
-        <i class="fas fa-envelope mr-2"></i>
-        <% if(lang==='uz'){%>Bog'laning<%}else if(lang==='ru'){%>Связаться<%}else{%>Contact Us<%}%>
+      <a href="/contact" class="btn btn-outline text-base px-10 py-4">
+        <i class="fas fa-headset"></i>
+        <% if(lang==='uz'){%>Bog'laning<%}else if(lang==='ru'){%>Связаться с нами<%}else{%>Contact Us<%}%>
       </a>
     </div>
   </div>
 </section>
 
 <!-- Lightbox -->
-<div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4" onclick="closeLightbox()">
-  <img id="lb-img" src="" class="max-w-full max-h-[90vh] rounded-xl object-contain">
-  <button class="absolute top-4 right-4 text-white text-2xl w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full"><i class="fas fa-times"></i></button>
+<div id="lightbox" class="fixed inset-0 z-[200] hidden items-center justify-center p-4" style="background:rgba(0,0,0,.92)" onclick="if(event.target===this)closeLightbox()">
+  <button onclick="closeLightbox()" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+    <i class="fas fa-times"></i>
+  </button>
+  <img id="lb-img" src="" class="max-w-full max-h-[88vh] rounded-2xl object-contain shadow-2xl">
 </div>
 <script>
-function openLightbox(src){ document.getElementById('lb-img').src=src; document.getElementById('lightbox').classList.remove('hidden'); }
-function closeLightbox(){ document.getElementById('lightbox').classList.add('hidden'); }
+function openLightbox(src) {
+  document.getElementById('lb-img').src = src;
+  const lb = document.getElementById('lightbox');
+  lb.classList.remove('hidden');
+  lb.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  const lb = document.getElementById('lightbox');
+  lb.classList.add('hidden');
+  lb.classList.remove('flex');
+  document.body.style.overflow = '';
+}
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
 </script>

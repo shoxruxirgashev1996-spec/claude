@@ -1,124 +1,145 @@
-<!-- Header -->
-<div class="bg-primary text-white py-16 px-4">
-  <div class="max-w-7xl mx-auto">
-    <h1 class="text-4xl font-bold mb-3"><% if(lang==='uz'){%>Qabul<%}else if(lang==='ru'){%>Приём<%}else{%>Admission<%}%></h1>
-    <p class="text-white/60 flex items-center gap-2 text-sm">
+<div class="page-header py-16 px-6">
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="flex items-center gap-2 text-white/50 text-xs mb-4">
       <a href="/" class="hover:text-white"><% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Home<%}%></a>
       <i class="fas fa-chevron-right text-xs"></i>
-      <span><% if(lang==='uz'){%>Qabul<%}else if(lang==='ru'){%>Приём<%}else{%>Admission<%}%></span>
-    </p>
+      <span class="text-white/80"><% if(lang==='uz'){%>Qabul<%}else if(lang==='ru'){%>Приём<%}else{%>Admission<%}%></span>
+    </div>
+    <h1 class="text-white text-4xl font-black"><% if(lang==='uz'){%>Qabul 2025<%}else if(lang==='ru'){%>Приём 2025<%}else{%>Admission 2025<%}%></h1>
+    <p class="text-white/60 mt-2 text-lg"><% if(lang==='uz'){%>Online ariza topshiring<%}else if(lang==='ru'){%>Подайте заявку онлайн<%}else{%>Submit your application online<%}%></p>
   </div>
 </div>
 
-<div class="max-w-7xl mx-auto px-4 py-14">
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+<div class="max-w-7xl mx-auto px-6 py-14">
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
+
     <!-- Info -->
-    <div>
-      <div class="mb-8">
-        <p class="text-secondary font-semibold text-sm uppercase tracking-wider mb-1">
-          <% if(lang==='uz'){%>Hujjat topshirish<%}else if(lang==='ru'){%>Подача документов<%}else{%>How to Apply<%}%>
-        </p>
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">
+    <div class="lg:col-span-3 space-y-7">
+      <!-- Steps -->
+      <div class="card p-7">
+        <h2 class="text-xl font-black text-gray-900 mb-6">
           <% if(lang==='uz'){%>Qabul jarayoni<%}else if(lang==='ru'){%>Процесс поступления<%}else{%>Admission Process<%}%>
         </h2>
-        <p class="text-gray-600 leading-relaxed">
-          <% if(lang==='uz'){%>Prezident maktabiga qabul uch bosqichda amalga oshiriladi: hujjat topshirish, imtihon va suhbat.
-          <%}else if(lang==='ru'){%>Поступление в Президентскую школу осуществляется в три этапа: подача документов, экзамен и собеседование.
-          <%}else{%>Admission to the Presidential School takes place in three stages: document submission, examination, and interview.<%}%>
-        </p>
-      </div>
-
-      <!-- Steps -->
-      <div class="space-y-5">
-        <% const steps = [
-          { icon: 'fa-file-alt', color: 'blue', num: '01', uz: 'Onlayn ariza', ru: 'Онлайн заявка', en: 'Online Application', duz: 'Ariza shaklini to\'ldiring', dru: 'Заполните форму заявки', den: 'Fill out the application form' },
-          { icon: 'fa-pen-square', color: 'green', num: '02', uz: 'Imtihon', ru: 'Экзамен', en: 'Examination', duz: 'Kirish imtihonida qatnashing', dru: 'Пройдите вступительный экзамен', den: 'Take the entrance examination' },
-          { icon: 'fa-comments', color: 'purple', num: '03', uz: 'Suhbat', ru: 'Собеседование', en: 'Interview', duz: 'Suhbatdan o\'ting', dru: 'Пройдите собеседование', den: 'Complete the interview' },
-          { icon: 'fa-check-circle', color: 'yellow', num: '04', uz: 'Natija', ru: 'Результат', en: 'Results', duz: 'Qabul natijasini kuting', dru: 'Ожидайте результаты', den: 'Await admission results' },
-        ] %>
-        <% steps.forEach(s => { %>
-          <div class="flex gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-<%= s.color %>-100 flex items-center justify-center flex-shrink-0">
-              <i class="fas <%= s.icon %> text-<%= s.color %>-600"></i>
-            </div>
-            <div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-bold text-gray-300"><%= s.num %></span>
-                <h3 class="font-bold text-gray-900"><%= s[lang] || s.uz %></h3>
+        <div class="space-y-5">
+          <% [
+            { n:'01', icon:'fa-edit', c:'#6366f1', bg:'#eef2ff',
+              uz:"Online ariza", ru:'Онлайн заявка', en:'Online Application',
+              duz:"Quyidagi formani to'liq to'ldiring va yuboring",
+              dru:'Заполните и отправьте форму ниже',
+              den:'Fill out and submit the form below' },
+            { n:'02', icon:'fa-file-check', c:'#3b82f6', bg:'#eff6ff',
+              uz:'Hujjatlar tekshiruvi', ru:'Проверка документов', en:'Document Review',
+              duz:"Hujjatlaringiz admin tomonidan ko'rib chiqiladi (1-3 kun)",
+              dru:'Ваши документы будут рассмотрены администратором (1-3 дня)',
+              den:'Your documents will be reviewed by admin (1-3 days)' },
+            { n:'03', icon:'fa-pen-square', c:'#10b981', bg:'#ecfdf5',
+              uz:'Kirish imtihoni', ru:'Вступительный экзамен', en:'Entrance Exam',
+              duz:"Matematika, ona tili va mantiq fanlaridan imtihon",
+              dru:'Экзамен по математике, родному языку и логике',
+              den:'Exam in mathematics, native language and logic' },
+            { n:'04', icon:'fa-comments', c:'#f59e0b', bg:'#fffbeb',
+              uz:'Suhbat', ru:'Собеседование', en:'Interview',
+              duz:"Qabul komissiyasi bilan yuzma-yuz suhbat",
+              dru:'Личное собеседование с приёмной комиссией',
+              den:'Personal interview with the admission committee' },
+            { n:'05', icon:'fa-trophy', c:'#ef4444', bg:'#fef2f2',
+              uz:'Natijalar', ru:'Результаты', en:'Results',
+              duz:"Qabul natijalari e'lon qilinadi va xabardor qilinasiz",
+              dru:'Результаты приёма будут объявлены и вы получите уведомление',
+              den:'Admission results will be announced and you will be notified' },
+          ].forEach(s => { %>
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:<%= s.bg %>">
+                <i class="fas <%= s.icon %>" style="color:<%= s.c %>"></i>
               </div>
-              <p class="text-gray-500 text-sm"><%= s[`d${lang}`] || s.duz %></p>
+              <div class="flex-1 pt-1">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs font-black" style="color:var(--secondary)"><%= s.n %></span>
+                  <h3 class="font-bold text-gray-900 text-sm"><%= s[lang] || s.uz %></h3>
+                </div>
+                <p class="text-gray-500 text-sm"><%= s['d'+lang] || s.duz %></p>
+              </div>
             </div>
-          </div>
-        <% }) %>
+          <% }) %>
+        </div>
       </div>
 
       <!-- Requirements -->
-      <div class="mt-8 p-6 bg-blue-50 rounded-2xl border border-blue-100">
-        <h3 class="font-bold text-blue-900 mb-3 flex items-center gap-2">
-          <i class="fas fa-list-check"></i>
+      <div class="card p-7">
+        <h2 class="text-xl font-black text-gray-900 mb-5">
           <% if(lang==='uz'){%>Talab qilinadigan hujjatlar<%}else if(lang==='ru'){%>Необходимые документы<%}else{%>Required Documents<%}%>
-        </h3>
-        <ul class="space-y-2 text-sm text-blue-800">
-          <% const docs = lang==='uz'
-            ? ['Pasport yoki tug\'ilganlik guvohnomasi', 'So\'nggi 3 yillik baholar (5-7-sinflar)', 'Tibbiy ma\'lumotnoma', '2 dona 3x4 rasm', 'Ariza shakli']
-            : lang==='ru'
-            ? ['Паспорт или свидетельство о рождении', 'Оценки за последние 3 года (5-7 классы)', 'Медицинская справка', '2 фото 3x4', 'Форма заявки']
-            : ['Passport or birth certificate', 'Last 3 years grades (grades 5-7)', 'Medical certificate', '2 photos 3x4', 'Application form']
-          %>
-          <% docs.forEach(d => { %><li class="flex items-start gap-2"><i class="fas fa-check text-blue-500 text-xs mt-0.5 flex-shrink-0"></i><%= d %></li><% }) %>
+        </h2>
+        <ul class="space-y-3">
+          <% const docs = {
+            uz: ["Pasport yoki tug'ilganlik guvohnomasi (nusxa)", "So'nggi 3 yillik baholar daftarchasi (5-7 sinflar)", "Tibbiy ma'lumotnoma (086 shakl)", "3x4 formatdagi 2 dona rasm", "Ota-ona/vasiy pasporti nusxasi", "Online ariza shakli (to'ldirilgan)"],
+            ru: ["Паспорт или свидетельство о рождении (копия)", "Оценки за последние 3 года (5-7 классы)", "Медицинская справка (форма 086)", "2 фотографии 3x4", "Копия паспорта родителя/опекуна", "Заполненная онлайн-заявка"],
+            en: ["Passport or birth certificate (copy)", "Last 3 years grades (grades 5-7)", "Medical certificate (form 086)", "2 photos 3x4", "Parent/guardian passport copy", "Completed online application"]
+          } %>
+          <% (docs[lang] || docs.uz).forEach(d => { %>
+            <li class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style="background:var(--primary)">
+                <i class="fas fa-check text-white text-xs"></i>
+              </div>
+              <span class="text-gray-700 text-sm"><%= d %></span>
+            </li>
+          <% }) %>
         </ul>
       </div>
     </div>
 
-    <!-- Application Form -->
-    <div>
-      <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-        <div class="text-center mb-7">
-          <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
-            <i class="fas fa-graduation-cap text-primary text-2xl"></i>
+    <!-- Form -->
+    <div class="lg:col-span-2">
+      <div class="card p-7 sticky top-24">
+        <div class="text-center mb-6">
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3" style="background:var(--primary-light)">
+            <i class="fas fa-graduation-cap text-2xl" style="color:var(--primary)"></i>
           </div>
-          <h2 class="text-2xl font-bold text-gray-900">
-            <% if(lang==='uz'){%>Ariza topshirish<%}else if(lang==='ru'){%>Подать заявку<%}else{%>Submit Application<%}%>
+          <h2 class="text-xl font-black text-gray-900">
+            <% if(lang==='uz'){%>Ariza topshirish<%}else if(lang==='ru'){%>Подать заявку<%}else{%>Apply Now<%}%>
           </h2>
-          <p class="text-gray-500 text-sm mt-1">
-            <% if(lang==='uz'){%>Barcha maydonlarni to'ldiring<%}else if(lang==='ru'){%>Заполните все поля<%}else{%>Please fill in all fields<%}%>
+          <p class="text-gray-400 text-xs mt-1">
+            <% if(lang==='uz'){%>Barcha maydonlarni to'ldiring<%}else if(lang==='ru'){%>Заполните все поля<%}else{%>Fill in all fields%><%}%>
           </p>
         </div>
-
-        <form method="POST" action="/apply" class="space-y-5">
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
-                <% if(lang==='uz'){%>Ism *<%}else if(lang==='ru'){%>Имя *<%}else{%>First Name *<%}%>
-              </label>
-              <input type="text" name="first_name" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition">
-            </div>
-            <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
-                <% if(lang==='uz'){%>Familiya *<%}else if(lang==='ru'){%>Фамилия *<%}else{%>Last Name *<%}%>
-              </label>
-              <input type="text" name="last_name" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition">
-            </div>
+        <form method="POST" action="/apply" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">
+              <% if(lang==='uz'){%>Ism<%}else if(lang==='ru'){%>Имя<%}else{%>First Name<%}%> *
+            </label>
+            <input type="text" name="first_name" required
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 transition"
+              placeholder="<% if(lang==='uz'){%>Ismingiz<%}else if(lang==='ru'){%>Ваше имя<%}else{%>First name<%}%>">
           </div>
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">
-              <% if(lang==='uz'){%>Telefon raqami *<%}else if(lang==='ru'){%>Номер телефона *<%}else{%>Phone Number *<%}%>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">
+              <% if(lang==='uz'){%>Familiya<%}else if(lang==='ru'){%>Фамилия<%}else{%>Last Name<%}%> *
             </label>
-            <input type="tel" name="phone" required placeholder="+998 90 000 00 00" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition">
+            <input type="text" name="last_name" required
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 transition"
+              placeholder="<% if(lang==='uz'){%>Familiyangiz<%}else if(lang==='ru'){%>Ваша фамилия<%}else{%>Last name<%}%>">
           </div>
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">
-              <% if(lang==='uz'){%>Tug'ilgan kun *<%}else if(lang==='ru'){%>Дата рождения *<%}else{%>Date of Birth *<%}%>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">
+              <% if(lang==='uz'){%>Telefon raqami<%}else if(lang==='ru'){%>Номер телефона<%}else{%>Phone Number<%}%> *
             </label>
-            <input type="date" name="birth_date" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition">
+            <input type="tel" name="phone" required
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 transition"
+              placeholder="+998 90 000 00 00">
           </div>
-          <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg hover:opacity-90 transition shadow-lg shadow-primary/20">
-            <i class="fas fa-paper-plane mr-2"></i>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">
+              <% if(lang==='uz'){%>Tug'ilgan sana<%}else if(lang==='ru'){%>Дата рождения<%}else{%>Date of Birth<%}%> *
+            </label>
+            <input type="date" name="birth_date" required
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 transition">
+          </div>
+          <button type="submit" class="btn btn-primary w-full py-3.5 text-base">
+            <i class="fas fa-paper-plane"></i>
             <% if(lang==='uz'){%>Ariza yuborish<%}else if(lang==='ru'){%>Отправить заявку<%}else{%>Submit Application<%}%>
           </button>
-          <p class="text-center text-gray-400 text-xs">
-            <i class="fas fa-lock mr-1"></i>
-            <% if(lang==='uz'){%>Ma'lumotlaringiz xavfsiz saqlanadi<%}else if(lang==='ru'){%>Ваши данные в безопасности<%}else{%>Your data is safe and secure<%}%>
+          <p class="text-center text-gray-400 text-xs flex items-center justify-center gap-1.5">
+            <i class="fas fa-shield-alt" style="color:var(--primary)"></i>
+            <% if(lang==='uz'){%>Ma'lumotlaringiz xavfsiz<%}else if(lang==='ru'){%>Ваши данные в безопасности<%}else{%>Your data is secure<%}%>
           </p>
         </form>
       </div>

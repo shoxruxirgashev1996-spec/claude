@@ -1,20 +1,23 @@
-<div class="min-h-screen flex items-center justify-center px-4 py-20">
-  <div class="text-center max-w-md">
-    <div class="text-9xl font-bold text-primary/10 mb-4">404</div>
-    <h1 class="text-3xl font-bold text-gray-900 mb-3">
-      <% if(lang==='uz'){%>Sahifa topilmadi<%}else if(lang==='ru'){%>Страница не найдена<%}else{%>Page Not Found<%}%>
+<div class="min-h-screen flex items-center justify-center px-6" style="background:linear-gradient(135deg,#f8f9ff,#f0f4ff)">
+  <div class="text-center max-w-lg">
+    <div class="text-8xl font-black mb-4 leading-none" style="color:var(--primary);opacity:.08">404</div>
+    <div class="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-6 -mt-16" style="background:var(--primary)">
+      <i class="fas fa-search text-white text-3xl"></i>
+    </div>
+    <h1 class="text-2xl font-black text-gray-900 mb-3">
+      <% if(typeof lang!=='undefined'&&lang==='uz'){%>Sahifa topilmadi<%}else if(typeof lang!=='undefined'&&lang==='ru'){%>Страница не найдена<%}else{%>Page Not Found<%}%>
     </h1>
     <p class="text-gray-500 mb-8">
-      <% if(lang==='uz'){%>Siz qidirgan sahifa mavjud emas yoki ko'chirilgan.<%}else if(lang==='ru'){%>Страница, которую вы ищете, не существует или была перемещена.<%}else{%>The page you're looking for doesn't exist or has been moved.<%}%>
+      <% if(typeof lang!=='undefined'&&lang==='uz'){%>Siz qidirgan sahifa mavjud emas yoki ko'chirilgan.<%}else if(typeof lang!=='undefined'&&lang==='ru'){%>Страница, которую вы ищете, не существует или была перемещена.<%}else{%>The page you're looking for doesn't exist or has been moved.<%}%>
     </p>
     <div class="flex justify-center gap-4">
-      <a href="/" class="px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:opacity-90 transition flex items-center gap-2">
+      <a href="/" class="btn btn-primary py-3 px-6">
         <i class="fas fa-home"></i>
-        <% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Go Home<%}%>
+        <% if(typeof lang!=='undefined'&&lang==='uz'){%>Bosh sahifa<%}else if(typeof lang!=='undefined'&&lang==='ru'){%>Главная<%}else{%>Home<%}%>
       </a>
-      <button onclick="history.back()" class="px-6 py-3 border border-gray-200 text-gray-600 rounded-xl font-semibold hover:bg-gray-50 transition flex items-center gap-2">
+      <button onclick="history.back()" class="btn py-3 px-6" style="background:#f1f5f9;color:#374151">
         <i class="fas fa-arrow-left"></i>
-        <% if(lang==='uz'){%>Orqaga<%}else if(lang==='ru'){%>Назад<%}else{%>Go Back<%}%>
+        <% if(typeof lang!=='undefined'&&lang==='uz'){%>Orqaga<%}else if(typeof lang!=='undefined'&&lang==='ru'){%>Назад<%}else{%>Go Back<%}%>
       </button>
     </div>
   </div>

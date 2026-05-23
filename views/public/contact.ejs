@@ -1,106 +1,119 @@
-<!-- Header -->
-<div class="bg-primary text-white py-16 px-4">
-  <div class="max-w-7xl mx-auto">
-    <h1 class="text-4xl font-bold mb-3"><% if(lang==='uz'){%>Aloqa<%}else if(lang==='ru'){%>Контакт<%}else{%>Contact Us<%}%></h1>
-    <p class="text-white/60 flex items-center gap-2 text-sm">
+<div class="page-header py-16 px-6">
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="flex items-center gap-2 text-white/50 text-xs mb-4">
       <a href="/" class="hover:text-white"><% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Home<%}%></a>
       <i class="fas fa-chevron-right text-xs"></i>
-      <span><% if(lang==='uz'){%>Aloqa<%}else if(lang==='ru'){%>Контакт<%}else{%>Contact<%}%></span>
-    </p>
+      <span class="text-white/80"><% if(lang==='uz'){%>Aloqa<%}else if(lang==='ru'){%>Контакт<%}else{%>Contact<%}%></span>
+    </div>
+    <h1 class="text-white text-4xl font-black"><% if(lang==='uz'){%>Biz bilan bog'laning<%}else if(lang==='ru'){%>Свяжитесь с нами<%}else{%>Get In Touch<%}%></h1>
   </div>
 </div>
 
-<div class="max-w-7xl mx-auto px-4 py-14">
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-    <!-- Contact Info -->
-    <div class="space-y-5">
-      <% if (settings.footer_phone) { %>
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-start gap-4">
-          <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-            <i class="fas fa-phone text-blue-600"></i>
-          </div>
-          <div>
-            <p class="font-semibold text-gray-900 mb-1"><% if(lang==='uz'){%>Telefon<%}else if(lang==='ru'){%>Телефон<%}else{%>Phone<%}%></p>
-            <p class="text-gray-600 text-sm"><%= settings.footer_phone %></p>
-          </div>
-        </div>
-      <% } %>
-      <% if (settings.footer_email) { %>
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-start gap-4">
-          <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-            <i class="fas fa-envelope text-green-600"></i>
-          </div>
-          <div>
-            <p class="font-semibold text-gray-900 mb-1">Email</p>
-            <p class="text-gray-600 text-sm"><%= settings.footer_email %></p>
-          </div>
-        </div>
-      <% } %>
-      <% if (settings.footer_address_uz) { %>
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-start gap-4">
-          <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-            <i class="fas fa-map-marker-alt text-orange-600"></i>
-          </div>
-          <div>
-            <p class="font-semibold text-gray-900 mb-1"><% if(lang==='uz'){%>Manzil<%}else if(lang==='ru'){%>Адрес<%}else{%>Address<%}%></p>
-            <p class="text-gray-600 text-sm"><%= settings.footer_address_uz %></p>
-          </div>
-        </div>
-      <% } %>
+<div class="max-w-7xl mx-auto px-6 py-14">
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
 
-      <!-- Working Hours -->
-      <div class="bg-primary rounded-2xl p-6 text-white">
-        <h3 class="font-bold mb-4 flex items-center gap-2">
-          <i class="fas fa-clock text-secondary"></i>
+    <!-- Sidebar info -->
+    <div class="lg:col-span-2 space-y-5">
+      <% const contacts = [
+        {icon:'fa-phone-alt', color:'#10b981', bg:'#ecfdf5', label_uz:'Telefon', label_ru:'Телефон', label_en:'Phone', val: settings.footer_phone, href: 'tel:'},
+        {icon:'fa-envelope', color:'#3b82f6', bg:'#eff6ff', label_uz:'Email', label_ru:'Email', label_en:'Email', val: settings.footer_email, href: 'mailto:'},
+        {icon:'fa-map-marker-alt', color:'#f59e0b', bg:'#fffbeb', label_uz:'Manzil', label_ru:'Адрес', label_en:'Address', val: settings.footer_address_uz, href: null},
+      ]; %>
+      <% contacts.filter(c=>c.val).forEach(c => { %>
+        <div class="card p-5 flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:<%= c.bg %>">
+            <i class="fas <%= c.icon %>" style="color:<%= c.color %>"></i>
+          </div>
+          <div>
+            <p class="text-gray-400 text-xs font-medium mb-1"><%= c['label_'+lang] %></p>
+            <% if(c.href){ %>
+              <a href="<%= c.href+c.val %>" class="text-gray-900 font-semibold text-sm hover:underline" style="color:var(--primary)"><%= c.val %></a>
+            <% } else { %>
+              <p class="text-gray-900 font-semibold text-sm"><%= c.val %></p>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+
+      <!-- Working hours -->
+      <div class="card p-6" style="background:var(--primary)">
+        <h3 class="text-white font-bold mb-4 flex items-center gap-2">
+          <i class="fas fa-clock" style="color:var(--secondary)"></i>
           <% if(lang==='uz'){%>Ish vaqti<%}else if(lang==='ru'){%>Часы работы<%}else{%>Working Hours<%}%>
         </h3>
-        <div class="space-y-2 text-sm">
-          <div class="flex justify-between">
-            <span class="text-white/70"><% if(lang==='uz'){%>Du-Ju<%}else if(lang==='ru'){%>Пн-Пт<%}else{%>Mon-Fri<%}%></span>
-            <span>9:00 - 18:00</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-white/70"><% if(lang==='uz'){%>Shanba<%}else if(lang==='ru'){%>Суббота<%}else{%>Saturday<%}%></span>
-            <span>9:00 - 14:00</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-white/70"><% if(lang==='uz'){%>Yakshanba<%}else if(lang==='ru'){%>Воскресенье<%}else{%>Sunday<%}%></span>
-            <span class="text-white/50"><% if(lang==='uz'){%>Yopiq<%}else if(lang==='ru'){%>Закрыто<%}else{%>Closed<%}%></span>
-          </div>
+        <div class="space-y-3">
+          <% const hours = [
+            {uz:'Dushanba — Juma', ru:'Понедельник — Пятница', en:'Monday — Friday', time:'09:00 – 18:00', open:true},
+            {uz:'Shanba', ru:'Суббота', en:'Saturday', time:'09:00 – 14:00', open:true},
+            {uz:'Yakshanba', ru:'Воскресенье', en:'Sunday', time: lang==='uz'?'Dam olish':lang==='ru'?'Выходной':'Closed', open:false},
+          ] %>
+          <% hours.forEach(h => { %>
+            <div class="flex items-center justify-between">
+              <span class="text-white/60 text-sm"><%= h[lang] || h.uz %></span>
+              <span class="text-sm font-semibold <%= h.open?'text-white':'text-white/40' %>"><%= h.time %></span>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- Social -->
+      <div class="card p-5">
+        <h3 class="font-bold text-gray-900 mb-4 text-sm">
+          <% if(lang==='uz'){%>Ijtimoiy tarmoqlar<%}else if(lang==='ru'){%>Социальные сети<%}else{%>Social Media<%}%>
+        </h3>
+        <div class="flex gap-3">
+          <% if(settings.social_telegram){ %>
+            <a href="<%= settings.social_telegram %>" target="_blank" class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm transition hover:scale-110" style="background:#229ED9"><i class="fab fa-telegram"></i></a>
+          <% } %>
+          <% if(settings.social_instagram){ %>
+            <a href="<%= settings.social_instagram %>" target="_blank" class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm transition hover:scale-110" style="background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af)"><i class="fab fa-instagram"></i></a>
+          <% } %>
+          <% if(settings.social_youtube){ %>
+            <a href="<%= settings.social_youtube %>" target="_blank" class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm transition hover:scale-110" style="background:#FF0000"><i class="fab fa-youtube"></i></a>
+          <% } %>
+          <% if(settings.social_facebook){ %>
+            <a href="<%= settings.social_facebook %>" target="_blank" class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm transition hover:scale-110" style="background:#1877F2"><i class="fab fa-facebook-f"></i></a>
+          <% } %>
         </div>
       </div>
     </div>
 
-    <!-- Contact Form -->
-    <div class="lg:col-span-2">
-      <div class="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">
-          <% if(lang==='uz'){%>Xabar yuborish<%}else if(lang==='ru'){%>Отправить сообщение<%}else{%>Send a Message<%}%>
+    <!-- Form -->
+    <div class="lg:col-span-3">
+      <div class="card p-8">
+        <h2 class="text-2xl font-black text-gray-900 mb-2">
+          <% if(lang==='uz'){%>Xabar yuboring<%}else if(lang==='ru'){%>Отправить сообщение<%}else{%>Send a Message<%}%>
         </h2>
-        <p class="text-gray-500 text-sm mb-7">
-          <% if(lang==='uz'){%>Savollaringizni yozing, tez orada javob beramiz<%}else if(lang==='ru'){%>Напишите ваши вопросы, мы ответим вам в ближайшее время<%}else{%>Write your questions and we'll get back to you soon<%}%>
+        <p class="text-gray-500 text-sm mb-8">
+          <% if(lang==='uz'){%>Savollaringizni yozing, 24 soat ichida javob beramiz.<%}else if(lang==='ru'){%>Напишите ваши вопросы, мы ответим в течение 24 часов.<%}else{%>Write your questions, we'll reply within 24 hours.<%}%>
         </p>
-
         <form method="POST" action="/message" class="space-y-5">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">
-                <% if(lang==='uz'){%>Ismingiz *<%}else if(lang==='ru'){%>Ваше имя *<%}else{%>Your Name *<%}%>
+                <% if(lang==='uz'){%>Ismingiz<%}else if(lang==='ru'){%>Ваше имя<%}else{%>Your Name<%}%> *
               </label>
-              <input type="text" name="name" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition">
+              <input type="text" name="name" required
+                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:border-transparent transition"
+                style="--tw-ring-color:var(--primary)"
+                placeholder="<% if(lang==='uz'){%>Ism Familiya<%}else if(lang==='ru'){%>Имя Фамилия<%}else{%>John Doe<%}%>">
             </div>
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
-              <input type="email" name="email" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition">
+              <input type="email" name="email" required
+                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 transition"
+                placeholder="email@example.com">
             </div>
           </div>
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">
-              <% if(lang==='uz'){%>Xabar *<%}else if(lang==='ru'){%>Сообщение *<%}else{%>Message *<%}%>
+              <% if(lang==='uz'){%>Xabar<%}else if(lang==='ru'){%>Сообщение<%}else{%>Message<%}%> *
             </label>
-            <textarea name="message" required rows="6" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition resize-none" placeholder="<% if(lang==='uz'){%>Xabaringizni yozing...<%}else if(lang==='ru'){%>Напишите ваше сообщение...<%}else{%>Write your message...<%}%>"></textarea>
+            <textarea name="message" required rows="6"
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 transition resize-none"
+              placeholder="<% if(lang==='uz'){%>Xabaringizni yozing...<%}else if(lang==='ru'){%>Ваше сообщение...<%}else{%>Your message...<%}%>"></textarea>
           </div>
-          <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg hover:opacity-90 transition shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+          <button type="submit" class="btn btn-primary w-full py-4 text-base">
             <i class="fas fa-paper-plane"></i>
             <% if(lang==='uz'){%>Xabar yuborish<%}else if(lang==='ru'){%>Отправить сообщение<%}else{%>Send Message<%}%>
           </button>

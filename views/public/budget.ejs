@@ -1,131 +1,148 @@
-<!-- Header -->
-<div class="bg-primary text-white py-16 px-4">
-  <div class="max-w-7xl mx-auto">
-    <h1 class="text-4xl font-bold mb-3">
-      <% if(lang==='uz'){%>Budjet shaffofligi<%}else if(lang==='ru'){%>Бюджетная прозрачность<%}else{%>Budget Transparency<%}%>
-    </h1>
-    <p class="text-white/60 flex items-center gap-2 text-sm">
+<div class="page-header py-16 px-6">
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="flex items-center gap-2 text-white/50 text-xs mb-4">
       <a href="/" class="hover:text-white"><% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Home<%}%></a>
       <i class="fas fa-chevron-right text-xs"></i>
-      <span><% if(lang==='uz'){%>Budjet<%}else if(lang==='ru'){%>Бюджет<%}else{%>Budget<%}%></span>
-    </p>
+      <span class="text-white/80"><% if(lang==='uz'){%>Budjet shaffofligi<%}else if(lang==='ru'){%>Бюджетная прозрачность<%}else{%>Budget Transparency<%}%></span>
+    </div>
+    <h1 class="text-white text-4xl font-black"><% if(lang==='uz'){%>Moliyaviy hisobot<%}else if(lang==='ru'){%>Финансовый отчёт<%}else{%>Financial Report<%}%></h1>
+    <p class="text-white/60 mt-2"><% if(lang==='uz'){%>Ochiq va shaffof moliyaviy boshqaruv<%}else if(lang==='ru'){%>Открытое и прозрачное финансовое управление<%}else{%>Open and transparent financial management<%}%></p>
   </div>
 </div>
 
-<div class="max-w-7xl mx-auto px-4 py-12">
+<div class="max-w-7xl mx-auto px-6 py-12">
+
   <!-- Year filter -->
-  <div class="flex items-center justify-between mb-8">
+  <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
     <div class="flex gap-2 flex-wrap">
-      <% const allYears = years.length ? years : [new Date().getFullYear()]; %>
+      <% const allYears = years && years.length ? years : [new Date().getFullYear()]; %>
       <% allYears.forEach(y => { %>
-        <a href="/budget?year=<%= y %>" class="px-4 py-2 rounded-full text-sm font-medium <%= y===year ? 'bg-primary text-white' : 'bg-white border text-gray-600 hover:bg-gray-50' %>"><%= y %></a>
+        <a href="/budget?year=<%= y %>" class="badge text-sm font-semibold transition"
+          style="<%= y===year?'background:var(--primary);color:#fff':'background:#fff;color:#374151;border:1px solid #e5e7eb' %>">
+          <%= y %>
+        </a>
       <% }) %>
     </div>
     <div class="text-right">
-      <p class="text-xs text-gray-400"><% if(lang==='uz'){%>Saralangan yil<%}else if(lang==='ru'){%>Выбранный год<%}else{%>Selected Year<%}%></p>
-      <p class="text-2xl font-bold text-primary"><%= year %></p>
+      <p class="text-gray-400 text-xs"><% if(lang==='uz'){%>Tanlangan yil<%}else if(lang==='ru'){%>Выбранный год<%}else{%>Selected Year<%}%></p>
+      <p class="text-3xl font-black" style="color:var(--primary)"><%= year %></p>
     </div>
   </div>
 
-  <!-- Summary Cards -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-    <div class="bg-white rounded-2xl p-7 shadow-sm border border-gray-100 text-center">
-      <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
-        <i class="fas fa-arrow-down text-green-600 text-xl"></i>
+  <!-- Summary -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+    <div class="card p-6 border-l-4 border-green-500">
+      <div class="flex items-center justify-between mb-3">
+        <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">
+          <% if(lang==='uz'){%>Jami daromad<%}else if(lang==='ru'){%>Общий доход<%}else{%>Total Income<%}%>
+        </p>
+        <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
+          <i class="fas fa-arrow-down text-green-500"></i>
+        </div>
       </div>
-      <p class="text-gray-500 text-sm mb-1"><% if(lang==='uz'){%>Jami daromad<%}else if(lang==='ru'){%>Общий доход<%}else{%>Total Income<%}%></p>
-      <p class="text-3xl font-bold text-green-600"><%= income.toLocaleString() %></p>
+      <p class="text-2xl font-black text-green-600"><%= income.toLocaleString() %></p>
       <p class="text-gray-400 text-xs mt-1">UZS</p>
     </div>
-    <div class="bg-white rounded-2xl p-7 shadow-sm border border-gray-100 text-center">
-      <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
-        <i class="fas fa-arrow-up text-red-500 text-xl"></i>
+    <div class="card p-6 border-l-4 border-red-400">
+      <div class="flex items-center justify-between mb-3">
+        <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">
+          <% if(lang==='uz'){%>Jami xarajat<%}else if(lang==='ru'){%>Общий расход<%}else{%>Total Expense<%}%>
+        </p>
+        <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
+          <i class="fas fa-arrow-up text-red-400"></i>
+        </div>
       </div>
-      <p class="text-gray-500 text-sm mb-1"><% if(lang==='uz'){%>Jami xarajat<%}else if(lang==='ru'){%>Общий расход<%}else{%>Total Expense<%}%></p>
-      <p class="text-3xl font-bold text-red-500"><%= expense.toLocaleString() %></p>
+      <p class="text-2xl font-black text-red-500"><%= expense.toLocaleString() %></p>
       <p class="text-gray-400 text-xs mt-1">UZS</p>
     </div>
-    <div class="bg-white rounded-2xl p-7 shadow-sm border border-gray-100 text-center">
-      <div class="w-14 h-14 <%= (income-expense)>=0?'bg-blue-100':'bg-red-100' %> rounded-2xl flex items-center justify-center mx-auto mb-3">
-        <i class="fas fa-balance-scale <%= (income-expense)>=0?'text-blue-600':'text-red-500' %> text-xl"></i>
+    <div class="card p-6" style="border-left:4px solid var(--primary)">
+      <div class="flex items-center justify-between mb-3">
+        <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">
+          <% if(lang==='uz'){%>Balans<%}else if(lang==='ru'){%>Баланс<%}else{%>Balance<%}%>
+        </p>
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--primary-light)">
+          <i class="fas fa-balance-scale" style="color:var(--primary)"></i>
+        </div>
       </div>
-      <p class="text-gray-500 text-sm mb-1"><% if(lang==='uz'){%>Balans<%}else if(lang==='ru'){%>Баланс<%}else{%>Balance<%}%></p>
-      <p class="text-3xl font-bold <%= (income-expense)>=0?'text-blue-600':'text-red-500' %>"><%= (income-expense).toLocaleString() %></p>
+      <p class="text-2xl font-black <%= (income-expense)>=0?'text-green-600':'text-red-500' %>">
+        <%= (income-expense >= 0 ? '+' : '') %><%= (income-expense).toLocaleString() %>
+      </p>
       <p class="text-gray-400 text-xs mt-1">UZS</p>
     </div>
   </div>
 
   <!-- Chart -->
-  <div class="bg-white rounded-2xl shadow-sm p-7 mb-10">
-    <h3 class="font-bold text-gray-900 text-xl mb-5">
-      <% if(lang==='uz'){%>Oylik tahlil<%}else if(lang==='ru'){%>Ежемесячный анализ<%}else{%>Monthly Analysis<%}%> (<%= year %>)
+  <div class="card p-7 mb-10">
+    <h3 class="font-black text-gray-900 text-lg mb-6">
+      <% if(lang==='uz'){%>Oylik tahlil<%}else if(lang==='ru'){%>Ежемесячный анализ<%}else{%>Monthly Analysis<%}%> — <%= year %>
     </h3>
-    <canvas id="budgetChart" height="120"></canvas>
+    <canvas id="budgetChart" height="100"></canvas>
   </div>
 
-  <!-- Records Table -->
-  <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
-    <div class="px-7 py-5 border-b">
-      <h3 class="font-bold text-gray-900 text-xl">
-        <% if(lang==='uz'){%>Barcha yozuvlar<%}else if(lang==='ru'){%>Все записи<%}else{%>All Records<%}%> (<%= budgets.length %>)
+  <!-- Table -->
+  <div class="card overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+      <h3 class="font-black text-gray-900">
+        <% if(lang==='uz'){%>Barcha yozuvlar<%}else if(lang==='ru'){%>Все записи<%}else{%>All Records<%}%>
+        <span class="text-gray-400 font-normal text-sm ml-2">(<%= budgets.length %>)</span>
       </h3>
     </div>
     <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead class="bg-gray-50 border-b">
+      <table class="w-full">
+        <thead class="bg-gray-50 border-b border-gray-100">
           <tr>
-            <th class="text-left px-7 py-4 text-gray-500 font-semibold text-xs uppercase">
+            <th class="text-left px-6 py-3.5 text-gray-500 font-semibold text-xs uppercase tracking-wider">
               <% if(lang==='uz'){%>Sana<%}else if(lang==='ru'){%>Дата<%}else{%>Date<%}%>
             </th>
-            <th class="text-left px-7 py-4 text-gray-500 font-semibold text-xs uppercase">
+            <th class="text-left px-6 py-3.5 text-gray-500 font-semibold text-xs uppercase tracking-wider">
               <% if(lang==='uz'){%>Turi<%}else if(lang==='ru'){%>Тип<%}else{%>Type<%}%>
             </th>
-            <th class="text-left px-7 py-4 text-gray-500 font-semibold text-xs uppercase">
+            <th class="text-left px-6 py-3.5 text-gray-500 font-semibold text-xs uppercase tracking-wider">
               <% if(lang==='uz'){%>Kategoriya<%}else if(lang==='ru'){%>Категория<%}else{%>Category<%}%>
             </th>
-            <th class="text-left px-7 py-4 text-gray-500 font-semibold text-xs uppercase">
+            <th class="text-left px-6 py-3.5 text-gray-500 font-semibold text-xs uppercase tracking-wider">
               <% if(lang==='uz'){%>Tavsif<%}else if(lang==='ru'){%>Описание<%}else{%>Description<%}%>
             </th>
-            <th class="text-right px-7 py-4 text-gray-500 font-semibold text-xs uppercase">
-              <% if(lang==='uz'){%>Summa<%}else if(lang==='ru'){%>Сумма<%}else{%>Amount<%}%> (UZS)
+            <th class="text-right px-6 py-3.5 text-gray-500 font-semibold text-xs uppercase tracking-wider">
+              <% if(lang==='uz'){%>Summa (UZS)<%}else if(lang==='ru'){%>Сумма (UZS)<%}else{%>Amount (UZS)<%}%>
             </th>
           </tr>
         </thead>
-        <tbody class="divide-y">
-          <% if (budgets.length === 0) { %>
-            <tr><td colspan="5" class="px-7 py-16 text-center text-gray-400">
-              <i class="fas fa-chart-bar text-4xl mb-3 block"></i>
-              <% if(lang==='uz'){%>Ma'lumot yo'q<%}else if(lang==='ru'){%>Нет данных<%}else{%>No data available<%}%>
+        <tbody class="divide-y divide-gray-50">
+          <% if(!budgets || budgets.length===0){ %>
+            <tr><td colspan="5" class="px-6 py-16 text-center text-gray-400">
+              <i class="fas fa-chart-bar text-4xl text-gray-200 mb-3 block"></i>
+              <% if(lang==='uz'){%>Bu yil uchun ma'lumot yo'q<%}else if(lang==='ru'){%>Нет данных за этот год<%}else{%>No data for this year<%}%>
             </td></tr>
           <% } %>
           <% budgets.forEach(b => { %>
-            <tr class="hover:bg-gray-50">
-              <td class="px-7 py-4 text-gray-500 text-xs"><%= new Date(b.date).toLocaleDateString() %></td>
-              <td class="px-7 py-4">
-                <span class="text-xs px-2.5 py-1 rounded-full font-semibold <%= b.type==='income'?'bg-green-100 text-green-700':'bg-red-100 text-red-600' %>">
-                  <i class="fas fa-<%= b.type==='income'?'arrow-down':'arrow-up' %> mr-1 text-xs"></i>
+            <tr class="hover:bg-gray-50 transition">
+              <td class="px-6 py-4 text-gray-500 text-xs whitespace-nowrap"><%= new Date(b.date).toLocaleDateString() %></td>
+              <td class="px-6 py-4">
+                <span class="badge text-xs font-semibold <%= b.type==='income'?'bg-green-100 text-green-700':'bg-red-100 text-red-600' %>">
+                  <i class="fas fa-<%= b.type==='income'?'arrow-down':'arrow-up' %> text-xs"></i>
                   <%= b.type==='income'?(lang==='uz'?'Daromad':lang==='ru'?'Доход':'Income'):(lang==='uz'?'Xarajat':lang==='ru'?'Расход':'Expense') %>
                 </span>
               </td>
-              <td class="px-7 py-4 text-gray-700 font-medium"><%= b[`category_${lang}`] || b.category_uz %></td>
-              <td class="px-7 py-4 text-gray-500 text-sm max-w-xs truncate"><%= b[`description_${lang}`] || b.description_uz || '—' %></td>
-              <td class="px-7 py-4 text-right font-bold <%= b.type==='income'?'text-green-600':'text-red-500' %>">
-                <%= b.type==='income' ? '+' : '-' %><%= b.amount.toLocaleString() %>
+              <td class="px-6 py-4 text-gray-800 font-medium text-sm"><%= b['category_'+lang] || b.category_uz %></td>
+              <td class="px-6 py-4 text-gray-500 text-sm max-w-xs truncate"><%= b['description_'+lang] || b.description_uz || '—' %></td>
+              <td class="px-6 py-4 text-right font-bold text-base <%= b.type==='income'?'text-green-600':'text-red-500' %>">
+                <%= b.type==='income'?'+':'-' %><%= b.amount.toLocaleString() %>
               </td>
             </tr>
           <% }) %>
         </tbody>
-        <% if (budgets.length > 0) { %>
-          <tfoot class="border-t-2 border-gray-200 bg-gray-50">
-            <tr>
-              <td colspan="4" class="px-7 py-4 font-bold text-gray-800">
-                <% if(lang==='uz'){%>Balans<%}else if(lang==='ru'){%>Баланс<%}else{%>Balance<%}%>
-              </td>
-              <td class="px-7 py-4 text-right font-bold text-xl <%= (income-expense)>=0?'text-green-600':'text-red-500' %>">
-                <%= (income-expense).toLocaleString() %> UZS
-              </td>
-            </tr>
-          </tfoot>
+        <% if(budgets && budgets.length){ %>
+        <tfoot style="background:#f9fafb;border-top:2px solid #e5e7eb">
+          <tr>
+            <td colspan="4" class="px-6 py-4 font-black text-gray-900">
+              <% if(lang==='uz'){%>Jami balans<%}else if(lang==='ru'){%>Итоговый баланс<%}else{%>Total Balance<%}%>
+            </td>
+            <td class="px-6 py-4 text-right font-black text-xl <%= (income-expense)>=0?'text-green-600':'text-red-500' %>">
+              <%= (income-expense).toLocaleString() %> UZS
+            </td>
+          </tr>
+        </tfoot>
         <% } %>
       </table>
     </div>
@@ -133,23 +150,26 @@
 </div>
 
 <script>
-const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const monthlyData = <%- JSON.stringify(monthly) %>;
-const incomeArr = Array(12).fill(0);
-const expenseArr = Array(12).fill(0);
-monthlyData.forEach(d => {
-  if (d._id.type === 'income') incomeArr[d._id.month - 1] = d.total;
-  else expenseArr[d._id.month - 1] = d.total;
+const months = ['Yan','Fev','Mar','Apr','May','Iyun','Iyul','Avg','Sen','Okt','Noy','Dek'];
+const monthlyRaw = <%- JSON.stringify(monthly) %>;
+const incArr = Array(12).fill(0), expArr = Array(12).fill(0);
+monthlyRaw.forEach(d => {
+  if (d._id.type==='income') incArr[d._id.month-1] = d.total;
+  else expArr[d._id.month-1] = d.total;
 });
 new Chart(document.getElementById('budgetChart'), {
   type: 'bar',
   data: {
     labels: months,
     datasets: [
-      { label: '<% if(lang==="uz"){%>Daromad<%}else if(lang==="ru"){%>Доход<%}else{%>Income<%}%>', data: incomeArr, backgroundColor: 'rgba(16,185,129,0.8)', borderRadius: 6 },
-      { label: '<% if(lang==="uz"){%>Xarajat<%}else if(lang==="ru"){%>Расход<%}else{%>Expense<%}%>', data: expenseArr, backgroundColor: 'rgba(239,68,68,0.7)', borderRadius: 6 }
+      { label: '<% if(lang==="uz"){%>Daromad<%}else if(lang==="ru"){%>Доход<%}else{%>Income<%}%>', data: incArr, backgroundColor: 'rgba(16,185,129,0.85)', borderRadius: 6, borderSkipped: false },
+      { label: '<% if(lang==="uz"){%>Xarajat<%}else if(lang==="ru"){%>Расход<%}else{%>Expense<%}%>', data: expArr, backgroundColor: 'rgba(239,68,68,0.75)', borderRadius: 6, borderSkipped: false }
     ]
   },
-  options: { responsive: true, scales: { y: { beginAtZero: true } }, plugins: { legend: { position: 'top' } } }
+  options: {
+    responsive: true,
+    plugins: { legend: { position: 'top' } },
+    scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } }
+  }
 });
 </script>

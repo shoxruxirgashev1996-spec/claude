@@ -1,90 +1,126 @@
-<!-- Header -->
-<div class="bg-primary text-white py-14 px-4">
-  <div class="max-w-4xl mx-auto">
-    <div class="flex items-center gap-2 text-white/60 text-sm mb-4">
+<div class="page-header py-14 px-6">
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="flex items-center gap-2 text-white/50 text-xs mb-5">
       <a href="/" class="hover:text-white"><% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Home<%}%></a>
       <i class="fas fa-chevron-right text-xs"></i>
       <a href="/news" class="hover:text-white"><% if(lang==='uz'){%>Yangiliklar<%}else if(lang==='ru'){%>Новости<%}else{%>News<%}%></a>
       <i class="fas fa-chevron-right text-xs"></i>
-      <span class="text-white/90 truncate max-w-xs"><%= (news[`title_${lang}`] || news.title_uz).substring(0, 40) %>...</span>
+      <span class="text-white/70 truncate max-w-xs"><%= (news['title_'+lang]||news.title_uz).substring(0,40) %>...</span>
     </div>
-    <span class="inline-block text-xs bg-white/10 px-3 py-1 rounded-full mb-3 capitalize"><%= news.category %></span>
-    <h1 class="text-3xl md:text-4xl font-bold leading-tight mb-4">
-      <%= news[`title_${lang}`] || news.title_uz %>
+    <span class="badge text-white text-xs mb-4 capitalize" style="background:var(--secondary)"><%= news.category %></span>
+    <h1 class="text-white text-3xl md:text-4xl font-black leading-snug mb-5">
+      <%= news['title_'+lang] || news.title_uz %>
     </h1>
-    <div class="flex items-center gap-5 text-white/60 text-sm">
-      <span><i class="fas fa-calendar mr-1.5"></i><%= news.createdAt.toLocaleDateString() %></span>
-      <span><i class="fas fa-eye mr-1.5"></i><%= news.views %> views</span>
+    <div class="flex flex-wrap items-center gap-5 text-white/55 text-sm">
+      <span class="flex items-center gap-1.5"><i class="far fa-calendar-alt"></i> <%= news.createdAt.toLocaleDateString() %></span>
+      <span class="flex items-center gap-1.5"><i class="far fa-eye"></i> <%= news.views %> <% if(lang==='uz'){%>marta ko'rildi<%}else if(lang==='ru'){%>просмотров<%}else{%>views<%}%></span>
     </div>
   </div>
 </div>
 
-<div class="max-w-4xl mx-auto px-4 py-12">
+<div class="max-w-7xl mx-auto px-6 py-12">
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
     <!-- Main Content -->
     <div class="lg:col-span-2">
-      <% if (news.image) { %>
-        <img src="<%= news.image %>" alt="<%= news[`title_${lang}`] %>" class="w-full rounded-2xl mb-8 shadow-md">
+      <% if(news.image){ %>
+        <div class="rounded-2xl overflow-hidden mb-8 shadow-lg">
+          <img src="<%= news.image %>" alt="<%= news['title_'+lang] %>" class="w-full object-cover max-h-96">
+        </div>
       <% } %>
 
-      <div class="prose max-w-none text-gray-700 leading-relaxed text-lg">
-        <% const content = news[`content_${lang}`] || news.content_uz || ''; %>
-        <%- content.replace(/\n/g, '<br>') %>
-      </div>
+      <% if(news.video_url){ %>
+        <div class="mb-8 rounded-2xl overflow-hidden shadow-lg aspect-video">
+          <% let embedUrl = news.video_url;
+             if(news.video_url.includes('youtube.com/watch?v=')) {
+               const id = news.video_url.split('v=')[1].split('&')[0];
+               embedUrl = 'https://www.youtube.com/embed/' + id;
+             } else if(news.video_url.includes('youtu.be/')) {
+               const id = news.video_url.split('youtu.be/')[1].split('?')[0];
+               embedUrl = 'https://www.youtube.com/embed/' + id;
+             }
+          %>
+          <iframe src="<%= embedUrl %>" class="w-full h-full" allowfullscreen frameborder="0"></iframe>
+        </div>
+      <% } %>
+
+      <!-- Article content -->
+      <article class="prose max-w-none">
+        <div class="text-gray-700 leading-relaxed text-base" style="font-size:16px;line-height:1.85">
+          <%- (news['content_'+lang] || news.content_uz || '').replace(/\n/g, '<br>') %>
+        </div>
+      </article>
 
       <!-- Share -->
-      <div class="mt-8 pt-8 border-t flex items-center gap-4">
-        <span class="text-gray-500 text-sm font-medium"><% if(lang==='uz'){%>Ulashish<%}else if(lang==='ru'){%>Поделиться<%}else{%>Share<%}%>:</span>
-        <a href="https://t.me/share/url?url=<%= encodeURIComponent('https://localhost:3000/news/' + news.slug) %>" target="_blank" class="w-9 h-9 rounded-lg bg-blue-500 text-white flex items-center justify-center hover:bg-blue-600">
-          <i class="fab fa-telegram text-sm"></i>
-        </a>
-        <button onclick="navigator.clipboard.writeText(window.location.href)" class="w-9 h-9 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-gray-200" title="Copy link">
-          <i class="fas fa-link text-sm"></i>
-        </button>
+      <div class="mt-10 pt-8 border-t border-gray-100">
+        <div class="flex items-center gap-4 flex-wrap">
+          <span class="text-gray-500 text-sm font-semibold">
+            <% if(lang==='uz'){%>Ulashish:<%}else if(lang==='ru'){%>Поделиться:<%}else{%>Share:<%}%>
+          </span>
+          <a href="https://t.me/share/url?url=<%= encodeURIComponent('https://claude-1-6w2b.onrender.com/news/'+news.slug) %>&text=<%= encodeURIComponent(news['title_'+lang]||news.title_uz) %>"
+            target="_blank" class="badge text-white text-sm" style="background:#229ED9">
+            <i class="fab fa-telegram"></i> Telegram
+          </a>
+          <button onclick="navigator.clipboard.writeText(window.location.href).then(()=>alert('Nusxalandi!'))"
+            class="badge text-sm" style="background:#f1f5f9;color:#374151">
+            <i class="fas fa-link"></i> <% if(lang==='uz'){%>Havolani nusxalash<%}else if(lang==='ru'){%>Копировать ссылку<%}else{%>Copy Link<%}%>
+          </button>
+        </div>
       </div>
     </div>
 
     <!-- Sidebar -->
-    <div>
-      <% if (related.length > 0) { %>
-        <div class="bg-gray-50 rounded-2xl p-5">
-          <h3 class="font-bold text-gray-900 mb-4 text-lg">
-            <% if(lang==='uz'){%>O'xshash yangiliklar<%}else if(lang==='ru'){%>Похожие новости<%}else{%>Related News<%}%>
-          </h3>
-          <div class="space-y-4">
-            <% related.forEach(r => { %>
-              <a href="/news/<%= r.slug %>" class="flex gap-3 group">
-                <% if (r.image) { %>
-                  <img src="<%= r.image %>" class="w-16 h-14 object-cover rounded-lg flex-shrink-0">
-                <% } else { %>
-                  <div class="w-16 h-14 bg-blue-100 rounded-lg flex-shrink-0 flex items-center justify-center">
-                    <i class="fas fa-newspaper text-blue-300"></i>
-                  </div>
-                <% } %>
-                <div>
-                  <p class="text-sm font-semibold text-gray-800 group-hover:text-primary line-clamp-2 leading-snug">
-                    <%= r[`title_${lang}`] || r.title_uz %>
-                  </p>
-                  <p class="text-xs text-gray-400 mt-1"><%= r.createdAt.toLocaleDateString() %></p>
-                </div>
-              </a>
-            <% }) %>
-          </div>
-        </div>
-      <% } %>
-
-      <div class="mt-5 bg-primary rounded-2xl p-5 text-white text-center">
-        <i class="fas fa-graduation-cap text-3xl text-secondary mb-3 block"></i>
-        <h3 class="font-bold mb-2">
+    <div class="space-y-6">
+      <!-- CTA box -->
+      <div class="card p-6 text-center" style="background:linear-gradient(135deg,var(--primary),#1a3a8f)">
+        <i class="fas fa-graduation-cap text-3xl mb-3" style="color:var(--secondary)"></i>
+        <h3 class="text-white font-bold text-lg mb-2">
           <% if(lang==='uz'){%>Qabul 2025<%}else if(lang==='ru'){%>Приём 2025<%}else{%>Admission 2025<%}%>
         </h3>
-        <p class="text-white/70 text-sm mb-4">
-          <% if(lang==='uz'){%>Ariza topshiring<%}else if(lang==='ru'){%>Подайте заявку<%}else{%>Apply today<%}%>
+        <p class="text-white/60 text-sm mb-5">
+          <% if(lang==='uz'){%>Online ariza topshiring<%}else if(lang==='ru'){%>Подайте заявку онлайн<%}else{%>Apply online today<%}%>
         </p>
-        <a href="/admission" class="block py-2.5 bg-secondary text-white rounded-xl text-sm font-semibold hover:opacity-90">
+        <a href="/admission" class="btn btn-secondary w-full justify-center text-sm py-3">
+          <i class="fas fa-pen-alt"></i>
           <% if(lang==='uz'){%>Ariza topshirish<%}else if(lang==='ru'){%>Подать заявку<%}else{%>Apply Now<%}%>
         </a>
       </div>
+
+      <!-- Related -->
+      <% if(related && related.length){ %>
+      <div class="card p-5">
+        <h3 class="font-black text-gray-900 text-base mb-5">
+          <% if(lang==='uz'){%>O'xshash yangiliklar<%}else if(lang==='ru'){%>Похожие новости<%}else{%>Related News<%}%>
+        </h3>
+        <div class="space-y-4">
+          <% related.forEach(r => { %>
+            <a href="/news/<%= r.slug %>" class="flex gap-3 group">
+              <div class="w-18 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100" style="width:68px">
+                <% if(r.image){ %>
+                  <img src="<%= r.image %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                <% } else { %>
+                  <div class="w-full h-full flex items-center justify-center" style="background:#f0f4ff">
+                    <i class="fas fa-newspaper text-xs" style="color:var(--primary);opacity:.3"></i>
+                  </div>
+                <% } %>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-gray-800 group-hover:text-primary line-clamp-2 leading-snug transition" style="--primary:var(--primary)">
+                  <%= r['title_'+lang] || r.title_uz %>
+                </p>
+                <p class="text-gray-400 text-xs mt-1"><%= r.createdAt.toLocaleDateString() %></p>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      </div>
+      <% } %>
+
+      <!-- Back -->
+      <a href="/news" class="btn w-full justify-center text-sm py-3" style="background:#f1f5f9;color:#374151">
+        <i class="fas fa-arrow-left"></i>
+        <% if(lang==='uz'){%>Barcha yangiliklarga<%}else if(lang==='ru'){%>Ко всем новостям<%}else{%>All News<%}%>
+      </a>
     </div>
   </div>
 </div>

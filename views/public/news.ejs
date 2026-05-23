@@ -1,85 +1,86 @@
-<!-- Header -->
-<div class="bg-primary text-white py-16 px-4">
-  <div class="max-w-7xl mx-auto">
-    <h1 class="text-4xl font-bold mb-3"><% if(lang==='uz'){%>Yangiliklar<%}else if(lang==='ru'){%>Новости<%}else{%>News & Updates<%}%></h1>
-    <p class="text-white/60 flex items-center gap-2 text-sm">
-      <a href="/" class="hover:text-white"><% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Home<%}%></a>
+<div class="page-header py-16 px-6 relative">
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="flex items-center gap-2 text-white/50 text-xs mb-4">
+      <a href="/" class="hover:text-white transition"><% if(lang==='uz'){%>Bosh sahifa<%}else if(lang==='ru'){%>Главная<%}else{%>Home<%}%></a>
       <i class="fas fa-chevron-right text-xs"></i>
-      <span><% if(lang==='uz'){%>Yangiliklar<%}else if(lang==='ru'){%>Новости<%}else{%>News<%}%></span>
-    </p>
+      <span class="text-white/80"><% if(lang==='uz'){%>Yangiliklar<%}else if(lang==='ru'){%>Новости<%}else{%>News<%}%></span>
+    </div>
+    <h1 class="text-white text-4xl font-black"><% if(lang==='uz'){%>Yangiliklar<%}else if(lang==='ru'){%>Новости<%}else{%>News & Updates<%}%></h1>
   </div>
 </div>
 
-<div class="max-w-7xl mx-auto px-4 py-12">
-  <!-- Filter Bar -->
-  <div class="flex flex-wrap gap-3 mb-8">
-    <a href="/news" class="px-4 py-2 rounded-full text-sm font-medium <%= !query.category ? 'bg-primary text-white' : 'bg-white text-gray-600 border hover:bg-gray-50' %>">
-      <% if(lang==='uz'){%>Barchasi<%}else if(lang==='ru'){%>Все<%}else{%>All<%}%>
+<div class="max-w-7xl mx-auto px-6 py-12">
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-2 mb-10">
+    <a href="/news" class="badge text-sm font-semibold transition <%= !query.category?'text-white':'text-gray-600 bg-white border border-gray-200 hover:bg-gray-50' %>" style="<%= !query.category?'background:var(--primary)':'' %>">
+      <% if(lang==='uz'){%>Barchasi<%}else if(lang==='ru'){%>Все<%}else{%>All<%}%> (<%= total %>)
     </a>
     <% categories.forEach(cat => { %>
-      <a href="/news?category=<%= cat %>" class="px-4 py-2 rounded-full text-sm font-medium capitalize <%= query.category===cat ? 'bg-primary text-white' : 'bg-white text-gray-600 border hover:bg-gray-50' %>">
+      <a href="/news?category=<%= cat %>" class="badge text-sm font-semibold capitalize transition <%= query.category===cat?'text-white':'text-gray-600 bg-white border border-gray-200 hover:bg-gray-50' %>" style="<%= query.category===cat?'background:var(--primary)':'' %>">
         <%= cat %>
       </a>
     <% }) %>
   </div>
 
-  <!-- News Grid -->
-  <% if (news.length === 0) { %>
-    <div class="text-center py-20 text-gray-400">
-      <i class="fas fa-newspaper text-5xl mb-4 block"></i>
-      <p><% if(lang==='uz'){%>Yangiliklar yo'q<%}else if(lang==='ru'){%>Новостей нет<%}else{%>No news available<%}%></p>
+  <% if(!news || news.length===0){ %>
+    <div class="text-center py-24 bg-white rounded-2xl border border-gray-100">
+      <i class="fas fa-newspaper text-5xl text-gray-200 mb-4 block"></i>
+      <p class="text-gray-400 font-medium text-lg"><% if(lang==='uz'){%>Yangiliklar topilmadi<%}else if(lang==='ru'){%>Новостей не найдено<%}else{%>No news found<%}%></p>
     </div>
-  <% } %>
-
+  <% } else { %>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-    <% news.forEach(n => { %>
-      <article class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-        <% if (n.image) { %>
-          <div class="h-52 overflow-hidden">
-            <img src="<%= n.image %>" alt="<%= n[`title_${lang}`] %>" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+    <% news.forEach((n, i) => { %>
+      <article class="card group flex flex-col">
+        <div class="relative h-52 overflow-hidden bg-gray-100">
+          <% if(n.image){ %>
+            <img src="<%= n.image %>" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-600">
+          <% } else { %>
+            <div class="w-full h-full flex items-center justify-center" style="background:linear-gradient(135deg,#f8faff,#eef2ff)">
+              <i class="fas fa-newspaper text-5xl opacity-15" style="color:var(--primary)"></i>
+            </div>
+          <% } %>
+          <div class="absolute top-3 left-3">
+            <span class="badge text-white text-xs capitalize" style="background:var(--secondary)"><%= n.category %></span>
           </div>
-        <% } else { %>
-          <div class="h-52 bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
-            <i class="fas fa-newspaper text-blue-200 text-4xl"></i>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex items-center gap-2 text-gray-400 text-xs mb-3">
+            <i class="far fa-calendar-alt"></i> <%= n.createdAt.toLocaleDateString() %>
+            <span class="text-gray-200">•</span>
+            <i class="far fa-eye"></i> <%= n.views %>
           </div>
-        <% } %>
-        <div class="p-6">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full font-medium capitalize"><%= n.category %></span>
-            <span class="text-gray-400 text-xs"><%= n.createdAt.toLocaleDateString() %></span>
-            <span class="text-gray-300 text-xs ml-auto"><i class="fas fa-eye mr-1"></i><%= n.views %></span>
-          </div>
-          <h2 class="font-bold text-gray-900 text-lg mb-2 leading-tight line-clamp-2">
-            <%= n[`title_${lang}`] || n.title_uz %>
+          <h2 class="font-bold text-gray-900 text-base leading-snug line-clamp-2 mb-3 flex-1">
+            <%= n['title_'+lang] || n.title_uz %>
           </h2>
-          <p class="text-gray-500 text-sm line-clamp-3 mb-4">
-            <%= n[`excerpt_${lang}`] || (n[`content_${lang}`] || '').substring(0, 130) %>...
+          <p class="text-gray-500 text-sm line-clamp-2 mb-5">
+            <%= (n['excerpt_'+lang] || n['content_'+lang] || '').substring(0, 120) %>...
           </p>
-          <a href="/news/<%= n.slug %>" class="inline-flex items-center gap-1.5 text-primary font-semibold text-sm hover:gap-3 transition-all">
-            <% if(lang==='uz'){%>Batafsil o'qish<%}else if(lang==='ru'){%>Читать далее<%}else{%>Read More<%}%>
+          <a href="/news/<%= n.slug %>" class="btn btn-primary py-2.5 px-5 text-sm self-start">
+            <% if(lang==='uz'){%>O'qish<%}else if(lang==='ru'){%>Читать<%}else{%>Read More<%}%>
             <i class="fas fa-arrow-right text-xs"></i>
           </a>
         </div>
       </article>
     <% }) %>
   </div>
+  <% } %>
 
   <!-- Pagination -->
-  <% if (pages > 1) { %>
-    <div class="flex justify-center gap-2 mt-10">
-      <% if (page > 1) { %>
-        <a href="?page=<%= page-1 %>&category=<%= query.category||'' %>" class="w-10 h-10 rounded-xl flex items-center justify-center bg-white border hover:bg-gray-50">
+  <% if(pages > 1){ %>
+    <div class="flex justify-center gap-2 mt-12">
+      <% if(page > 1){ %>
+        <a href="?page=<%= page-1 %>&category=<%= query.category||'' %>" class="w-10 h-10 rounded-xl flex items-center justify-center bg-white border border-gray-200 hover:bg-gray-50 transition">
           <i class="fas fa-chevron-left text-sm text-gray-600"></i>
         </a>
       <% } %>
-      <% for (let i = 1; i <= pages; i++) { %>
+      <% for(let i=1;i<=pages;i++){ %>
         <a href="?page=<%= i %>&category=<%= query.category||'' %>"
-          class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-medium <%= i===page ? 'bg-primary text-white' : 'bg-white border text-gray-600 hover:bg-gray-50' %>">
-          <%= i %>
-        </a>
+          class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold transition border
+          <%= i===page?'border-transparent text-white':'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' %>"
+          style="<%= i===page?'background:var(--primary)':'' %>"><%= i %></a>
       <% } %>
-      <% if (page < pages) { %>
-        <a href="?page=<%= page+1 %>&category=<%= query.category||'' %>" class="w-10 h-10 rounded-xl flex items-center justify-center bg-white border hover:bg-gray-50">
+      <% if(page < pages){ %>
+        <a href="?page=<%= page+1 %>&category=<%= query.category||'' %>" class="w-10 h-10 rounded-xl flex items-center justify-center bg-white border border-gray-200 hover:bg-gray-50 transition">
           <i class="fas fa-chevron-right text-sm text-gray-600"></i>
         </a>
       <% } %>
