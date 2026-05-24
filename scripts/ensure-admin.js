@@ -5,17 +5,17 @@ const bcrypt = require('bcryptjs');
 const MONGODB_URI = process.env.MONGODB_URI;
 if (!MONGODB_URI) {
   console.log('⚠️  MONGODB_URI yoq - ensure-admin skip');
-  process.exit(0); // exit 0 - serverni to'xtatmasin
+  process.exit(0);
 }
 
 async function ensureAdmin() {
   try {
     await mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
-    
     const db = mongoose.connection.db;
+
+    // ── Admin user ──
     const users = db.collection('users');
     const count = await users.countDocuments({ email: 'superadmin@school.uz' });
-    
     if (count === 0) {
       const hash = await bcrypt.hash('admin123', 12);
       await users.insertOne({
@@ -27,12 +27,10 @@ async function ensureAdmin() {
         createdAt: new Date(),
         updatedAt: new Date()
       });
-      console.log('✅ Super Admin yaratildi: superadmin@school.uz / admin123');
-    } else {
-      console.log('ℹ️  Super Admin allaqachon mavjud');
+      console.log('✅ Super Admin yaratildi');
     }
-    
-    // Default settings
+
+    // ── Default Settings ──
     const settings = db.collection('settings');
     const defaults = [
       { key: 'site_name_uz', value: 'Prezident Maktabi' },
@@ -49,18 +47,52 @@ async function ensureAdmin() {
       { key: 'banner_subtitle_en', value: "Center of modern education, science and innovation" },
       { key: 'footer_phone', value: '+998 71 200 00 00' },
       { key: 'footer_email', value: 'info@school.uz' },
+      { key: 'footer_address_uz', value: "Toshkent shahri, Yunusobod tumani" },
     ];
     for (const s of defaults) {
-      await settings.updateOne({ key: s.key }, { $setOnInsert: s }, { upsert: true });
+      await settings.updateOne({ key: s.key }, { $setOnInsert: { ...s } }, { upsert: true });
     }
-    console.log('✅ Sozlamalar tayyor');
-    
+
+    // ── Stats ──
+    const statsCol = db.collection('stats');
+    const statsCount = await statsCol.countDocuments();
+    if (statsCount === 0) {
+      await statsCol.insertOne({
+        students_count: 1200,
+        teachers_count: 85,
+        awards_count: 340,
+        graduates_count: 3500,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      console.log('✅ Stats yaratildi');
+    }
+
+    // ── Sample Announcement ──
+    const ann = db.collection('announcements');
+    const annCount = await ann.countDocuments();
+    if (annCount === 0) {
+      await ann.insertOne({
+        title_uz: "2025-2026 o'quv yili uchun qabul boshlandi!",
+        title_ru: "Открыт приём на 2025-2026 учебный год!",
+        title_en: "Admission for 2025-2026 academic year is open!",
+        content_uz: "Ariza topshirish muddati: 1-may — 30-iyun",
+        content_ru: "Срок подачи заявок: 1 мая — 30 июня",
+        content_en: "Application deadline: May 1 — June 30",
+        isActive: true,
+        expiresAt: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      console.log('✅ Namuna e\'lon yaratildi');
+    }
+
     await mongoose.disconnect();
     console.log('✅ ensure-admin tugadi');
     process.exit(0);
   } catch(err) {
-    console.error('⚠️  ensure-admin xatosi:', err.message);
-    process.exit(0); // exit 0 - serverni to'xtatmasin!
+    console.error('⚠️  ensure-admin:', err.message);
+    process.exit(0);
   }
 }
 
